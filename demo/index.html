@@ -1,0 +1,1265 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Super Note</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600&family=Inter:wght@500;600;700&display=swap">
+<style>
+/* Layout: calm phone app. Five clear rooms (Today, Library, +Capture, Money, Inbox). One accent, flat cards, generous space, one idea per section. */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --sunken:#eef0f4; --line:#e3e6ec;
+  --ink:#101828; --ink-2:#475467; --ink-3:#8a94a6;
+  --accent:#2563eb; --accent-soft:#e8efff; --on-accent:#ffffff;
+  --good:#12925e; --good-soft:#e3f5ec; --warn:#b54708; --warn-soft:#fdf0e1; --rec:#e0393e; --rec-soft:#fde8e8;
+  --c-aca:#2563eb; --c-biz:#d97706; --c-sk:#0d9488; --c-so:#c026d3; --c-fa:#e11d48; --c-pe:#64748b;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 4px 14px rgba(16,24,40,.05);
+  --display:"Anek Bangla","Hind Siliguri",system-ui,sans-serif;
+  --body:"Hind Siliguri",system-ui,sans-serif;
+  --num:"Inter","Hind Siliguri",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b0f17; --surface:#141a24; --sunken:#1b2230; --line:#252e3d;
+  --ink:#eef1f6; --ink-2:#b3bccb; --ink-3:#7c8799;
+  --accent:#6b9bff; --accent-soft:#1a2740; --on-accent:#0b0f17;
+  --good:#3ccf8e; --good-soft:#12291f; --warn:#f2a54a; --warn-soft:#2d2112; --rec:#ff6b6f; --rec-soft:#321617;
+  --c-aca:#6b9bff; --c-biz:#f2a54a; --c-sk:#2dd4bf; --c-so:#e879f9; --c-fa:#fb7185; --c-pe:#94a3b8;
+  --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b0f17; --surface:#141a24; --sunken:#1b2230; --line:#252e3d;
+  --ink:#eef1f6; --ink-2:#b3bccb; --ink-3:#7c8799;
+  --accent:#6b9bff; --accent-soft:#1a2740; --on-accent:#0b0f17;
+  --good:#3ccf8e; --good-soft:#12291f; --warn:#f2a54a; --warn-soft:#2d2112; --rec:#ff6b6f; --rec-soft:#321617;
+  --c-aca:#6b9bff; --c-biz:#f2a54a; --c-sk:#2dd4bf; --c-so:#e879f9; --c-fa:#fb7185; --c-pe:#94a3b8;
+  --shadow:none; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bg)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app{max-width:440px;margin:0 auto;min-height:100%}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:var(--bg);padding-block:14px 10px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:12px}
+.top .ttl{flex:1;min-width:0}
+.top h1{margin:0;font-family:var(--display);font-weight:700;font-size:24px;line-height:1.2}
+.top small{display:block;color:var(--ink-3);font-size:13px}
+.iconbtn{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--ink-2);position:relative}
+.iconbtn .badge{position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--rec);border:2px solid var(--surface)}
+.back{margin-left:-6px}
+
+main{padding-block:4px 120px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:24px}
+section{display:flex;flex-direction:column;gap:10px}
+.sh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sh h2{margin:0;font-family:var(--display);font-weight:600;font-size:17px}
+.sh a,.link{color:var(--accent);font-size:13.5px;font-weight:600;text-decoration:none;background:none;border:0;cursor:pointer;padding:0}
+.muted{color:var(--ink-3);font-size:13px}
+.sample{font-size:11.5px;color:var(--ink-3);border:1px dashed var(--line);border-radius:999px;padding:1px 9px;align-self:flex-start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.pad{padding:16px}
+.num{font-family:var(--num);font-variant-numeric:tabular-nums}
+
+/* ask bar */
+.ask{display:flex;align-items:center;gap:10px;padding:6px 6px 6px 14px;border-radius:14px;cursor:text}
+.ask input{flex:1;min-width:0;border:0;background:transparent;outline:none;padding:9px 0}
+.ask input::placeholder{color:var(--ink-3)}
+.ask .mic{width:38px;height:38px;border-radius:10px;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;cursor:pointer}
+
+/* rows */
+.rows{display:flex;flex-direction:column}
+.row{display:flex;gap:12px;align-items:center;padding:13px 16px;border-top:1px solid var(--line);text-align:left;background:none;border-left:0;border-right:0;border-bottom:0;width:100%;cursor:pointer}
+.row:first-child{border-top:0}
+.row .tx{flex:1;min-width:0}
+.row .tx b{display:block;font-weight:600;line-height:1.35}
+.row .tx span{display:block;font-size:12.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .end{font-size:12.5px;color:var(--ink-3);white-space:nowrap}
+.chev{color:var(--ink-3);width:16px;height:16px}
+.time{font-family:var(--num);font-size:13px;font-weight:600;width:46px;color:var(--ink-2);flex:none}
+.dot{width:8px;height:8px;border-radius:50%;flex:none}
+.tile{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none}
+.t-aca{background:color-mix(in srgb,var(--c-aca) 14%,transparent);color:var(--c-aca)}
+.t-biz{background:color-mix(in srgb,var(--c-biz) 16%,transparent);color:var(--c-biz)}
+.t-sk{background:color-mix(in srgb,var(--c-sk) 14%,transparent);color:var(--c-sk)}
+.t-so{background:color-mix(in srgb,var(--c-so) 14%,transparent);color:var(--c-so)}
+.t-fa{background:color-mix(in srgb,var(--c-fa) 14%,transparent);color:var(--c-fa)}
+.t-pe{background:color-mix(in srgb,var(--c-pe) 16%,transparent);color:var(--c-pe)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.p-good{background:var(--good-soft);color:var(--good)}
+.p-warn{background:var(--warn-soft);color:var(--warn)}
+.p-acc{background:var(--accent-soft);color:var(--accent)}
+.p-rec{background:var(--rec-soft);color:var(--rec)}
+.p-plain{background:var(--sunken);color:var(--ink-2)}
+
+/* attention */
+.attn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.attn button{display:flex;flex-direction:column;gap:6px;align-items:flex-start;text-align:left;padding:14px;cursor:pointer}
+.attn b{font-family:var(--num);font-size:22px;line-height:1}
+.attn span{font-size:13px;color:var(--ink-2)}
+
+/* quick capture */
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.quick button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;font-size:13px;color:var(--ink-2);cursor:pointer}
+
+/* library */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:13.5px;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.smart{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.smart button{padding:12px;text-align:left;display:flex;flex-direction:column;gap:8px;cursor:pointer}
+.smart b{font-family:var(--num);font-size:18px;line-height:1}
+.smart span{font-size:12.5px;color:var(--ink-2)}
+
+/* note detail */
+.crumbs{font-size:12.5px;color:var(--ink-3)}
+.crumbs b{color:var(--ink-2);font-weight:500}
+.ntitle{margin:2px 0 0;font-family:var(--display);font-weight:700;font-size:23px;line-height:1.25;text-wrap:balance}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sunken);border-radius:12px;padding:4px;gap:4px}
+.seg button{border:0;background:none;border-radius:9px;padding:8px 4px;font-size:13.5px;font-weight:600;color:var(--ink-3);cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.panel{display:flex;flex-direction:column;gap:14px}
+.keys{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.keys li{display:flex;gap:12px}
+.keys li i{font-style:normal;font-family:var(--num);font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex:none;margin-top:2px}
+.callout{border-radius:14px;padding:14px;background:var(--warn-soft);display:flex;flex-direction:column;gap:6px}
+.callout .h{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:var(--warn)}
+.callout p{margin:0;color:var(--ink)}
+.tline{display:grid;grid-template-columns:46px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.tline:first-child{border-top:0}
+.tline time{font-family:var(--num);font-size:12px;color:var(--ink-3);padding-top:3px}
+.tline p{margin:0}
+.tline .bn{display:block;color:var(--ink-2);font-size:14px;margin-top:2px}
+.unsure{text-decoration:underline wavy var(--warn);text-underline-offset:4px}
+.board{width:100%;border-radius:12px;background:#1f3d31;color:#e2f1e7;font-family:var(--num);font-size:12px;padding:12px 14px;line-height:1.7;border:3px solid #7a5a37}
+.mind{width:100%;height:auto;display:block}
+.mind text{font-family:var(--body);font-size:12px;fill:var(--ink)}
+.mind .nd{fill:var(--sunken);stroke:var(--line)}
+.mind .hub{fill:var(--accent)}
+.mind .hubt{fill:var(--on-accent);font-weight:600}
+.mind path{stroke:var(--ink-3);stroke-width:1.3;fill:none}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;text-align:left}
+.opt.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.opt.wrong{border-color:var(--rec);background:var(--rec-soft);color:var(--rec)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600;font-size:14.5px}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.block{width:100%}
+.btns{display:flex;gap:8px}
+.btns .btn{flex:1}
+
+/* class mode */
+.recwrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 16px 18px;text-align:center}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--rec)}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--rec);animation:blink 1.3s infinite}
+@keyframes blink{50%{opacity:.25}}
+.clock{font-family:var(--num);font-weight:600;font-size:40px;letter-spacing:-.01em;line-height:1}
+.wave{display:flex;align-items:center;gap:3px;height:36px;width:100%}
+.wave span{flex:1;border-radius:2px;background:var(--accent);opacity:.75;animation:w 1.2s ease-in-out infinite}
+@keyframes w{50%{transform:scaleY(.3)}}
+.recactions{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.stop{width:64px;height:64px;border-radius:50%;border:0;background:var(--rec);display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 6px var(--rec-soft)}
+.stop i{width:20px;height:20px;border-radius:5px;background:#fff}
+.switch{width:44px;height:26px;border-radius:999px;border:0;background:var(--line);position:relative;cursor:pointer;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:transform .2s}
+.switch[aria-checked="true"]{background:var(--accent)}
+.switch[aria-checked="true"]::after{transform:translateX(18px)}
+.notr .bn{display:none}
+
+/* money */
+.biz{display:flex;justify-content:space-between;align-items:center}
+.biz select{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-weight:600}
+.hero{padding:18px;display:flex;flex-direction:column;gap:14px}
+.hero .big{font-family:var(--num);font-weight:700;font-size:32px;line-height:1}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);padding-top:12px}
+.trio div{display:flex;flex-direction:column;gap:2px;font-size:12px;color:var(--ink-3)}
+.trio div+div{border-left:1px solid var(--line);padding-left:12px}
+.trio b{font-family:var(--num);font-size:15px;color:var(--ink)}
+.chart{display:flex;align-items:flex-end;gap:10px;height:84px}
+.chart div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;height:100%;font-size:11px;color:var(--ink-3)}
+.chart i{width:100%;max-width:28px;border-radius:6px 6px 2px 2px;background:var(--sunken)}
+.chart .cur i{background:var(--accent)}
+.amt{font-family:var(--num);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.amt.in{color:var(--good)}
+.voicebar{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--accent-soft);color:var(--ink)}
+.voicebar q{flex:1;font-size:14px}
+
+/* inbox */
+.modebar{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.modebar .tx{flex:1;min-width:0}
+.modebar .tx b{display:block}
+.modebar select{background:var(--sunken);border:0;border-radius:10px;padding:7px 10px;font-weight:600}
+.msg{padding:14px;display:flex;flex-direction:column;gap:10px}
+.who{display:flex;gap:10px;align-items:center}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:600;flex:none}
+.who .tx{flex:1;min-width:0;line-height:1.3}
+.who .tx span{display:block;font-size:12px;color:var(--ink-3)}
+.bubble{background:var(--sunken);border-radius:12px 12px 12px 4px;padding:9px 12px;font-size:14.5px}
+.reply{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14.5px}
+.reply small{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--accent);font-weight:600;margin-bottom:3px}
+.sent{font-size:12.5px;color:var(--good);display:flex;gap:6px;align-items:center}
+
+/* capture sheet */
+.scrim{position:fixed;inset:0;z-index:30;background:rgba(10,14,22,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:440px;background:var(--surface);border-radius:22px 22px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:.5}}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line);align-self:center}
+.sheet h3{margin:0;font-family:var(--display);font-size:18px}
+.capgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.capgrid button{display:flex;gap:10px;align-items:center;padding:14px;text-align:left;cursor:pointer;border-radius:14px;border:1px solid var(--line);background:var(--surface)}
+.capgrid b{display:block;font-weight:600}
+.capgrid span{display:block;font-size:12px;color:var(--ink-3);line-height:1.3}
+.capgrid .wide{grid-column:1/-1;background:var(--rec-soft);border-color:transparent}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:9;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+.tabs nav{max-width:440px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);align-items:center}
+.tab{border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 0 10px;font-size:11.5px;color:var(--ink-3)}
+.tab[aria-current="page"]{color:var(--accent);font-weight:600}
+.tab.plus span{width:48px;height:48px;border-radius:16px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;margin-top:-6px;box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
+/* ---- finishing layer ---- */
+:root{--r-lg:20px;--r-md:14px;--ease:cubic-bezier(.2,.8,.2,1)}
+.card{border-radius:var(--r-lg);border-color:color-mix(in srgb,var(--line) 80%,transparent)}
+button.card,.row,.btn,.chip,.opt,.capgrid button,.quick button,.attn button,.smart button{transition:transform .15s var(--ease),background .2s,border-color .2s}
+button.card:active,.row:active,.btn:active,.chip:active,.capgrid button:active{transform:scale(.98)}
+@media (hover:hover){button.row:hover,button.card:hover{background:color-mix(in srgb,var(--sunken) 55%,var(--surface))}}
+.top h1{font-size:26px;letter-spacing:-.005em}
+.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-family:var(--display);background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+main{animation:fade .35s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.sh h2{font-size:16px;letter-spacing:.01em}
+/* today hero */
+.daycard{padding:18px;display:flex;flex-direction:column;gap:16px;background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 9%,var(--surface)),var(--surface) 60%)}
+.dayhead{display:flex;align-items:center;gap:14px}
+.dayhead .tx{flex:1;min-width:0}
+.dayhead .tx b{display:block;font-family:var(--display);font-size:18px;font-weight:600;line-height:1.3}
+.dayhead .tx span{font-size:13px;color:var(--ink-2)}
+.prog{width:56px;height:56px;position:relative;flex:none}
+.prog svg{width:56px;height:56px;transform:rotate(-90deg)}
+.prog span{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--num);font-weight:700;font-size:14px}
+.tl{display:flex;flex-direction:column;position:relative}
+.tl::before{content:"";position:absolute;left:65px;top:14px;bottom:14px;width:2px;background:var(--line);border-radius:1px}
+.tl .row{padding:10px 0;border-top:0;background:none}
+.tl .row .dot{width:12px;height:12px;border:3px solid var(--surface);box-sizing:content-box;position:relative;z-index:1;margin-left:-1px}
+.tl .row.next .tx b{color:var(--accent)}
+.tl .row.past .tx b{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--line)}
+.tl .row.past .dot{background:var(--line)!important}
+/* tab bar */
+.tabs{background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:saturate(1.6) blur(18px);-webkit-backdrop-filter:saturate(1.6) blur(18px)}
+.tab{position:relative}
+.tab[aria-current="page"]::before{content:"";position:absolute;top:0;width:22px;height:3px;border-radius:0 0 3px 3px;background:var(--accent)}
+.tab.plus span{transition:transform .2s var(--ease)}
+.tab.plus:active span{transform:scale(.92) rotate(90deg)}
+/* note header band */
+.nhead{padding:18px;gap:8px;display:flex;flex-direction:column;border-radius:var(--r-lg);background:linear-gradient(160deg,color-mix(in srgb,var(--c-aca) 12%,var(--surface)),var(--surface));border:1px solid var(--line)}
+/* money hero accent */
+.hero{background:linear-gradient(165deg,color-mix(in srgb,var(--good) 8%,var(--surface)),var(--surface) 55%)}
+.delta{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;color:var(--good);margin-left:8px;vertical-align:middle}
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);opacity:0;z-index:40;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:500;display:flex;gap:8px;align-items:center;pointer-events:none;transition:opacity .2s,transform .25s var(--ease);max-width:calc(100% - 40px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.empty-hint{font-size:12.5px;color:var(--ink-3);text-align:center}
+/* universal command */
+.sheet{max-height:92vh;overflow-y:auto}
+.cmdlive{display:flex;gap:12px;align-items:center;padding:12px;border-radius:16px;background:var(--accent-soft)}
+.bigmic{width:52px;height:52px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;flex:none;cursor:pointer;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 18%,transparent);animation:breathe 2s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 0 0 11px color-mix(in srgb,var(--accent) 8%,transparent)}}
+.heard{margin:0;font-size:14px;line-height:1.5}
+.parsed{display:flex;flex-direction:column;gap:8px}
+.prow{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:14px}
+.prow .tx{flex:1;min-width:0}
+.prow .tx b{display:block;font-weight:600;font-size:14.5px}
+.prow .tx span{display:block;font-size:12px;color:var(--ink-3)}
+.capgrid button{padding:11px}
+/* circle */
+.members{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:2px 20px}
+.members::-webkit-scrollbar{display:none}
+.mem{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px;width:64px;font-size:12.5px;text-align:center;background:none;border:0;cursor:pointer}
+.mem .ring2{width:56px;height:56px;border-radius:50%;padding:3px;background:conic-gradient(var(--good) var(--p,100%),var(--line) 0)}
+.mem .ring2 span{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;font-weight:700;font-family:var(--display);font-size:20px;border:3px solid var(--bg)}
+.mem .ring2 span{background:var(--surface)!important}
+.mem small{font-size:11px;color:var(--ink-3);line-height:1.2}
+.mem.add .ring2{background:var(--line)}
+.mem.add .ring2 span{background:var(--surface);color:var(--ink-3)}
+.care{padding:14px;display:flex;flex-direction:column;gap:10px}
+.care .top2{display:flex;gap:10px;align-items:center}
+.care .top2 .tx{flex:1;min-width:0}
+.care .top2 .tx b{display:block}
+.care .top2 .tx span{font-size:12.5px;color:var(--ink-3)}
+.doses{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.doses div{border-radius:10px;padding:7px 4px;text-align:center;font-size:12px;background:var(--sunken);color:var(--ink-2)}
+.doses div.ok{background:var(--good-soft);color:var(--good);font-weight:600}
+.doses div.wait{background:var(--warn-soft);color:var(--warn);font-weight:600}
+.streak{display:flex;gap:4px}
+.streak i{flex:1;height:22px;border-radius:5px;background:var(--sunken)}
+.streak i.on{background:color-mix(in srgb,var(--c-aca) 70%,transparent)}
+.moods{display:flex;gap:8px;flex-wrap:wrap}
+.mood{display:flex;gap:8px;align-items:center;padding:8px 12px 8px 8px;border-radius:999px;background:var(--sunken);font-size:13px}
+.mood .av{width:26px;height:26px;font-size:12px}
+.priv{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.priv div{border-radius:12px;padding:10px 12px;font-size:13px}
+.priv .yes{background:var(--good-soft)}
+.priv .no{background:var(--sunken)}
+.priv b{display:block;font-size:12px;margin-bottom:4px}
+.priv ul{margin:0;padding-left:16px;color:var(--ink-2)}
+.elder{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.elder button{border:0;border-radius:16px;padding:16px 8px;font-weight:700;font-size:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px}
+.e1{background:var(--good-soft);color:var(--good)}.e2{background:var(--accent-soft);color:var(--accent)}.e3{background:var(--rec-soft);color:var(--rec)}.e4{background:var(--warn-soft);color:var(--warn)}
+.phonebox{border:6px solid var(--ink);border-radius:26px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--surface);max-width:260px;align-self:center;width:100%}
+/* auto transactions */
+.autotx{padding:14px;display:flex;flex-direction:column;gap:10px}
+.notif{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--sunken);font-size:13px}
+.notif b{display:block;font-size:12px;color:var(--ink-3);font-weight:600}
+.arrow{align-self:center;color:var(--ink-3);font-size:12px;display:flex;gap:6px;align-items:center}
+/* identity */
+.idcard{padding:18px;display:flex;gap:14px;align-items:center;background:linear-gradient(160deg,color-mix(in srgb,var(--c-so) 10%,var(--surface)),var(--surface) 60%)}
+.idcard .bigav{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:26px;background:var(--accent);color:var(--on-accent);flex:none}
+.idcard .tx{flex:1;min-width:0}
+.idcard b{display:block;font-family:var(--display);font-size:19px}
+.meter{height:6px;border-radius:3px;background:var(--sunken);overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;width:78%;background:var(--good);border-radius:3px}
+.ctsum{display:grid;grid-template-columns:repeat(3,1fr);padding:12px;text-align:center}
+.ctsum b{display:block;font-family:var(--display);font-size:20px}
+.ctsum span{font-size:12px;color:var(--ink-3)}
+.chat{padding:14px;display:flex;flex-direction:column;gap:12px}
+.chat .day{align-self:center;font-size:11.5px;color:var(--ink-3);background:var(--sunken);padding:3px 10px;border-radius:999px}
+.chat .cm{display:flex;gap:8px;align-items:flex-end;max-width:86%}
+.chat .cm .av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.chat .cm small{font-size:11px;color:var(--ink-3);display:block;margin:0 0 3px 2px}
+.chat .cm p{margin:0;background:var(--sunken);padding:9px 12px;border-radius:14px 14px 14px 4px;font-size:14.5px}
+.chat .cm.me{align-self:flex-end}
+.chat .cm.me small{text-align:right}
+.chat .cm.me p{background:var(--accent);color:var(--on-accent);border-radius:14px 14px 4px 14px}
+.chat .aicard{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink-2);background:var(--accent-soft);border-radius:12px;padding:9px 11px}
+.chat .aicard .i{width:16px;height:16px;color:var(--accent);flex:none;margin-top:2px}
+.chat .aicard.ok{background:var(--good-soft)}.chat .aicard.ok .i{color:var(--good)}
+.composer{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:999px;padding:6px 6px 6px 18px;box-shadow:var(--shadow);color:var(--ink-3);font-size:14.5px}
+.composer span{flex:1}
+.bigmic.sm{width:40px;height:40px}
+.bigmic.sm .i{width:18px;height:18px}
+.magic{display:flex;align-items:center;gap:12px;padding:16px;width:100%;text-align:left;border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);cursor:pointer;font:inherit;color:inherit;background:linear-gradient(160deg,var(--accent-soft),var(--surface) 70%)}
+.magic .tx b{display:block;font-family:var(--display);font-size:16px}
+.magic .tx span{font-size:13px;color:var(--ink-3)}
+.og{display:flex;flex-direction:column;gap:8px}
+.chips.wrap{flex-wrap:wrap;overflow:visible;margin:0;padding:0}
+.kinds{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kinds button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.kinds button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.sugg{display:flex;flex-direction:column;gap:6px}
+.sugg button{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.sugg button .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.sugg button .tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.sugg button .tx b{font-size:14.5px;font-weight:600}
+.sugg button .tx span{font-size:12px;color:var(--ink-3)}
+.sugg button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.outp{padding:14px;display:flex;flex-direction:column;gap:8px}
+.outp p{margin:0;font-size:15px;line-height:1.6}
+.themecard{display:flex;flex-direction:column;gap:16px}
+.swatches{display:flex;gap:12px;flex-wrap:wrap}
+.swatches button{width:36px;height:36px;border-radius:50%;border:0;background:var(--sw);cursor:pointer;box-shadow:0 0 0 2px var(--surface),0 0 0 3px transparent;transition:transform .15s var(--ease),box-shadow .2s}
+.swatches button[aria-checked="true"]{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--sw)}
+.swatches button:active{transform:scale(.9)}
+.kinds button,.sugg button{transition:transform .15s var(--ease),border-color .2s,background .2s}
+.kinds button:active,.sugg button:active,.seg button:active{transform:scale(.96)}
+.seg button{transition:background .2s,color .2s,box-shadow .2s}
+.shelf{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:2px 20px 6px;scroll-snap-type:x mandatory}
+.appc{flex:none;width:150px;scroll-snap-align:start;display:flex;flex-direction:column;gap:3px;padding:14px;border-radius:18px;background:var(--surface);box-shadow:var(--shadow);border:1px solid var(--line);text-decoration:none;color:var(--ink);transition:transform .15s var(--ease)}
+.appc:active{transform:scale(.97)}
+.appc .aico{line-height:1;width:52px;height:52px;border-radius:15px;display:grid;place-items:center;margin-bottom:8px;font-family:var(--display);font-weight:700;font-size:22px;color:#fff;background:linear-gradient(145deg,var(--g1),var(--g2))}
+.appc b{font-family:var(--display);font-size:15px}
+.appc span{font-size:12.5px;color:var(--ink-3);line-height:1.35}
+.appc .price{margin-top:6px;font-family:var(--num);font-size:12.5px;font-weight:600;color:var(--accent)}
+.lifehero{padding:18px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(160deg,color-mix(in srgb,var(--c-pe) 12%,var(--surface)),var(--surface) 65%)}
+.lifehero h2{margin:0;font-family:var(--display);font-size:20px;font-weight:700}
+.lstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lstats div{background:var(--surface);border-radius:12px;padding:10px;text-align:center;box-shadow:var(--shadow)}
+.lstats b{display:block;font-family:var(--display);font-size:18px}
+.lstats span{font-size:12px;color:var(--ink-3)}
+.lifehero .meter i{width:64%;background:var(--accent)}
+.askq{padding:16px;display:flex;flex-direction:column;gap:10px;border:1px solid color-mix(in srgb,var(--accent) 25%,transparent)}
+.askq .q{font-family:var(--display);font-size:16.5px;font-weight:600;margin:0}
+.askq .from{display:flex;gap:6px;flex-wrap:wrap}
+.chap .yr{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;width:58px;flex:none;text-align:right}
+.chap .row.now .tx b{color:var(--accent)}
+.person{padding:16px;display:flex;flex-direction:column;gap:12px}
+.person .ptop{display:flex;gap:12px;align-items:center}
+.person .av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:20px;flex:none}
+.person .ptop b{display:block;font-family:var(--display);font-size:17px}
+.facets{display:flex;flex-direction:column;gap:10px;margin:0;padding:0}
+.facets div{border-left:3px solid var(--line);padding-left:10px}
+.facets dt{font-size:12px;font-weight:600;color:var(--ink-3);margin:0}
+.facets dd{margin:2px 0 0;font-size:14.5px}
+.facets div.rem{border-left-color:var(--accent)}
+.facets div.rem dd{font-family:var(--display);font-style:italic}
+.book{display:flex;gap:14px;align-items:center;padding:16px}
+.book .cover{width:74px;height:100px;border-radius:4px 8px 8px 4px;flex:none;background:linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#000));color:var(--on-accent);display:flex;flex-direction:column;justify-content:flex-end;padding:8px;font-family:var(--display);font-size:11px;line-height:1.25;box-shadow:var(--shadow),inset 4px 0 0 rgba(0,0,0,.18)}
+.intro{padding:16px;display:flex;flex-direction:column;gap:10px}
+.intro p{margin:0}
+.lenrow{display:flex;gap:6px}
+.lenrow button{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px;font-size:13px;cursor:pointer;color:var(--ink-2)}
+.lenrow button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);font-weight:600}
+.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.doc{display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:14px;border:1px solid var(--line);background:var(--surface);cursor:pointer;text-align:left;font-size:12.5px}
+.doc[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.paper{aspect-ratio:3/4;max-width:100%;border-radius:6px;background:#fff;border:1px solid #e5e7eb;padding:7px;display:flex;flex-direction:column;gap:4px}
+.paper i{display:block;height:4px;border-radius:2px;background:#d6dae1}
+.paper i.h{height:7px;width:60%;background:#1f2a44}
+.paper i.a{background:#2563eb;width:35%}
+.paper.cl i.h{background:#7a1d2e}.paper.cl i.a{background:#b8893b}
+.paper.md{background:#f7f9fc}.paper.md i.h{background:#0d9488;width:75%}
+.cmdbox{padding:14px;display:flex;flex-direction:column;gap:10px}
+.cmdbox .said{display:flex;gap:8px;align-items:flex-start;font-size:14.5px}
+.chan{display:flex;gap:6px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 6h14M5 12h14M5 18h9"/></symbol>
+  <symbol id="i-rec" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></symbol>
+  <symbol id="i-lib" viewBox="0 0 24 24"><path d="M4 5h6l2 2h8v12H4z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 5h11v8H8l-4 3z"/><path d="M15 9h5v8l-3-2h-6v-2"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4z"/><path d="M7 10v5c3 2 7 2 10 0v-5"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5h8v2"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 4 14h7l-1 7 9-11h-7z"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .6 3 2 3 4"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-5h4v5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 4 2.5 5 5.5.8-4 3.9.9 5.5L12 16.6 7.1 19.2l.9-5.5-4-3.9 5.5-.8z"/></symbol>
+  <symbol id="i-q" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6M12 17h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H14a4 4 0 0 1 4 4v5.5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 11h16v9H4zM12 11v9M3 7h18v4H3zM12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0"/></symbol>
+</svg>
+
+<div class="app">
+  <header class="top" id="hdr">
+    <button class="iconbtn back" type="button" id="backbtn" hidden aria-label="Go back"><svg class="i"><use href="#i-back"/></svg></button>
+    <div class="ttl"><small id="hsub">Thursday, 12 November</small><h1 id="htitle">Good morning, Yeasin</h1></div>
+    <button class="iconbtn" type="button" data-go="auto" aria-label="Connections & automation"><svg class="i"><use href="#i-gear"/></svg><span class="badge"></span></button>
+    <button class="avatar" type="button" data-go="me" aria-label="My profile">Y</button>
+  </header>
+
+  <!-- TODAY -->
+  <main id="v-today">
+    <label class="card ask" for="q">
+      <svg class="i" style="color:var(--ink-3)"><use href="#i-search"/></svg>
+      <input id="q" placeholder="Search or ask">
+      <button class="mic" type="button" aria-label="Speak"><svg class="i"><use href="#i-mic"/></svg></button>
+    </label>
+
+    <section>
+      <div class="card daycard">
+        <div class="dayhead">
+          <div class="prog" aria-label="2 of today's 5 tasks done"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="23" fill="none" stroke="var(--line)" stroke-width="6"/><circle cx="28" cy="28" r="23" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="144.5" stroke-dashoffset="86.7"/></svg><span>2/5</span></div>
+          <div class="tx"><b>3 tasks left today</b><span>Next in 20 minutes: Accounting class</span></div>
+          <span class="sample">Sample</span>
+        </div>
+        <div class="tl">
+          <div class="row past"><span class="time">08:30</span><span class="dot" style="background:var(--c-pe)"></span><span class="tx"><b>Morning revision</b><span>Done</span></span></div>
+          <button class="row next" type="button" data-go="class"><span class="time">10:00</span><span class="dot" style="background:var(--c-aca)"></span><span class="tx"><b>Accounting class</b><span>Mr Karim · Room 304 · class mode ready</span></span><span class="pill p-acc">Start</span></button>
+          <button class="row" type="button" data-go="money"><span class="time">15:00</span><span class="dot" style="background:var(--c-biz)"></span><span class="tx"><b>Collect ৳500 from Rahim</b><span>Clothing shop · dues book</span></span></button>
+          <div class="row"><span class="time">21:00</span><span class="dot" style="background:var(--c-fa)"></span><span class="tx"><b>Mum's medicine</b><span>Daily</span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Needs attention</h2></div>
+      <div class="attn">
+        <button class="card" type="button" data-go="inbox"><span class="pill p-acc"><svg class="i" style="width:14px;height:14px"><use href="#i-inbox"/></svg>Inbox</span><b class="num">3</b><span>replies waiting for your OK</span></button>
+        <button class="card" type="button" data-go="money"><span class="pill p-warn"><svg class="i" style="width:14px;height:14px"><use href="#i-wallet"/></svg>Owed to you</span><b class="num">৳6,200</b><span>4 people owe you, 1 due today</span></button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>AI noticed</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-spark"/></svg></span><span class="tx"><b>Shall I automate this?</b><span>You've sent the shop accounts to your brother every Saturday for 3 weeks</span></span><button class="link" type="button">Automate</button></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>2-minute night review</b><span>At 10 pm: today's review and tomorrow's plan</span></span><span class="pill p-plain">10 pm</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Quick note</h2></div>
+      <div class="quick">
+        <button class="card" type="button"><span class="tile t-aca"><svg class="i"><use href="#i-mic"/></svg></span>Voice</button>
+        <button class="card" type="button"><span class="tile t-sk"><svg class="i"><use href="#i-cam"/></svg></span>Photo</button>
+        <button class="card" type="button"><span class="tile t-so"><svg class="i"><use href="#i-link"/></svg></span>Link</button>
+        <button class="card" type="button" data-go="class"><span class="tile" style="background:var(--rec-soft);color:var(--rec)"><svg class="i"><use href="#i-rec"/></svg></span>Class</button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Recent notes</h2><a href="#library">See all</a></div>
+      <div class="card rows">
+        <button class="row" type="button" data-go="note"><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>Debit and credit rules</b><span>Academic › Accounting · 48 min · 3 photos</span></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-sk"><svg class="i"><use href="#i-bolt"/></svg></span><span class="tx"><b>6 steps to open a Facebook page</b><span>Skills › Digital marketing · from a link</span></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-fa"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>Mum's prescription</b><span>Family › Health · from a photo</span></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Weekly review</h2><span class="muted">Friday</span></div>
+      <div class="card pad" style="display:flex;gap:12px;align-items:flex-start">
+        <span class="tile t-aca"><svg class="i"><use href="#i-spark"/></svg></span>
+        <p style="margin:0">6 class notes this week, 82% right in quizzes, ৳3,400 business profit. Accounting chapter 3 is weak, so I set 20 minutes of revision on Sunday.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- LIBRARY -->
+  <main id="v-library" hidden>
+    <div class="chips" role="group" aria-label="Life areas">
+      <button class="chip" type="button" aria-pressed="true">All</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-aca)"></span>Academic</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-biz)"></span>Business</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-sk)"></span>Skills</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-so)"></span>Social</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-fa)"></span>Family</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-pe)"></span>Personal</button>
+    </div>
+
+    <section>
+      <div class="sh"><h2>Smart lists</h2></div>
+      <div class="smart">
+        <button class="card" type="button"><svg class="i" style="color:var(--warn)"><use href="#i-star"/></svg><b class="num">14</b><span>Important</span></button>
+        <button class="card" type="button" data-go="note"><svg class="i" style="color:var(--accent)"><use href="#i-q"/></svg><b class="num">5</b><span>Didn't get it</span></button>
+        <button class="card" type="button"><svg class="i" style="color:var(--good)"><use href="#i-clock"/></svg><b class="num">8</b><span>Has reminder</span></button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Folders</h2><span class="muted">AI sorts them</span></div>
+      <div class="card rows">
+        <button class="row" type="button" data-go="note"><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>Academic</b><span>Accounting, Economics, English, Math</span></span><span class="end num">48</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button" data-go="money"><span class="tile t-biz"><svg class="i"><use href="#i-bag"/></svg></span><span class="tx"><b>Business</b><span>Clothing shop, online page</span></span><span class="end num">31</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-sk"><svg class="i"><use href="#i-bolt"/></svg></span><span class="tx"><b>Skills</b><span>Digital marketing, spoken English</span></span><span class="end num">17</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-so"><svg class="i"><use href="#i-people"/></svg></span><span class="tx"><b>Social</b><span>Friends, people profiles, birthdays</span></span><span class="end num">12</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-fa"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>Family</b><span>Health, groceries, bills, documents</span></span><span class="end num">22</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-pe"><svg class="i"><use href="#i-user"/></svg></span><span class="tx"><b>Personal</b><span>Diary, goals, private vault</span></span><span class="end num">9</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+      </div>
+    </section>
+  </main>
+
+  <!-- NOTE DETAIL -->
+  <main id="v-note" hidden>
+    <section class="nhead">
+      <span class="crumbs">Academic › <b>Accounting</b> › Mr Karim</span>
+      <h2 class="ntitle">Debit and credit rules and the dual aspect</h2>
+      <div class="facts"><span class="pill p-plain">12 November</span><span class="pill p-plain">48 minutes</span><span class="pill p-plain">3 photos</span><span class="pill p-warn">1 unclear</span></div>
+    </section>
+
+    <div class="seg" role="tablist" aria-label="Note sections">
+      <button type="button" role="tab" aria-selected="true" data-p="sum">Summary</button>
+      <button type="button" role="tab" aria-selected="false" data-p="full">Full text</button>
+      <button type="button" role="tab" aria-selected="false" data-p="map">Map</button>
+      <button type="button" role="tab" aria-selected="false" data-p="quiz">Quiz</button>
+    </div>
+
+    <div class="panel" id="p-sum">
+      <div class="card pad">
+        <ol class="keys">
+          <li><i>1</i><span>Every transaction affects at least two accounts. This is called the <b>dual aspect</b>.</span></li>
+          <li><i>2</i><span>When money comes in, the <b>Cash account is debited</b>.</span></li>
+          <li><i>3</i><span>In a real account, what comes in is debited and what goes out is credited.</span></li>
+        </ol>
+      </div>
+      <div class="callout">
+        <div class="h"><span>What you didn't get · 23:12</span><span>In simple words</span></div>
+        <p>Say you buy a fan for the shop. The fan <b>comes in</b>, so Furniture is debited. The money <b>goes out</b>, so Cash is credited.</p>
+      </div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Assignment due</b><span>10 journal entries</span></span><span class="pill p-acc">15 Nov</span></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Class test</b><span>Chapters 2 and 3</span></span><span class="pill p-acc">22 Nov</span></div>
+      </div>
+      <button class="btn block" type="button"><svg class="i"><use href="#i-spark"/></svg>Ask this lecture a question</button>
+    </div>
+
+    <div class="panel" id="p-full" hidden>
+      <div class="card pad" style="padding-block:6px">
+        <div class="tline"><time>21:58</time><p>Every transaction affects at least two accounts.<span class="bn">Every transaction affects at least two accounts.</span></p></div>
+        <div class="tline"><time>22:40</time><p>When cash comes in, we debit the cash account.<span class="bn">When money comes in, the Cash account is debited.</span></p></div>
+        <div class="tline"><time>23:05</time><div class="board">Dr Cash ........ 5,000<br>&nbsp;&nbsp;&nbsp;Cr Capital ... 5,000</div></div>
+        <div class="tline"><time>23:12</time><p>Debit what comes in, credit what goes out, for <span class="unsure">real accounts</span>.<span class="bn">In a real account, what comes in is debited and what goes out is credited.</span></p></div>
+      </div>
+      <p class="muted" style="margin:0">The engine isn't sure about underlined words. Tap to play the real audio at that spot.</p>
+    </div>
+
+    <div class="panel" id="p-map" hidden>
+      <div class="card pad">
+        <svg class="mind" viewBox="0 0 340 200" role="img" aria-label="Lecture mind map">
+          <path d="M170 100 C125 100 120 40 76 40"/><path d="M170 100 C215 100 220 40 264 40"/><path d="M170 100 C125 100 120 160 76 160"/><path d="M170 100 C215 100 220 160 264 160"/>
+          <rect class="nd" x="16" y="24" width="120" height="32" rx="10"/><text x="76" y="45" text-anchor="middle">dual aspect</text>
+          <rect class="nd" x="204" y="24" width="120" height="32" rx="10"/><text x="264" y="45" text-anchor="middle">Real account</text>
+          <rect class="nd" x="16" y="144" width="120" height="32" rx="10"/><text x="76" y="165" text-anchor="middle">Cash debit</text>
+          <rect class="nd" x="204" y="144" width="120" height="32" rx="10"/><text x="264" y="165" text-anchor="middle">Capital credit</text>
+          <rect class="hub" x="108" y="81" width="124" height="38" rx="12"/><text class="hubt" x="170" y="105" text-anchor="middle">Debit and credit</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="panel" id="p-quiz" hidden>
+      <div class="card pad" style="display:flex;flex-direction:column;gap:12px">
+        <span class="muted">Question 1 of 5</span>
+        <b style="font-size:16px">The owner brings ৳10,000 into the business. Which account is debited?</b>
+        <div class="opts" id="quiz"><button class="opt" type="button" data-ok="1">Cash</button><button class="opt" type="button">Capital</button><button class="opt" type="button">Sales</button></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- CLASS MODE -->
+  <main id="v-class" hidden>
+    <div class="card recwrap">
+      <div class="facts" style="justify-content:center"><span class="pill p-plain">Accounting</span><span class="pill p-plain">Mr Karim</span><span class="pill p-plain">English</span></div>
+      <span class="live">Recording</span>
+      <div class="clock num" id="timer">00:23:41</div>
+      <div class="wave" id="wave" aria-hidden="true"></div>
+      <button class="stop" type="button" data-go="note" aria-label="Class over, make the note"><i></i></button>
+      <span class="muted">Stop to create the note</span>
+      <div class="recactions">
+        <button class="btn" type="button"><svg class="i"><use href="#i-cam"/></svg>Board photo</button>
+        <button class="btn" type="button" id="huh" style="background:var(--warn-soft);border-color:transparent;color:var(--warn)"><svg class="i"><use href="#i-q"/></svg>Didn't get it</button>
+      </div>
+    </div>
+
+    <section>
+      <div class="sh"><h2>Live transcript</h2><span style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-2)">Bangla translation<button class="switch" type="button" role="switch" aria-checked="true" id="trsw" aria-label="Bangla translation"></button></span></div>
+      <div class="card pad" style="padding-block:6px" id="trans">
+        <div class="tline"><time>22:40</time><p>When cash comes in, we debit the cash account.<span class="bn">When money comes in, the Cash account is debited.</span></p></div>
+        <div class="tline" id="tr"><time>23:12</time><p>Debit what comes in, credit what goes out, for <span class="unsure">real accounts</span>.<span class="bn">In a real account, what comes in is debited and what goes out is credited.</span></p></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MONEY -->
+  <main id="v-money" hidden>
+    <div class="biz">
+      <select aria-label="Choose business"><option>All businesses</option><option>Clothing shop</option><option>Online page</option><option>Family spending</option></select>
+      <span class="muted">November 2026</span>
+    </div>
+
+    <div class="card hero">
+      <div><span class="muted">Profit this month</span><div class="big num">৳14,450<span class="delta"><svg class="i" style="width:14px;height:14px"><use href="#i-up"/></svg>18%</span></div></div>
+      <div class="chart" aria-label="Monthly profit">
+        <div><i style="height:46%"></i>Jun</div><div><i style="height:54%"></i>Jul</div><div><i style="height:38%"></i>Aug</div><div><i style="height:64%"></i>Sep</div><div><i style="height:68%"></i>Oct</div><div class="cur"><i style="height:82%"></i>Nov</div>
+      </div>
+      <div class="trio"><div>Income<b>৳42,300</b></div><div>Spending<b>৳27,850</b></div><div>Owed to you<b style="color:var(--warn)">৳6,200</b></div></div>
+    </div>
+
+    <section>
+      <div class="sh"><h2>Auto-captured payments</h2><span class="pill p-acc">Check 2</span></div>
+      <div class="card autotx">
+        <div class="notif"><svg class="i" style="color:var(--ink-3)"><use href="#i-bell"/></svg><div><b>bKash notification · 11:42</b>You have received Tk 2,500.00 from 017XXXXXXXX. Ref: three piece</div></div>
+        <span class="arrow"><svg class="i" style="width:14px;height:14px"><use href="#i-down"/></svg>AI understood</span>
+        <div class="row" style="padding:0;border:0"><span class="tile" style="background:var(--good-soft);color:var(--good)"><svg class="i"><use href="#i-up"/></svg></span><span class="tx"><b>Sale · three-piece</b><span>Clothing shop · matched customer Sumaiya's order</span></span><span class="amt in">+৳2,500</span></div>
+        <div class="btns"><button class="btn pri" type="button" data-toast="Added to the books">OK</button><button class="btn" type="button">Change</button></div>
+      </div>
+      <div class="card autotx">
+        <div class="notif"><svg class="i" style="color:var(--ink-3)"><use href="#i-bell"/></svg><div><b>Bank SMS · yesterday</b>Your A/C XX4521 debited BDT 1,650.00 for DESCO bill payment.</div></div>
+        <div class="row" style="padding:0;border:0"><span class="tile t-fa"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>Electricity bill</b><span>Family spending · ৳200 more than last month</span></span><span class="amt">−৳1,650</span></div>
+        <div class="btns"><button class="btn pri" type="button" data-toast="Added to the books">OK</button><button class="btn" type="button">Change</button></div>
+      </div>
+      <p class="muted" style="margin:0">Reads bKash, Nagad, Rocket and bank messages and records them. Tell it once "this is for the shop" and next time it knows. Notification text stays on your phone.</p>
+    </section>
+
+    <div class="voicebar"><svg class="i" style="color:var(--accent)"><use href="#i-mic"/></svg><q>Say cash payments out loud: "Sold ৳3,000 today, Rahim owes ৳500"</q><button class="btn pri" type="button" style="padding:8px 12px">Save</button></div>
+
+    <section>
+      <div class="sh"><h2>Transactions</h2><a href="#money">See all</a></div>
+      <div class="card rows">
+        <div class="row"><span class="tile" style="background:var(--good-soft);color:var(--good)"><svg class="i"><use href="#i-up"/></svg></span><span class="tx"><b>Sales, cash</b><span>Clothing shop · today</span></span><span class="amt in">+৳3,000</span></div>
+        <div class="row"><span class="tile" style="background:var(--warn-soft);color:var(--warn)"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Rahim, owes</b><span>Clothing shop · pays tomorrow</span></span><span class="amt" style="color:var(--warn)">৳500</span></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-down"/></svg></span><span class="tx"><b>Facebook boost</b><span>Online page · receipt attached</span></span><span class="amt">−৳1,200</span></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-down"/></svg></span><span class="tx"><b>Stock purchase, Islampur</b><span>Clothing shop · 10 Nov</span></span><span class="amt">−৳18,500</span></div>
+      </div>
+    </section>
+    <p class="muted" style="margin:0">AI understands what you say and files it. The maths runs in plain accounting code, so numbers are never wrong.</p>
+  </main>
+
+  <!-- INBOX (SOCIAL) -->
+  <main id="v-inbox" hidden>
+    <div class="card modebar">
+      <span class="tile t-aca"><svg class="i"><use href="#i-spark"/></svg></span>
+      <span class="tx"><b>AI replies</b><span class="muted">5 apps connected</span></span>
+      <select aria-label="Sending mode"><option>Ask first</option><option>Auto</option><option>Off</option></select>
+    </div>
+
+    <div class="chips" role="group" aria-label="Filter">
+      <button class="chip" type="button" aria-pressed="true">Waiting · 2</button>
+      <button class="chip" type="button" aria-pressed="false">Sent automatically · 7</button>
+      <button class="chip" type="button" aria-pressed="false">AI suggestions · 2</button>
+    </div>
+
+    <div class="card cmdbox">
+      <div class="said"><svg class="i" style="color:var(--accent)"><use href="#i-mic"/></svg><span>"Send a message to my old school friend Rakib, we haven't talked in ages"</span></div>
+      <div class="who"><span class="av t-so">Ra</span><span class="tx"><b>Rakib Hasan</b><span>Found in contacts · last chat in 2024</span></span></div>
+      <div class="reply"><small><svg class="i" style="width:14px;height:14px"><use href="#i-spark"/></svg>Written by AI</small>Hey Rakib, how are you? It's been so long. I really miss our school days. Shall we meet up when you're free?</div>
+      <div class="chan"><span class="pill p-acc">WhatsApp</span><span class="pill p-plain">Messenger</span><span class="pill p-plain">SMS</span></div>
+      <div class="btns"><button class="btn pri" type="button">Send</button><button class="btn" type="button">Change</button></div>
+    </div>
+
+    <div class="card msg">
+      <div class="who"><span class="av t-fa">M</span><span class="tx"><b>Mum</b><span>WhatsApp · voice message · 10 min</span></span></div>
+      <div class="bubble">Son, bring eggs and potatoes on your way home today</div>
+      <div class="reply"><small><svg class="i" style="width:14px;height:14px"><use href="#i-spark"/></svg>AI's reply</small>Yes Mum, I'll bring them. I'll be home by 7 pm.</div>
+      <div class="btns"><button class="btn pri" type="button">Send</button><button class="btn" type="button">Change</button></div>
+      <span class="muted">Added "eggs, potatoes" to the shopping list.</span>
+    </div>
+
+    <div class="card msg">
+      <div class="who"><span class="av t-sk">R</span><span class="tx"><b>Rahim</b><span>Messenger · 1 hour</span></span></div>
+      <div class="bubble">Brother, can I pay tomorrow?</div>
+      <div class="reply"><small><svg class="i" style="width:14px;height:14px"><use href="#i-spark"/></svg>AI's reply · checked the books</small>No problem, please send the ৳500 by tomorrow afternoon.</div>
+      <div class="btns"><button class="btn pri" type="button">Send</button><button class="btn" type="button">Change</button></div>
+    </div>
+
+    <div class="card msg">
+      <div class="who"><span class="av t-biz">S</span><span class="tx"><b>Sumaiya, customer</b><span>Business page · comment · 2 min</span></span><span class="pill p-good">Sent automatically</span></div>
+      <div class="bubble">How much is the blue three-piece? Do you deliver outside Dhaka?</div>
+      <div class="reply"><small><svg class="i" style="width:14px;height:14px"><use href="#i-check"/></svg>Sent</small>It's ৳1,850. Outside Dhaka takes 2-3 days, delivery charge ৳120.</div>
+    </div>
+
+    <section>
+      <div class="sh"><h2>AI suggestion</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-so"><svg class="i"><use href="#i-gift"/></svg></span><span class="tx"><b>Tanvir's birthday is tomorrow</b><span>Send wishes at midnight?</span></span><button class="link" type="button">Schedule</button></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>You haven't replied to Nasim for 2 days</b><span>A short reply is ready</span></span><button class="link" type="button">View</button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>What to do for whom</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tx"><b>Customers</b><span>Price, delivery, stock</span></span><span class="pill p-good">Auto</span></div>
+        <div class="row"><span class="tx"><b>Family & friends</b><span>Shows you first</span></span><span class="pill p-acc">Ask first</span></div>
+        <div class="row"><span class="tx"><b>Money or angry messages</b><span>Always asks you</span></span><span class="pill p-warn">Lock</span></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CIRCLE -->
+  <main id="v-circle" hidden>
+    <div class="chips" role="group" aria-label="Choose circle">
+      <button class="chip" type="button" aria-pressed="true">Family · 5</button>
+      <button class="chip" type="button" aria-pressed="false">Friends · 8</button>
+      <button class="chip" type="button" aria-pressed="false">Business team · 3</button>
+      <button class="chip" type="button" aria-pressed="false">+ New circle</button>
+    </div>
+
+    <div class="members" aria-label="Members">
+      <button class="mem" type="button"><span class="ring2" style="--p:100%"><span class="t-fa">M</span></span>Mum<small>Medicine 2/3</small></button>
+      <button class="mem" type="button"><span class="ring2" style="--p:100%"><span class="t-pe">D</span></span>Dad<small>I'm fine</small></button>
+      <button class="mem" type="button"><span class="ring2" style="--p:70%"><span class="t-aca">Ri</span></span>Riya<small>Studied 1 h 40 m</small></button>
+      <button class="mem" type="button"><span class="ring2" style="--p:40%"><span class="t-sk">Sa</span></span>Sakib<small>Studied 35 m</small></button>
+      <button class="mem add" type="button"><span class="ring2"><span>+</span></span>Add<small>by sending a link</small></button>
+    </div>
+
+    <div class="seg" role="tablist" aria-label="Circle sections">
+      <button type="button" role="tab" aria-selected="true" data-p="ctask">Shared tasks</button>
+      <button type="button" role="tab" aria-selected="false" data-p="cchat">Group chat</button>
+      <button type="button" role="tab" aria-selected="false" data-p="cupd">Everyone's news</button>
+    </div>
+
+    <div class="panel" id="p-ctask">
+      <div class="card ctsum"><div><b>5</b><span>Tasks this month</span></div><div><b style="color:var(--good)">2</b><span>Done</span></div><div><b style="color:var(--warn)">1</b><span>Coming up</span></div></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-plus"/></svg></span><span class="tx"><b>Buy Mum's medicine</b><span>Owner: you · within 4 days · reminds before it runs out</span></span><span class="pill p-warn">4 days</span></div>
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-people"/></svg></span><span class="tx"><b>Check on Mum</b><span>Taking turns: Riya today, you tomorrow, Sakib next</span></span><span class="pill p-acc">Riya today</span></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>House rent · ৳12,000</b><span>Owner: Dad · 5th of every month</span></span><span class="pill p-good">Paid</span></div>
+        <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-bag"/></svg></span><span class="tx"><b>Shop rent · ৳8,500</b><span>Owner: you · ticks itself when paid by bKash</span></span><span class="pill p-good">Paid</span></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>Riya's tuition fee · ৳3,000</b><span>Owner: you · 10th of every month</span></span><span class="pill p-plain">10 Dec</span></div>
+      </div>
+      <button class="btn block" type="button" data-toast="Say it, and the AI creates the task and assigns it"><svg class="i"><use href="#i-mic"/></svg>Add a shared task by voice</button>
+      <p class="muted" style="margin:0">Only the owner of a task gets the reminder. Everyone sees when it's done, so nobody has to keep calling to ask "did you pay?".</p>
+    <section style="margin-top:6px">
+      <div class="sh"><h2>Family shared items</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>Shopping list</b><span>Eggs, potatoes, rice · added by Mum</span></span><span class="end num">6</span></div>
+        <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-wallet"/></svg></span><span class="tx"><b>Household spending</b><span>৳18,400 this month · who paid what</span></span><svg class="i chev"><use href="#i-chev"/></svg></div>
+        <div class="row"><span class="tile t-so"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Family calendar</b><span>Birthdays, invitations, doctor visits</span></span><svg class="i chev"><use href="#i-chev"/></svg></div>
+        <div class="row"><span class="tile t-sk"><svg class="i"><use href="#i-shield"/></svg></span><span class="tx"><b>"Arrived safely"</b><span>One tap to say you've arrived</span></span><svg class="i chev"><use href="#i-chev"/></svg></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-cam"/></svg></span><span class="tx"><b>Family memories</b><span>Photos and voice, the AI makes a story at year end</span></span><svg class="i chev"><use href="#i-chev"/></svg></div>
+      </div>
+    </section>
+
+    </div>
+
+    <div class="panel" id="p-cchat" hidden>
+      <div class="card chat">
+        <div class="day">Today</div>
+        <div class="cm"><span class="av t-fa">M</span><div><small>Mum · 10:12</small><p>🎤 Only 4 days of blood pressure medicine left, son</p></div></div>
+        <div class="aicard"><svg class="i"><use href="#i-spark"/></svg><span>AI understood: <b>buy medicine</b>. Assigned to Yeasin, reminder on Saturday.</span></div>
+        <div class="cm"><span class="av t-aca">Ri</span><div><small>Riya · 11:40</small><p>Mum took it, I talked to her 👍</p></div></div>
+        <div class="cm me"><div><small>You · 12:05</small><p>Paid the shop rent</p></div></div>
+        <div class="aicard ok"><svg class="i"><use href="#i-check"/></svg><span>bKash ৳8,500 matched. <b>Shop rent</b> ticked off.</span></div>
+      </div>
+      <div class="composer"><span>Type or speak a message</span><button class="bigmic sm" type="button" aria-label="Voice message"><svg class="i"><use href="#i-mic"/></svg></button></div>
+      <p class="muted" style="margin:0">When someone mentions a task in chat, the AI creates it. When money is paid, it ticks it off. No separate WhatsApp group needed, but a summary can go to WhatsApp if you like.</p>
+    </div>
+
+    <div class="panel" id="p-cupd" hidden>
+    <div class="card care">
+      <div class="top2"><span class="tile t-fa"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Mum's medicine</b><span>Mum taps "Taken" herself. If she doesn't, you'll be told</span></span></div>
+      <div class="doses"><div class="ok">Morning ✓ 8:10</div><div class="ok">Noon ✓ 2:05</div><div class="wait">9 pm</div></div>
+      <span class="muted">4 days of medicine left. Add buying it to your list?</span>
+      <div class="btns"><button class="btn" type="button">Call Mum</button><button class="btn pri" type="button" data-toast="Added to the shopping list">Add to list</button></div>
+    </div>
+
+    <div class="card care">
+      <div class="top2"><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>Siblings' studies</b><span>Only what they chose to share</span></span></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span>Riya · 6 days this week</span><span class="pill p-good">Going well</span></div>
+        <div class="streak" aria-label="Riya's study, last 7 days"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>Sakib · 2 days this week</span><span class="pill p-warn">Needs a little push</span></div>
+        <div class="streak" aria-label="Sakib's study, last 7 days"><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div>
+      </div>
+      <button class="btn" type="button" data-toast="Encouragement sent to Sakib" style="align-self:flex-start">Encourage Sakib</button>
+    </div>
+
+    <section>
+      <div class="sh"><h2>How everyone is today</h2><span class="muted">One tap a day</span></div>
+      <div class="moods">
+        <span class="mood"><span class="av t-fa">M</span>Mum · good 😊</span>
+        <span class="mood"><span class="av t-pe">D</span>Dad · a bit tired</span>
+        <span class="mood"><span class="av t-aca">Ri</span>Riya · exam stress</span>
+      </div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-so"><svg class="i"><use href="#i-spark"/></svg></span><span class="tx"><b>You haven't talked to Dad for 5 days</b><span>Remind you to call him this evening?</span></span><button class="link" type="button" data-toast="Will remind at 7 pm">Yes</button></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-gift"/></svg></span><span class="tx"><b>Riya's exam is on Sunday</b><span>Send a good-luck voice message</span></span><button class="link" type="button" data-toast="Voice recorder opened">Record</button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Easy mode for parents</h2></div>
+      <div class="phonebox" aria-label="Easy mode preview">
+        <b style="font-family:var(--display);font-size:18px;text-align:center">Assalamu alaikum, Mum</b>
+        <div class="elder">
+          <button class="e1" type="button" data-toast="Yeasin has been told">✓<span>Took my medicine</span></button>
+          <button class="e2" type="button">🎤<span>Send voice</span></button>
+          <button class="e4" type="button">😊<span>I'm fine</span></button>
+          <button class="e3" type="button">☎<span>Call my son</span></button>
+        </div>
+      </div>
+      <p class="muted" style="margin:0;text-align:center">Big buttons, works without reading. No typing needed.</p>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Privacy, in everyone's hands</h2></div>
+      <div class="priv">
+        <div class="yes"><b style="color:var(--good)">Shared (only if turned on)</b><ul><li>Medicine taken</li><li>Study time</li><li>How I am today</li><li>Arrived</li></ul></div>
+        <div class="no"><b style="color:var(--ink-2)">Never shared</b><ul><li>Private notes</li><li>Messages</li><li>Money</li><li>Location all the time</li></ul></div>
+      </div>
+      <p class="muted" style="margin:0">Each person chooses what to share and can stop any time. There is no secret tracking, which keeps trust and relationships healthy.</p>
+    </section>
+    </div>
+  </main>
+
+  <!-- AUTOMATION SETTINGS -->
+  <main id="v-auto" hidden>
+    <section>
+      <div class="sh"><h2>Running automations</h2><span class="pill p-good">4 on</span></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-flow"/></svg></span><span class="tx"><b>Every Saturday 9 pm</b><span>Shop accounts as PDF to my brother on WhatsApp</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="On"></button></div>
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-flow"/></svg></span><span class="tx"><b>When a due date comes</b><span>Tells you in the morning, sends a polite reminder to them</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="On"></button></div>
+        <div class="row"><span class="tile t-so"><svg class="i"><use href="#i-flow"/></svg></span><span class="tx"><b>On a close one's birthday</b><span>Wishes at midnight, shown to you first</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="On"></button></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-flow"/></svg></span><span class="tx"><b>As soon as class ends</b><span>Makes the note, backs up to Google Drive, quiz at night</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="On"></button></div>
+      </div>
+      <button class="btn block" type="button" id="newauto"><svg class="i"><use href="#i-mic"/></svg>Create a new automation by voice</button>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Reminder engine</h2><span class="pill p-good">Built in</span></div>
+      <div class="card pad" style="display:flex;flex-direction:column;gap:12px">
+        <span class="muted">How it reminds, based on importance</span>
+        <div class="card rows" style="box-shadow:none">
+          <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-bell"/></svg></span><span class="tx"><b>Normal</b><span>Notification, soft sound</span></span><span class="pill p-plain">Shopping list</span></div>
+          <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Urgent</b><span>Alarm, rings even on silent</span></span><span class="pill p-warn">Class, dues</span></div>
+          <div class="row"><span class="tile" style="background:var(--rec-soft);color:var(--rec)"><svg class="i"><use href="#i-people"/></svg></span><span class="tx"><b>Very urgent</b><span>Full screen like a call, rings until you answer</span></span><span class="pill p-rec">Medicine, exams</span></div>
+        </div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>Escalates if you miss it</b><span>Notification → alarm after 5 minutes → then call</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Escalation"></button></div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>Done or snooze</b><span>in one tap "Done", 10 min / 1 hour / tomorrow</span></span><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>Works offline and after restart</b><span>All reminders stay on the phone, none get lost</span></span><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>No duplicates</b><span>If you say the same task again, it asks instead of making a new one</span></span><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>Copy to Google / Outlook</b><span>Optional, view only; no sound</span></span><button class="switch" type="button" role="switch" aria-checked="false" aria-label="Copy to calendar"></button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Connected apps & accounts</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="av" style="background:#ea4335;color:#fff;width:36px;height:36px">G</span><span class="tx"><b>Google</b><span>Gmail, Calendar, Drive, Contacts</span></span><span class="pill p-good">Connected</span></div>
+        <div class="row"><span class="av" style="background:#1fae5b;color:#fff;width:36px;height:36px">W</span><span class="tx"><b>WhatsApp</b><span>Reads and replies from notifications</span></span><span class="pill p-good">Connected</span></div>
+        <div class="row"><span class="av" style="background:#2563eb;color:#fff;width:36px;height:36px">f</span><span class="tx"><b>Facebook page & Messenger</b><span>Page messages, comments, posts</span></span><span class="pill p-good">Connected</span></div>
+        <div class="row"><span class="av" style="background:#c13584;color:#fff;width:36px;height:36px">I</span><span class="tx"><b>Instagram business</b><span>DMs and comments</span></span><button class="link" type="button">Connect</button></div>
+        <div class="row"><span class="av t-pe" style="width:36px;height:36px">S</span><span class="tx"><b>SMS & call log</b><span>Due-payment messages, missed-call reminders</span></span><button class="link" type="button">Connect</button></div>
+        <div class="row"><span class="av t-sk" style="width:36px;height:36px"><svg class="i"><use href="#i-link"/></svg></span><span class="tx"><b>Add your own link</b><span>Website, page, form, sheet</span></span><button class="link" type="button">Add</button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Phone permissions</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tx"><b>Read notifications</b><span>To understand messages and reply</span></span><span class="pill p-good">Allowed</span></div>
+        <div class="row"><span class="tx"><b>Microphone & camera</b><span>Voice, class recording, photos</span></span><span class="pill p-good">Allowed</span></div>
+        <div class="row"><span class="tx"><b>Location</b><span>"Remind me at the market"</span></span><button class="link" type="button">Allow</button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>Security</h2></div>
+      <div class="card pad" style="display:flex;gap:12px;align-items:flex-start">
+        <span class="tile t-sk"><svg class="i"><use href="#i-shield"/></svg></span>
+        <div style="display:flex;flex-direction:column;gap:4px"><b>Sending money, passwords and deleting things</b><span class="muted">The AI never does these three on its own. It always asks for your fingerprint. Every action is logged here.</span><button class="link" type="button" style="align-self:flex-start;margin-top:4px">See the action log</button></div>
+      </div>
+    </section>
+      <section>
+      <div class="sh"><h2>Look & theme</h2><span class="muted">Make it yours</span></div>
+      <div class="card pad themecard">
+        <div class="og"><span class="muted">Mode</span>
+          <div class="seg" role="radiogroup" aria-label="Mode" id="modeseg"><button type="button" role="radio" aria-selected="true" data-m="auto">Auto</button><button type="button" role="radio" aria-selected="false" data-m="light">Light</button><button type="button" role="radio" aria-selected="false" data-m="dark">Dark</button></div></div>
+        <div class="og"><span class="muted">Language</span>
+          <div class="seg" role="radiogroup" aria-label="Language" id="langseg"><button type="button" role="radio" aria-selected="true" data-href="index.html">English</button><button type="button" role="radio" aria-selected="false" data-href="bn.html" lang="bn">বাংলা</button></div></div>
+        <div class="og"><span class="muted">Accent colour</span>
+          <div class="swatches" role="radiogroup" aria-label="Accent colour" id="swatches">
+            <button type="button" role="radio" aria-checked="true" aria-label="Blue" data-c="blue" style="--sw:#2563eb"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="Emerald" data-c="emerald" style="--sw:#059669"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="Violet" data-c="violet" style="--sw:#7c3aed"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="Amber" data-c="amber" style="--sw:#c2410c"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="Rose" data-c="rose" style="--sw:#db2777"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="Graphite" data-c="graphite" style="--sw:#334155"></button>
+          </div></div>
+        <div class="og"><span class="muted">Text size</span>
+          <div class="seg" role="radiogroup" aria-label="Text size" id="sizeseg"><button type="button" role="radio" aria-selected="false" data-z="14">Small</button><button type="button" role="radio" aria-selected="true" data-z="15">Normal</button><button type="button" role="radio" aria-selected="false" data-z="16.5">Large</button></div></div>
+        <div class="row" style="padding:0;background:none"><span class="tx"><b>Light haptics</b><span>A soft buzz when you tap</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Haptics"></button></div>
+      </div>
+    </section>
+      <section>
+      <div class="sh"><h2>More apps from the same maker</h2><span class="pill p-acc">1 new</span></div>
+      <div class="shelf" aria-label="Other apps">
+        <a class="appc" href="#auto" data-toast="Opening Play Store"><span class="aico" style="--g1:#0ea5e9;--g2:#2563eb">Hi</span><b>Hisab Pro</b><span>Full shop accounts</span><span class="price">৳596 · once</span></a>
+        <a class="appc" href="#auto" data-toast="Opening Play Store"><span class="aico" style="--g1:#f59e0b;--g2:#ea580c">Po</span><b>Study Buddy</b><span>Exam preparation</span><span class="price">Free</span></a>
+        <a class="appc" href="#auto" data-toast="Opening Play Store"><span class="aico" style="--g1:#10b981;--g2:#047857">A</span><b>Amalnama</b><span>Daily good deeds</span><span class="price">৳596</span></a>
+        <a class="appc more" href="#auto" data-toast="List of all apps opened"><span class="aico" style="--g1:var(--sunken);--g2:var(--sunken);color:var(--ink-3)!important">+</span><b>See all</b><span>New apps appear here by themselves</span></a>
+      </div>
+      <p class="muted" style="margin:0">No annoying ads. When a new app comes out you get one small notice, and you can turn it off.</p>
+    </section>
+  </main>
+
+  <!-- ME / IDENTITY -->
+  <main id="v-me" hidden>
+    <div class="card idcard">
+      <span class="bigav">Y</span>
+      <div class="tx"><b>Yeasin Arafat</b><span class="muted">Student · entrepreneur · sample data</span>
+        <div class="meter" aria-label="Profile 78% complete"><i></i></div><span class="muted">Profile 78% complete · missing: language skills</span></div>
+    </div>
+
+    <button class="card rows" type="button" data-go="life" style="border:0;text-align:left;width:100%;padding:0;cursor:pointer;font:inherit;color:inherit">
+      <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-star"/></svg></span><span class="tx"><b>My life story</b><span>From birth to today · the people in my life</span></span><svg class="i" style="color:var(--ink-3)"><use href="#i-chev"/></svg></div>
+    </button>
+
+    <section>
+      <div class="sh"><h2>Intros, messages & documents</h2></div>
+      <button class="card magic" type="button" id="opendoc">
+        <span class="tile" style="background:var(--accent);color:var(--on-accent)"><svg class="i"><use href="#i-spark"/></svg></span>
+        <span class="tx"><b>One-tap create</b><span>Message, intro, email or CV. Just choose, the AI writes the rest.</span></span>
+        <svg class="i" style="color:var(--ink-3)"><use href="#i-chev"/></svg>
+      </button>
+      <div class="card rows">
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>CV, for jobs</b><span>English · professional · 3 Nov</span></span><span class="pill p-plain">PDF</span></div>
+        <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>Business profile</b><span>Clothing shop · for partners</span></span><span class="pill p-plain">PDF</span></div>
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>Application letter</b><span>For a scholarship · Bangla</span></span><span class="pill p-plain">PDF</span></div>
+      </div>
+    </section>
+    <p class="muted" style="margin:0">Give your details once. Depending on who is asking, the AI decides what to show and what to keep hidden.</p>
+  </main>
+
+  <main id="v-life" hidden>
+    <div class="card lifehero">
+      <span class="muted">Yeasin Arafat's life story · sample</span>
+      <h2>From birth to today</h2>
+      <div class="lstats"><div><b>6</b><span>chapters</span></div><div><b>412</b><span>days of notes</span></div><div><b>38</b><span>people</span></div></div>
+      <div><div class="meter" aria-label="Life story 64% written"><i></i></div><span class="muted">64% written · childhood needs more stories</span></div>
+    </div>
+
+    <section class="card askq">
+      <div class="sh"><span class="pill p-acc">Today's question</span><span class="muted">Once at 10 pm</span></div>
+      <p class="q">"Today the shop got its first wholesale order. How did it feel, and who helped?"</p>
+      <div class="from"><span class="pill p-plain">Seen in your accounts</span><span class="pill p-plain">Calendar: 2 classes</span></div>
+      <div class="btns"><button class="btn pri" type="button" data-toast="Go ahead, I'm listening. It will be added to your story"><svg class="i"><use href="#i-mic"/></svg>Answer</button><button class="btn" type="button" data-toast="OK, I'll ask again tomorrow">Not today</button></div>
+    </section>
+
+    <div class="seg" role="tablist" aria-label="Life story sections">
+      <button type="button" role="tab" aria-selected="true" data-p="chap">chapters</button>
+      <button type="button" role="tab" aria-selected="false" data-p="ppl">People</button>
+      <button type="button" role="tab" aria-selected="false" data-p="book">Book</button>
+    </div>
+
+    <div class="panel" id="p-chap">
+      <div class="card rows chap">
+        <div class="row"><span class="yr">2003</span><span class="tile t-fa"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>Birth & childhood</b><span>Village home, days at grandma's</span></span><span class="pill p-warn">3 questions left</span></div>
+        <div class="row"><span class="yr">2009–13</span><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>Primary school</b><span>First friend, first prize</span></span><span class="pill p-plain">9 stories</span></div>
+        <div class="row"><span class="yr">2014–18</span><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>High school & SSC</b><span>The teacher who made me love maths</span></span><span class="pill p-plain">14 stories</span></div>
+        <div class="row"><span class="yr">2019–21</span><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>College & HSC</b><span>Covid years, online classes</span></span><span class="pill p-plain">11 stories</span></div>
+        <div class="row"><span class="yr">2022–</span><span class="tile t-biz"><svg class="i"><use href="#i-bag"/></svg></span><span class="tx"><b>Starting the business</b><span>First shop, first profit and loss</span></span><span class="pill p-plain">23 stories</span></div>
+        <div class="row now"><span class="yr">2023–</span><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>University, Accounting</b><span>Ongoing · added every day</span></span><span class="pill p-acc">Now</span></div>
+      </div>
+      <p class="muted" style="margin:0">From your notes, classes, accounts and daily answers, the AI puts each story in the right chapter. You only check it's right.</p>
+    </div>
+
+    <div class="panel" id="p-ppl" hidden>
+      <div class="chips" role="group" aria-label="Relationship">
+        <button class="chip" type="button" aria-pressed="true">Everyone 38</button>
+        <button class="chip" type="button" aria-pressed="false">Family</button>
+        <button class="chip" type="button" aria-pressed="false">Teachers</button>
+        <button class="chip" type="button" aria-pressed="false">Friends</button>
+        <button class="chip" type="button" aria-pressed="false">Work</button>
+      </div>
+      <article class="card person">
+        <div class="ptop"><span class="av t-aca">R</span><span class="tx" style="flex:1;min-width:0"><b>Mr Rafiq</b><span class="muted">Maths teacher · high school · since 2014</span></span><span class="pill p-plain">Only you</span></div>
+        <dl class="facets">
+          <div><dt>What he was like</dt><dd>Strict but patient. If someone didn't understand, he'd sit with them after class.</dd></div>
+          <div><dt>What he did</dt><dd>Gave free extra maths classes every Saturday.</dd></div>
+          <div><dt>His part in my life</dt><dd>He took away my fear of maths, which is why I study Accounting today.</dd></div>
+          <div class="rem"><dt>How I want to remember him</dt><dd>""The one who first taught me to believe I could do it.""</dd></div>
+        </dl>
+        <div class="btns"><button class="btn" type="button" data-toast="Opened 7 stories about him">See 7 stories</button><button class="btn" type="button" data-toast="Thank-you draft ready, you'll see it before sending">Say thanks</button></div>
+      </article>
+      <div class="card rows">
+        <div class="row"><span class="tile t-fa">M</span><span class="tx"><b>Mum</b><span>Family · since birth · 64 stories</span></span><svg class="i" style="color:var(--ink-3)"><use href="#i-chev"/></svg></div>
+        <div class="row"><span class="tile t-so">S</span><span class="tx"><b>Sakib</b><span>Childhood friend · since 2009 · haven't talked in a while</span></span><span class="pill p-warn">Reach out</span></div>
+        <div class="row"><span class="tile t-biz">K</span><span class="tx"><b>Uncle Karim</b><span>First wholesaler · started me off with goods on credit</span></span><svg class="i" style="color:var(--ink-3)"><use href="#i-chev"/></svg></div>
+      </div>
+      <p class="muted" style="margin:0">When a name comes up in your notes or chats, the AI asks whether to add them here. Nothing is saved unless you say yes.</p>
+    </div>
+
+    <div class="panel" id="p-book" hidden>
+      <div class="card book">
+        <span class="cover">My story<br><b style="font-size:13px">Yeasin Arafat</b></span>
+        <span class="tx" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><b style="font-family:var(--display);font-size:16px">Life story book</b><span class="muted">6 chapters · with photos · about 85 pages</span><span class="muted">The AI writes it beautifully from all your stories</span></span>
+      </div>
+      <div class="card rows">
+        <div class="row"><span class="tx"><b>Type</b><span>Full book, one-page summary, or year by year</span></span><span class="pill p-acc">Full book</span></div>
+        <div class="row"><span class="tx"><b>Language</b><span>Bangla, with an English copy if you like</span></span><span class="pill p-plain">Bangla</span></div>
+        <div class="row"><span class="tx"><b>Hidden when shared</b><span>Other people's private matters and family secrets</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="Hide private parts"></button></div>
+      </div>
+      <div class="btns"><button class="btn pri" type="button" data-toast="Life story PDF is being made">Make PDF book</button><button class="btn" type="button" data-toast="Opened for preview">Preview</button></div>
+    </div>
+    <p class="muted" style="margin:0;display:flex;gap:6px;align-items:center"><svg class="i" style="width:16px;height:16px;color:var(--good)"><use href="#i-shield"/></svg>Your life story is only yours. It needs your fingerprint and never goes to the circle.</p>
+  </main>
+
+  <div class="scrim" id="docsheet" hidden>
+    <div class="sheet" role="dialog" aria-label="Create a document">
+      <span class="grab"></span>
+      <div id="dstep1" style="display:flex;flex-direction:column;gap:14px">
+        <h3>What shall I make?</h3>
+        <div class="kinds" role="group" aria-label="Type" id="kinds">
+          <button type="button" aria-pressed="true" data-k="msg"><svg class="i"><use href="#i-inbox"/></svg>Messages</button>
+          <button type="button" aria-pressed="false" data-k="intro"><svg class="i"><use href="#i-user"/></svg>Intro</button>
+          <button type="button" aria-pressed="false" data-k="mail"><svg class="i"><use href="#i-text"/></svg>Email</button>
+          <button type="button" aria-pressed="false" data-k="cv"><svg class="i"><use href="#i-star"/></svg>CV / PDF</button>
+        </div>
+        <div class="og"><span class="muted" style="display:flex;gap:6px;align-items:center"><svg class="i" style="width:14px;height:14px;color:var(--accent)"><use href="#i-spark"/></svg>To whom · AI suggestions</span><div class="sugg" role="group" aria-label="To whom" id="whom"></div></div>
+        <div class="og"><span class="muted">Why</span><div class="chips wrap" role="group" aria-label="Why" id="why"></div></div>
+        <div class="og"><span class="muted">Language</span><div class="chips wrap" role="group" aria-label="Language">
+          <button class="chip" type="button" aria-pressed="true">Bangla</button><button class="chip" type="button" aria-pressed="false">English</button><button class="chip" type="button" aria-pressed="false">Both</button></div></div>
+        <div class="og" id="dgroup" hidden><span class="muted">Design</span><div class="docs" role="group" aria-label="Design">
+          <button class="doc" type="button" aria-pressed="true"><span class="paper"><i class="h"></i><i class="a"></i><i></i><i></i><i style="width:70%"></i><i class="a"></i><i></i><i style="width:80%"></i></span>Professional</button>
+          <button class="doc" type="button" aria-pressed="false"><span class="paper cl"><i class="h"></i><i class="a"></i><i></i><i style="width:60%"></i><i></i><i class="a"></i><i style="width:85%"></i></span>Classic</button>
+          <button class="doc" type="button" aria-pressed="false"><span class="paper md"><i class="h"></i><i></i><i class="a"></i><i style="width:75%"></i><i></i><i style="width:55%"></i></span>Modern</button>
+        </div></div>
+        <button class="btn pri block" type="button" id="makedoc"><svg class="i"><use href="#i-spark"/></svg>Create it</button>
+        <p class="muted" style="margin:0">Details come from your profile. If something's missing, it asks only for that.</p>
+      </div>
+      <div id="dstep2" hidden style="flex-direction:column;gap:14px">
+        <h3>It's ready</h3>
+        <div class="card outp" style="box-shadow:none;border:1px solid var(--line)">
+          <span class="muted" id="otitle"></span>
+          <p id="obody"></p>
+          <span class="pill p-good" id="ohide" style="align-self:flex-start"></span>
+        </div>
+        <div class="btns"><button class="btn pri" type="button" id="oact" data-toast="">Send</button><button class="btn" type="button" data-toast="Draft opened for editing">Edit</button><button class="btn" type="button" id="redoc">Choose again</button></div>
+        <p class="muted" style="margin:0">Nothing is sent until you tap "Send".</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrim" id="sheet" hidden>
+    <div class="sheet" role="dialog" aria-label="New note">
+      <span class="grab"></span>
+      <h3>Say what needs doing</h3>
+      <div class="cmdlive">
+        <button class="bigmic" type="button" aria-label="Start speaking"><svg class="i"><use href="#i-mic"/></svg></button>
+        <p class="heard">"Goods arrive at the shop at 4 pm today, take Mum to the doctor tomorrow morning, and make a CV for the youth club by Friday"</p>
+      </div>
+      <div class="parsed">
+        <span class="muted">AI understood, 3 tasks:</span>
+        <div class="prow"><span class="tile t-biz"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Goods arrive at the shop</b><span>Alarm at 3:30, auto WhatsApp to brother</span></span><span class="pill p-good">Automation</span></div>
+        <div class="prow"><span class="tile t-fa"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Mum to the doctor</b><span>Tomorrow 9:00 am · in calendar</span></span><span class="pill p-plain">Event</span></div>
+        <div class="prow"><span class="tile t-so"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>CV, for the youth club</b><span>Draft ready · due Friday</span></span><span class="pill p-acc">PDF</span></div>
+        <div class="btns"><button class="btn pri" type="button" data-toast="All tasks are set">All good</button><button class="btn" type="button">Change</button></div>
+      </div>
+      <span class="muted">Or add directly</span>
+      <div class="capgrid">
+        <button class="wide" type="button" id="opendoc2"><span class="tile" style="background:var(--accent);color:var(--on-accent)"><svg class="i"><use href="#i-spark"/></svg></span><span><b>One-tap create</b><span>Message, intro, email, CV · just choose</span></span></button>
+        <button class="wide" type="button" data-go="class"><span class="tile" style="background:var(--rec);color:#fff"><svg class="i"><use href="#i-rec"/></svg></span><span><b>Class mode</b><span>Records the whole lecture, adds photos, tidy notes</span></span></button>
+        <button type="button"><span class="tile t-aca"><svg class="i"><use href="#i-mic"/></svg></span><span><b>Voice</b><span>Speak and it's a note</span></span></button>
+        <button type="button"><span class="tile t-sk"><svg class="i"><use href="#i-cam"/></svg></span><span><b>Photo</b><span>Board, receipt, notebook</span></span></button>
+        <button type="button"><span class="tile t-so"><svg class="i"><use href="#i-link"/></svg></span><span><b>Link</b><span>Reads and summarises</span></span></button>
+        <button type="button"><span class="tile t-pe"><svg class="i"><use href="#i-text"/></svg></span><span><b>Text</b><span>Type it</span></span></button>
+      </div>
+      <p class="muted" style="margin:0">The AI decides which folder it goes in.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"><svg class="i" style="width:16px;height:16px"><use href="#i-check"/></svg><span id="toastt"></span></div>
+
+  <div class="tabs"><nav aria-label="Main menu">
+    <button class="tab" type="button" data-go="today" aria-current="page"><svg class="i"><use href="#i-home"/></svg>Today</button>
+    <button class="tab" type="button" data-go="circle"><svg class="i"><use href="#i-people"/></svg>Circle</button>
+    <button class="tab plus" type="button" id="plus" aria-label="New note"><span><svg class="i"><use href="#i-plus"/></svg></span></button>
+    <button class="tab" type="button" data-go="money"><svg class="i"><use href="#i-wallet"/></svg>Money</button>
+    <button class="tab" type="button" data-go="inbox"><svg class="i"><use href="#i-inbox"/></svg>Inbox</button>
+  </nav></div>
+</div>
+
+<script>
+(function(){
+  const V={
+    today:{t:"Good morning, Yeasin",s:"Thursday, 12 November",tab:"today"},
+    library:{t:"Library",s:"139 notes in 6 life areas",tab:null,back:"today"},
+    note:{t:"Class notes",s:"Accounting",tab:null,back:"library"},
+    circle:{t:"Circle",s:"Shared tasks, chat and news",tab:"circle"},
+    class:{t:"Class mode",s:"Recognised from your routine",tab:null,back:"today"},
+    money:{t:"Money",s:"2 businesses and family",tab:"money"},
+    inbox:{t:"Inbox",s:"WhatsApp, Messenger, page, Gmail",tab:"inbox"},
+    me:{t:"My profile",s:"Life story, intros and documents",tab:null,back:"today"},
+    life:{t:"My life story",s:"Chapters, people and book",tab:null,back:"me"},
+    auto:{t:"Settings",s:"Connections, reminders, theme and security",tab:null,back:"today"}
+  };
+  const sheet=document.getElementById("sheet");
+  function show(v){
+    if(!V[v]) v="today";
+    sheet.hidden=true;document.getElementById("docsheet").hidden=true;
+    Object.keys(V).forEach(n=>document.getElementById("v-"+n).hidden=(n!==v));
+    document.querySelectorAll(".tab[data-go]").forEach(t=>t.dataset.go===V[v].tab?t.setAttribute("aria-current","page"):t.removeAttribute("aria-current"));
+    document.getElementById("htitle").textContent=V[v].t;
+    document.getElementById("hsub").textContent=V[v].s;
+    const bb=document.getElementById("backbtn");bb.hidden=!V[v].back;bb.dataset.go=V[v].back||"";
+    window.scrollTo(0,0);
+  }
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b&&b.dataset.go){location.hash=b.dataset.go}});
+  window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
+  show(location.hash.slice(1));
+
+  const toast=document.getElementById("toast");let tt;
+  const msgs={"Send":"Sent","Save":"Saved to the books","Schedule":"Will be sent at midnight","View":"Reply opened","Automate":"Will go automatically every Saturday from now","Copy":"Copied","Make PDF":"PDF created, saved to documents"};
+  document.querySelectorAll(".lenrow,.docs").forEach(g=>g.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true")})));
+  document.addEventListener("click",e=>{
+    const b=e.target.closest(".btn.pri,.link,[data-toast]");if(!b||(b.tagName==="A"&&!b.dataset.toast))return;if(b.tagName==="A")e.preventDefault();
+    const m=b.dataset.toast||msgs[b.textContent.trim()];if(!m)return;
+    if(b.dataset.toast)sheet.hidden=true;
+    document.getElementById("toastt").textContent=m;toast.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove("on"),1800);
+  });
+  const K={
+    msg:{who:[["S","Sakib","Childhood friend · haven't talked in 3 months","t-so"],["D","Dad","Haven't talked in 5 days","t-pe"],["K","Uncle Karim","Wholesaler · owes ৳4,200","t-biz"]],why:["Check in","Greetings","About money","Meet up"],act:"Send",toast:"Sent on WhatsApp",
+      out:"Sakib, how are you? It's been ages. I suddenly thought of you. If you're free this Friday afternoon, let's meet up.",hide:"Goes on WhatsApp · in your writing style"},
+    intro:{who:[["N","New HR","Interview tomorrow · from calendar","t-aca"],["Y","Youth club","Meeting on Saturday","t-so"],["P","New partner","Saved their number yesterday","t-biz"]],why:["Job","Organisation","Business","New contact"],act:"Copy",toast:"Copied",
+      out:"I'm Yeasin Arafat, an Accounting student. Alongside my studies I run a clothing business, so I have real experience with accounts and working with people.",hide:"Hidden: family, income, address"},
+    mail:{who:[["R","Mr Rafiq","Extension for the assignment","t-aca"],["S","Supplier","Order invoice pending","t-biz"],["S","Scholarship office","Application closes 20 Nov","t-so"]],why:["Ask for time","Application","Thanks","Complaint"],act:"Send",toast:"Sent from Gmail",
+      out:"Dear Sir, I am Yeasin Arafat from your Accounting class. Due to a family emergency, I kindly request two more days to submit the journal entry assignment. Thank you for your understanding.",hide:"English · polite · Gmail"},
+    cv:{who:[["Y","Youth club","Due by Friday","t-so"],["J","Job application","Bank officer · 30 Nov","t-aca"],["S","Scholarship","Closes 20 Nov","t-fa"]],why:["CV","Application letter","Business profile"],act:"Save PDF",toast:"PDF saved, it's in documents",
+      out:"CV for the youth club · Bangla · professional design · 2 pages. Community work and leadership first, photo and signature from your profile.",hide:"Hidden: business income"}};
+  let kind="msg";
+  const ds=document.getElementById("docsheet"),s1=document.getElementById("dstep1"),s2=document.getElementById("dstep2");
+  function pick(g,b){g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true")}
+  function setKind(k){kind=k;const d=K[k];
+    const w=document.getElementById("whom");w.innerHTML=d.who.map((p,i)=>'<button type="button" aria-pressed="'+(i===0)+'"><span class="av '+p[3]+'">'+p[0]+'</span><span class="tx"><b>'+p[1]+'</b><span>'+p[2]+'</span></span></button>').join("")+'<button type="button" aria-pressed="false"><span class="av" style="background:var(--sunken);color:var(--ink-3)">+</span><span class="tx"><b>Someone else</b><span>Say or search a name</span></span></button>';
+    w.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pick(w,b)));
+    const y=document.getElementById("why");y.innerHTML=d.why.map((t,i)=>'<button class="chip" type="button" aria-pressed="'+(i===0)+'">'+t+'</button>').join("");
+    y.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pick(y,b)));
+    document.getElementById("dgroup").hidden=k!=="cv";}
+  document.querySelectorAll("#kinds button").forEach(b=>b.addEventListener("click",()=>{pick(document.getElementById("kinds"),b);setKind(b.dataset.k)}));
+  setKind("msg");
+  function docStep(n){s1.style.display=n===1?"flex":"none";s2.hidden=n!==2;s2.style.display=n===2?"flex":"none"}
+  function openDoc(){docStep(1);sheet.hidden=true;ds.hidden=false}
+  document.querySelectorAll("#opendoc,#opendoc2").forEach(b=>b.addEventListener("click",openDoc));
+  document.getElementById("makedoc").addEventListener("click",()=>{const d=K[kind],who=document.querySelector("#whom [aria-pressed=true] b").textContent;
+    document.getElementById("otitle").textContent=document.querySelector("#kinds [aria-pressed=true]").textContent+" · "+who;
+    document.getElementById("obody").textContent=d.out;document.getElementById("ohide").textContent=d.hide;
+    const a=document.getElementById("oact");a.textContent=d.act;a.dataset.toast=d.toast;docStep(2)});
+  document.getElementById("redoc").addEventListener("click",()=>docStep(1));
+  ds.addEventListener("click",e=>{if(e.target===ds||e.target.closest("[data-toast]"))ds.hidden=true});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")ds.hidden=true});
+  document.getElementById("plus").addEventListener("click",()=>{sheet.hidden=false});
+  document.querySelector(".ask .mic").addEventListener("click",e=>{e.preventDefault();sheet.hidden=false});
+  document.getElementById("newauto").addEventListener("click",()=>{sheet.hidden=false});
+  document.querySelectorAll(".switch:not(#trsw)").forEach(s=>s.addEventListener("click",()=>s.setAttribute("aria-checked",s.getAttribute("aria-checked")==="true"?"false":"true")));
+  sheet.addEventListener("click",e=>{if(e.target===sheet)sheet.hidden=true});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")sheet.hidden=true});
+
+  const ACC={blue:["#2563eb","#6b9bff"],emerald:["#059669","#34d399"],violet:["#7c3aed","#a78bfa"],amber:["#c2410c","#fb923c"],rose:["#db2777","#f472b6"],graphite:["#334155","#cbd5e1"]};
+  const R=document.documentElement;let st={m:"auto",c:"blue",z:"15"};
+  try{Object.assign(st,JSON.parse(localStorage.getItem("sn-theme")||"{}"))}catch(e){}
+  function isDark(){return st.m==="dark"||(st.m==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches)}
+  function applyTheme(){
+    if(st.m==="auto")R.removeAttribute("data-theme");else R.setAttribute("data-theme",st.m);
+    const c=ACC[st.c]||ACC.blue,d=isDark(),a=d?c[1]:c[0];
+    R.style.setProperty("--accent",a);R.style.setProperty("--accent-soft","color-mix(in srgb,"+a+" "+(d?"18%":"11%")+",var(--surface))");
+    document.body.style.fontSize=st.z+"px";
+    document.querySelectorAll("#modeseg button").forEach(b=>b.setAttribute("aria-selected",b.dataset.m===st.m));
+    document.querySelectorAll("#swatches button").forEach(b=>b.setAttribute("aria-checked",b.dataset.c===st.c));
+    document.querySelectorAll("#sizeseg button").forEach(b=>b.setAttribute("aria-selected",b.dataset.z===st.z));
+    try{localStorage.setItem("sn-theme",JSON.stringify(st))}catch(e){}
+  }
+  document.querySelectorAll("#modeseg button").forEach(b=>b.addEventListener("click",()=>{st.m=b.dataset.m;applyTheme()}));
+  document.querySelectorAll("#swatches button").forEach(b=>b.addEventListener("click",()=>{st.c=b.dataset.c;applyTheme()}));
+  document.querySelectorAll("#sizeseg button").forEach(b=>b.addEventListener("click",()=>{st.z=b.dataset.z;applyTheme()}));
+  document.querySelectorAll("#langseg button").forEach(b=>b.addEventListener("click",()=>{if(b.getAttribute("aria-selected")!=="true")location.href=b.dataset.href+location.hash}));
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change",applyTheme);
+  applyTheme();
+
+  document.querySelectorAll(".seg[role=tablist]").forEach(g=>{const bs=[...g.querySelectorAll("button")];bs.forEach(b=>b.addEventListener("click",()=>{
+    bs.forEach(x=>{x.setAttribute("aria-selected","false");document.getElementById("p-"+x.dataset.p).hidden=true});
+    b.setAttribute("aria-selected","true");document.getElementById("p-"+b.dataset.p).hidden=false;
+  }))});
+  document.querySelectorAll(".chips").forEach(g=>g.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
+    g.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");
+  })));
+  document.querySelectorAll("#quiz .opt").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll("#quiz .opt").forEach(x=>x.classList.remove("right","wrong"));b.classList.add(b.dataset.ok?"right":"wrong");
+  }));
+  const sw=document.getElementById("trsw");
+  sw.addEventListener("click",()=>{const on=sw.getAttribute("aria-checked")!=="true";sw.setAttribute("aria-checked",on);document.getElementById("trans").classList.toggle("notr",!on)});
+
+  const wave=document.getElementById("wave");
+  for(let i=0;i<36;i++){const s=document.createElement("span");s.style.height=(25+Math.round(Math.abs(Math.sin(i*1.3)*Math.cos(i*.45))*75))+"%";s.style.animationDelay=(i*.04)+"s";wave.appendChild(s)}
+  let sec=23*60+41;const tm=document.getElementById("timer");
+  setInterval(()=>{sec++;tm.textContent=[Math.floor(sec/3600),Math.floor(sec/60)%60,sec%60].map(n=>String(n).padStart(2,"0")).join(":")},1000);
+  document.getElementById("huh").addEventListener("click",()=>{
+    const d=document.createElement("div");d.className="tline";
+    d.innerHTML="<time>"+tm.textContent.slice(3)+"</time><p><span class=\"pill p-warn\">Didn't get it</span> After class it explains in simple words.</p>";
+    document.getElementById("trans").appendChild(d);
+  });
+})();
+</script>

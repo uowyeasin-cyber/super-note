@@ -1,0 +1,1265 @@
+<!doctype html>
+<html lang="bn">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>সুপার নোট</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@500;600;700&family=Hind+Siliguri:wght@400;500;600&family=Inter:wght@500;600;700&display=swap">
+<style>
+/* Layout: calm phone app. Five clear rooms (Today, Library, +Capture, Money, Inbox). One accent, flat cards, generous space, one idea per section. */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --sunken:#eef0f4; --line:#e3e6ec;
+  --ink:#101828; --ink-2:#475467; --ink-3:#8a94a6;
+  --accent:#2563eb; --accent-soft:#e8efff; --on-accent:#ffffff;
+  --good:#12925e; --good-soft:#e3f5ec; --warn:#b54708; --warn-soft:#fdf0e1; --rec:#e0393e; --rec-soft:#fde8e8;
+  --c-aca:#2563eb; --c-biz:#d97706; --c-sk:#0d9488; --c-so:#c026d3; --c-fa:#e11d48; --c-pe:#64748b;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 4px 14px rgba(16,24,40,.05);
+  --display:"Anek Bangla","Hind Siliguri",system-ui,sans-serif;
+  --body:"Hind Siliguri",system-ui,sans-serif;
+  --num:"Inter","Hind Siliguri",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b0f17; --surface:#141a24; --sunken:#1b2230; --line:#252e3d;
+  --ink:#eef1f6; --ink-2:#b3bccb; --ink-3:#7c8799;
+  --accent:#6b9bff; --accent-soft:#1a2740; --on-accent:#0b0f17;
+  --good:#3ccf8e; --good-soft:#12291f; --warn:#f2a54a; --warn-soft:#2d2112; --rec:#ff6b6f; --rec-soft:#321617;
+  --c-aca:#6b9bff; --c-biz:#f2a54a; --c-sk:#2dd4bf; --c-so:#e879f9; --c-fa:#fb7185; --c-pe:#94a3b8;
+  --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b0f17; --surface:#141a24; --sunken:#1b2230; --line:#252e3d;
+  --ink:#eef1f6; --ink-2:#b3bccb; --ink-3:#7c8799;
+  --accent:#6b9bff; --accent-soft:#1a2740; --on-accent:#0b0f17;
+  --good:#3ccf8e; --good-soft:#12291f; --warn:#f2a54a; --warn-soft:#2d2112; --rec:#ff6b6f; --rec-soft:#321617;
+  --c-aca:#6b9bff; --c-biz:#f2a54a; --c-sk:#2dd4bf; --c-so:#e879f9; --c-fa:#fb7185; --c-pe:#94a3b8;
+  --shadow:none; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bg)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app{max-width:440px;margin:0 auto;min-height:100%}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:var(--bg);padding-block:14px 10px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:12px}
+.top .ttl{flex:1;min-width:0}
+.top h1{margin:0;font-family:var(--display);font-weight:700;font-size:24px;line-height:1.2}
+.top small{display:block;color:var(--ink-3);font-size:13px}
+.iconbtn{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--ink-2);position:relative}
+.iconbtn .badge{position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--rec);border:2px solid var(--surface)}
+.back{margin-left:-6px}
+
+main{padding-block:4px 120px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:24px}
+section{display:flex;flex-direction:column;gap:10px}
+.sh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sh h2{margin:0;font-family:var(--display);font-weight:600;font-size:17px}
+.sh a,.link{color:var(--accent);font-size:13.5px;font-weight:600;text-decoration:none;background:none;border:0;cursor:pointer;padding:0}
+.muted{color:var(--ink-3);font-size:13px}
+.sample{font-size:11.5px;color:var(--ink-3);border:1px dashed var(--line);border-radius:999px;padding:1px 9px;align-self:flex-start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.pad{padding:16px}
+.num{font-family:var(--num);font-variant-numeric:tabular-nums}
+
+/* ask bar */
+.ask{display:flex;align-items:center;gap:10px;padding:6px 6px 6px 14px;border-radius:14px;cursor:text}
+.ask input{flex:1;min-width:0;border:0;background:transparent;outline:none;padding:9px 0}
+.ask input::placeholder{color:var(--ink-3)}
+.ask .mic{width:38px;height:38px;border-radius:10px;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;cursor:pointer}
+
+/* rows */
+.rows{display:flex;flex-direction:column}
+.row{display:flex;gap:12px;align-items:center;padding:13px 16px;border-top:1px solid var(--line);text-align:left;background:none;border-left:0;border-right:0;border-bottom:0;width:100%;cursor:pointer}
+.row:first-child{border-top:0}
+.row .tx{flex:1;min-width:0}
+.row .tx b{display:block;font-weight:600;line-height:1.35}
+.row .tx span{display:block;font-size:12.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .end{font-size:12.5px;color:var(--ink-3);white-space:nowrap}
+.chev{color:var(--ink-3);width:16px;height:16px}
+.time{font-family:var(--num);font-size:13px;font-weight:600;width:46px;color:var(--ink-2);flex:none}
+.dot{width:8px;height:8px;border-radius:50%;flex:none}
+.tile{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none}
+.t-aca{background:color-mix(in srgb,var(--c-aca) 14%,transparent);color:var(--c-aca)}
+.t-biz{background:color-mix(in srgb,var(--c-biz) 16%,transparent);color:var(--c-biz)}
+.t-sk{background:color-mix(in srgb,var(--c-sk) 14%,transparent);color:var(--c-sk)}
+.t-so{background:color-mix(in srgb,var(--c-so) 14%,transparent);color:var(--c-so)}
+.t-fa{background:color-mix(in srgb,var(--c-fa) 14%,transparent);color:var(--c-fa)}
+.t-pe{background:color-mix(in srgb,var(--c-pe) 16%,transparent);color:var(--c-pe)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.p-good{background:var(--good-soft);color:var(--good)}
+.p-warn{background:var(--warn-soft);color:var(--warn)}
+.p-acc{background:var(--accent-soft);color:var(--accent)}
+.p-rec{background:var(--rec-soft);color:var(--rec)}
+.p-plain{background:var(--sunken);color:var(--ink-2)}
+
+/* attention */
+.attn{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.attn button{display:flex;flex-direction:column;gap:6px;align-items:flex-start;text-align:left;padding:14px;cursor:pointer}
+.attn b{font-family:var(--num);font-size:22px;line-height:1}
+.attn span{font-size:13px;color:var(--ink-2)}
+
+/* quick capture */
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.quick button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;font-size:13px;color:var(--ink-2);cursor:pointer}
+
+/* library */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:13.5px;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.smart{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.smart button{padding:12px;text-align:left;display:flex;flex-direction:column;gap:8px;cursor:pointer}
+.smart b{font-family:var(--num);font-size:18px;line-height:1}
+.smart span{font-size:12.5px;color:var(--ink-2)}
+
+/* note detail */
+.crumbs{font-size:12.5px;color:var(--ink-3)}
+.crumbs b{color:var(--ink-2);font-weight:500}
+.ntitle{margin:2px 0 0;font-family:var(--display);font-weight:700;font-size:23px;line-height:1.25;text-wrap:balance}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sunken);border-radius:12px;padding:4px;gap:4px}
+.seg button{border:0;background:none;border-radius:9px;padding:8px 4px;font-size:13.5px;font-weight:600;color:var(--ink-3);cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.panel{display:flex;flex-direction:column;gap:14px}
+.keys{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.keys li{display:flex;gap:12px}
+.keys li i{font-style:normal;font-family:var(--num);font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex:none;margin-top:2px}
+.callout{border-radius:14px;padding:14px;background:var(--warn-soft);display:flex;flex-direction:column;gap:6px}
+.callout .h{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:var(--warn)}
+.callout p{margin:0;color:var(--ink)}
+.tline{display:grid;grid-template-columns:46px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.tline:first-child{border-top:0}
+.tline time{font-family:var(--num);font-size:12px;color:var(--ink-3);padding-top:3px}
+.tline p{margin:0}
+.tline .bn{display:block;color:var(--ink-2);font-size:14px;margin-top:2px}
+.unsure{text-decoration:underline wavy var(--warn);text-underline-offset:4px}
+.board{width:100%;border-radius:12px;background:#1f3d31;color:#e2f1e7;font-family:var(--num);font-size:12px;padding:12px 14px;line-height:1.7;border:3px solid #7a5a37}
+.mind{width:100%;height:auto;display:block}
+.mind text{font-family:var(--body);font-size:12px;fill:var(--ink)}
+.mind .nd{fill:var(--sunken);stroke:var(--line)}
+.mind .hub{fill:var(--accent)}
+.mind .hubt{fill:var(--on-accent);font-weight:600}
+.mind path{stroke:var(--ink-3);stroke-width:1.3;fill:none}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;text-align:left}
+.opt.right{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.opt.wrong{border-color:var(--rec);background:var(--rec-soft);color:var(--rec)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:600;font-size:14.5px}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.block{width:100%}
+.btns{display:flex;gap:8px}
+.btns .btn{flex:1}
+
+/* class mode */
+.recwrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 16px 18px;text-align:center}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--rec)}
+.live::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--rec);animation:blink 1.3s infinite}
+@keyframes blink{50%{opacity:.25}}
+.clock{font-family:var(--num);font-weight:600;font-size:40px;letter-spacing:-.01em;line-height:1}
+.wave{display:flex;align-items:center;gap:3px;height:36px;width:100%}
+.wave span{flex:1;border-radius:2px;background:var(--accent);opacity:.75;animation:w 1.2s ease-in-out infinite}
+@keyframes w{50%{transform:scaleY(.3)}}
+.recactions{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.stop{width:64px;height:64px;border-radius:50%;border:0;background:var(--rec);display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 6px var(--rec-soft)}
+.stop i{width:20px;height:20px;border-radius:5px;background:#fff}
+.switch{width:44px;height:26px;border-radius:999px;border:0;background:var(--line);position:relative;cursor:pointer;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:transform .2s}
+.switch[aria-checked="true"]{background:var(--accent)}
+.switch[aria-checked="true"]::after{transform:translateX(18px)}
+.notr .bn{display:none}
+
+/* money */
+.biz{display:flex;justify-content:space-between;align-items:center}
+.biz select{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-weight:600}
+.hero{padding:18px;display:flex;flex-direction:column;gap:14px}
+.hero .big{font-family:var(--num);font-weight:700;font-size:32px;line-height:1}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);padding-top:12px}
+.trio div{display:flex;flex-direction:column;gap:2px;font-size:12px;color:var(--ink-3)}
+.trio div+div{border-left:1px solid var(--line);padding-left:12px}
+.trio b{font-family:var(--num);font-size:15px;color:var(--ink)}
+.chart{display:flex;align-items:flex-end;gap:10px;height:84px}
+.chart div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;height:100%;font-size:11px;color:var(--ink-3)}
+.chart i{width:100%;max-width:28px;border-radius:6px 6px 2px 2px;background:var(--sunken)}
+.chart .cur i{background:var(--accent)}
+.amt{font-family:var(--num);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.amt.in{color:var(--good)}
+.voicebar{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--accent-soft);color:var(--ink)}
+.voicebar q{flex:1;font-size:14px}
+
+/* inbox */
+.modebar{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.modebar .tx{flex:1;min-width:0}
+.modebar .tx b{display:block}
+.modebar select{background:var(--sunken);border:0;border-radius:10px;padding:7px 10px;font-weight:600}
+.msg{padding:14px;display:flex;flex-direction:column;gap:10px}
+.who{display:flex;gap:10px;align-items:center}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:600;flex:none}
+.who .tx{flex:1;min-width:0;line-height:1.3}
+.who .tx span{display:block;font-size:12px;color:var(--ink-3)}
+.bubble{background:var(--sunken);border-radius:12px 12px 12px 4px;padding:9px 12px;font-size:14.5px}
+.reply{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14.5px}
+.reply small{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--accent);font-weight:600;margin-bottom:3px}
+.sent{font-size:12.5px;color:var(--good);display:flex;gap:6px;align-items:center}
+
+/* capture sheet */
+.scrim{position:fixed;inset:0;z-index:30;background:rgba(10,14,22,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:440px;background:var(--surface);border-radius:22px 22px 0 0;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:.5}}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line);align-self:center}
+.sheet h3{margin:0;font-family:var(--display);font-size:18px}
+.capgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.capgrid button{display:flex;gap:10px;align-items:center;padding:14px;text-align:left;cursor:pointer;border-radius:14px;border:1px solid var(--line);background:var(--surface)}
+.capgrid b{display:block;font-weight:600}
+.capgrid span{display:block;font-size:12px;color:var(--ink-3);line-height:1.3}
+.capgrid .wide{grid-column:1/-1;background:var(--rec-soft);border-color:transparent}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:9;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+.tabs nav{max-width:440px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);align-items:center}
+.tab{border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 0 10px;font-size:11.5px;color:var(--ink-3)}
+.tab[aria-current="page"]{color:var(--accent);font-weight:600}
+.tab.plus span{width:48px;height:48px;border-radius:16px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;margin-top:-6px;box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
+/* ---- finishing layer ---- */
+:root{--r-lg:20px;--r-md:14px;--ease:cubic-bezier(.2,.8,.2,1)}
+.card{border-radius:var(--r-lg);border-color:color-mix(in srgb,var(--line) 80%,transparent)}
+button.card,.row,.btn,.chip,.opt,.capgrid button,.quick button,.attn button,.smart button{transition:transform .15s var(--ease),background .2s,border-color .2s}
+button.card:active,.row:active,.btn:active,.chip:active,.capgrid button:active{transform:scale(.98)}
+@media (hover:hover){button.row:hover,button.card:hover{background:color-mix(in srgb,var(--sunken) 55%,var(--surface))}}
+.top h1{font-size:26px;letter-spacing:-.005em}
+.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-family:var(--display);background:var(--accent-soft);color:var(--accent);border:1px solid var(--line)}
+main{animation:fade .35s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.sh h2{font-size:16px;letter-spacing:.01em}
+/* today hero */
+.daycard{padding:18px;display:flex;flex-direction:column;gap:16px;background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 9%,var(--surface)),var(--surface) 60%)}
+.dayhead{display:flex;align-items:center;gap:14px}
+.dayhead .tx{flex:1;min-width:0}
+.dayhead .tx b{display:block;font-family:var(--display);font-size:18px;font-weight:600;line-height:1.3}
+.dayhead .tx span{font-size:13px;color:var(--ink-2)}
+.prog{width:56px;height:56px;position:relative;flex:none}
+.prog svg{width:56px;height:56px;transform:rotate(-90deg)}
+.prog span{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--num);font-weight:700;font-size:14px}
+.tl{display:flex;flex-direction:column;position:relative}
+.tl::before{content:"";position:absolute;left:65px;top:14px;bottom:14px;width:2px;background:var(--line);border-radius:1px}
+.tl .row{padding:10px 0;border-top:0;background:none}
+.tl .row .dot{width:12px;height:12px;border:3px solid var(--surface);box-sizing:content-box;position:relative;z-index:1;margin-left:-1px}
+.tl .row.next .tx b{color:var(--accent)}
+.tl .row.past .tx b{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--line)}
+.tl .row.past .dot{background:var(--line)!important}
+/* tab bar */
+.tabs{background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:saturate(1.6) blur(18px);-webkit-backdrop-filter:saturate(1.6) blur(18px)}
+.tab{position:relative}
+.tab[aria-current="page"]::before{content:"";position:absolute;top:0;width:22px;height:3px;border-radius:0 0 3px 3px;background:var(--accent)}
+.tab.plus span{transition:transform .2s var(--ease)}
+.tab.plus:active span{transform:scale(.92) rotate(90deg)}
+/* note header band */
+.nhead{padding:18px;gap:8px;display:flex;flex-direction:column;border-radius:var(--r-lg);background:linear-gradient(160deg,color-mix(in srgb,var(--c-aca) 12%,var(--surface)),var(--surface));border:1px solid var(--line)}
+/* money hero accent */
+.hero{background:linear-gradient(165deg,color-mix(in srgb,var(--good) 8%,var(--surface)),var(--surface) 55%)}
+.delta{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;color:var(--good);margin-left:8px;vertical-align:middle}
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);opacity:0;z-index:40;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:500;display:flex;gap:8px;align-items:center;pointer-events:none;transition:opacity .2s,transform .25s var(--ease);max-width:calc(100% - 40px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.empty-hint{font-size:12.5px;color:var(--ink-3);text-align:center}
+/* universal command */
+.sheet{max-height:92vh;overflow-y:auto}
+.cmdlive{display:flex;gap:12px;align-items:center;padding:12px;border-radius:16px;background:var(--accent-soft)}
+.bigmic{width:52px;height:52px;border-radius:50%;border:0;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;flex:none;cursor:pointer;box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 18%,transparent);animation:breathe 2s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 0 0 11px color-mix(in srgb,var(--accent) 8%,transparent)}}
+.heard{margin:0;font-size:14px;line-height:1.5}
+.parsed{display:flex;flex-direction:column;gap:8px}
+.prow{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:14px}
+.prow .tx{flex:1;min-width:0}
+.prow .tx b{display:block;font-weight:600;font-size:14.5px}
+.prow .tx span{display:block;font-size:12px;color:var(--ink-3)}
+.capgrid button{padding:11px}
+/* circle */
+.members{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:2px 20px}
+.members::-webkit-scrollbar{display:none}
+.mem{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px;width:64px;font-size:12.5px;text-align:center;background:none;border:0;cursor:pointer}
+.mem .ring2{width:56px;height:56px;border-radius:50%;padding:3px;background:conic-gradient(var(--good) var(--p,100%),var(--line) 0)}
+.mem .ring2 span{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;font-weight:700;font-family:var(--display);font-size:20px;border:3px solid var(--bg)}
+.mem .ring2 span{background:var(--surface)!important}
+.mem small{font-size:11px;color:var(--ink-3);line-height:1.2}
+.mem.add .ring2{background:var(--line)}
+.mem.add .ring2 span{background:var(--surface);color:var(--ink-3)}
+.care{padding:14px;display:flex;flex-direction:column;gap:10px}
+.care .top2{display:flex;gap:10px;align-items:center}
+.care .top2 .tx{flex:1;min-width:0}
+.care .top2 .tx b{display:block}
+.care .top2 .tx span{font-size:12.5px;color:var(--ink-3)}
+.doses{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.doses div{border-radius:10px;padding:7px 4px;text-align:center;font-size:12px;background:var(--sunken);color:var(--ink-2)}
+.doses div.ok{background:var(--good-soft);color:var(--good);font-weight:600}
+.doses div.wait{background:var(--warn-soft);color:var(--warn);font-weight:600}
+.streak{display:flex;gap:4px}
+.streak i{flex:1;height:22px;border-radius:5px;background:var(--sunken)}
+.streak i.on{background:color-mix(in srgb,var(--c-aca) 70%,transparent)}
+.moods{display:flex;gap:8px;flex-wrap:wrap}
+.mood{display:flex;gap:8px;align-items:center;padding:8px 12px 8px 8px;border-radius:999px;background:var(--sunken);font-size:13px}
+.mood .av{width:26px;height:26px;font-size:12px}
+.priv{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.priv div{border-radius:12px;padding:10px 12px;font-size:13px}
+.priv .yes{background:var(--good-soft)}
+.priv .no{background:var(--sunken)}
+.priv b{display:block;font-size:12px;margin-bottom:4px}
+.priv ul{margin:0;padding-left:16px;color:var(--ink-2)}
+.elder{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.elder button{border:0;border-radius:16px;padding:16px 8px;font-weight:700;font-size:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px}
+.e1{background:var(--good-soft);color:var(--good)}.e2{background:var(--accent-soft);color:var(--accent)}.e3{background:var(--rec-soft);color:var(--rec)}.e4{background:var(--warn-soft);color:var(--warn)}
+.phonebox{border:6px solid var(--ink);border-radius:26px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--surface);max-width:260px;align-self:center;width:100%}
+/* auto transactions */
+.autotx{padding:14px;display:flex;flex-direction:column;gap:10px}
+.notif{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--sunken);font-size:13px}
+.notif b{display:block;font-size:12px;color:var(--ink-3);font-weight:600}
+.arrow{align-self:center;color:var(--ink-3);font-size:12px;display:flex;gap:6px;align-items:center}
+/* identity */
+.idcard{padding:18px;display:flex;gap:14px;align-items:center;background:linear-gradient(160deg,color-mix(in srgb,var(--c-so) 10%,var(--surface)),var(--surface) 60%)}
+.idcard .bigav{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:26px;background:var(--accent);color:var(--on-accent);flex:none}
+.idcard .tx{flex:1;min-width:0}
+.idcard b{display:block;font-family:var(--display);font-size:19px}
+.meter{height:6px;border-radius:3px;background:var(--sunken);overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;width:78%;background:var(--good);border-radius:3px}
+.ctsum{display:grid;grid-template-columns:repeat(3,1fr);padding:12px;text-align:center}
+.ctsum b{display:block;font-family:var(--display);font-size:20px}
+.ctsum span{font-size:12px;color:var(--ink-3)}
+.chat{padding:14px;display:flex;flex-direction:column;gap:12px}
+.chat .day{align-self:center;font-size:11.5px;color:var(--ink-3);background:var(--sunken);padding:3px 10px;border-radius:999px}
+.chat .cm{display:flex;gap:8px;align-items:flex-end;max-width:86%}
+.chat .cm .av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.chat .cm small{font-size:11px;color:var(--ink-3);display:block;margin:0 0 3px 2px}
+.chat .cm p{margin:0;background:var(--sunken);padding:9px 12px;border-radius:14px 14px 14px 4px;font-size:14.5px}
+.chat .cm.me{align-self:flex-end}
+.chat .cm.me small{text-align:right}
+.chat .cm.me p{background:var(--accent);color:var(--on-accent);border-radius:14px 14px 4px 14px}
+.chat .aicard{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink-2);background:var(--accent-soft);border-radius:12px;padding:9px 11px}
+.chat .aicard .i{width:16px;height:16px;color:var(--accent);flex:none;margin-top:2px}
+.chat .aicard.ok{background:var(--good-soft)}.chat .aicard.ok .i{color:var(--good)}
+.composer{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:999px;padding:6px 6px 6px 18px;box-shadow:var(--shadow);color:var(--ink-3);font-size:14.5px}
+.composer span{flex:1}
+.bigmic.sm{width:40px;height:40px}
+.bigmic.sm .i{width:18px;height:18px}
+.magic{display:flex;align-items:center;gap:12px;padding:16px;width:100%;text-align:left;border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);cursor:pointer;font:inherit;color:inherit;background:linear-gradient(160deg,var(--accent-soft),var(--surface) 70%)}
+.magic .tx b{display:block;font-family:var(--display);font-size:16px}
+.magic .tx span{font-size:13px;color:var(--ink-3)}
+.og{display:flex;flex-direction:column;gap:8px}
+.chips.wrap{flex-wrap:wrap;overflow:visible;margin:0;padding:0}
+.kinds{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kinds button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.kinds button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.sugg{display:flex;flex-direction:column;gap:6px}
+.sugg button{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+.sugg button .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.sugg button .tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.sugg button .tx b{font-size:14.5px;font-weight:600}
+.sugg button .tx span{font-size:12px;color:var(--ink-3)}
+.sugg button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.outp{padding:14px;display:flex;flex-direction:column;gap:8px}
+.outp p{margin:0;font-size:15px;line-height:1.6}
+.themecard{display:flex;flex-direction:column;gap:16px}
+.swatches{display:flex;gap:12px;flex-wrap:wrap}
+.swatches button{width:36px;height:36px;border-radius:50%;border:0;background:var(--sw);cursor:pointer;box-shadow:0 0 0 2px var(--surface),0 0 0 3px transparent;transition:transform .15s var(--ease),box-shadow .2s}
+.swatches button[aria-checked="true"]{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--sw)}
+.swatches button:active{transform:scale(.9)}
+.kinds button,.sugg button{transition:transform .15s var(--ease),border-color .2s,background .2s}
+.kinds button:active,.sugg button:active,.seg button:active{transform:scale(.96)}
+.seg button{transition:background .2s,color .2s,box-shadow .2s}
+.shelf{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:2px 20px 6px;scroll-snap-type:x mandatory}
+.appc{flex:none;width:150px;scroll-snap-align:start;display:flex;flex-direction:column;gap:3px;padding:14px;border-radius:18px;background:var(--surface);box-shadow:var(--shadow);border:1px solid var(--line);text-decoration:none;color:var(--ink);transition:transform .15s var(--ease)}
+.appc:active{transform:scale(.97)}
+.appc .aico{line-height:1;width:52px;height:52px;border-radius:15px;display:grid;place-items:center;margin-bottom:8px;font-family:var(--display);font-weight:700;font-size:22px;color:#fff;background:linear-gradient(145deg,var(--g1),var(--g2))}
+.appc b{font-family:var(--display);font-size:15px}
+.appc span{font-size:12.5px;color:var(--ink-3);line-height:1.35}
+.appc .price{margin-top:6px;font-family:var(--num);font-size:12.5px;font-weight:600;color:var(--accent)}
+.lifehero{padding:18px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(160deg,color-mix(in srgb,var(--c-pe) 12%,var(--surface)),var(--surface) 65%)}
+.lifehero h2{margin:0;font-family:var(--display);font-size:20px;font-weight:700}
+.lstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lstats div{background:var(--surface);border-radius:12px;padding:10px;text-align:center;box-shadow:var(--shadow)}
+.lstats b{display:block;font-family:var(--display);font-size:18px}
+.lstats span{font-size:12px;color:var(--ink-3)}
+.lifehero .meter i{width:64%;background:var(--accent)}
+.askq{padding:16px;display:flex;flex-direction:column;gap:10px;border:1px solid color-mix(in srgb,var(--accent) 25%,transparent)}
+.askq .q{font-family:var(--display);font-size:16.5px;font-weight:600;margin:0}
+.askq .from{display:flex;gap:6px;flex-wrap:wrap}
+.chap .yr{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;width:58px;flex:none;text-align:right}
+.chap .row.now .tx b{color:var(--accent)}
+.person{padding:16px;display:flex;flex-direction:column;gap:12px}
+.person .ptop{display:flex;gap:12px;align-items:center}
+.person .av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:20px;flex:none}
+.person .ptop b{display:block;font-family:var(--display);font-size:17px}
+.facets{display:flex;flex-direction:column;gap:10px;margin:0;padding:0}
+.facets div{border-left:3px solid var(--line);padding-left:10px}
+.facets dt{font-size:12px;font-weight:600;color:var(--ink-3);margin:0}
+.facets dd{margin:2px 0 0;font-size:14.5px}
+.facets div.rem{border-left-color:var(--accent)}
+.facets div.rem dd{font-family:var(--display);font-style:italic}
+.book{display:flex;gap:14px;align-items:center;padding:16px}
+.book .cover{width:74px;height:100px;border-radius:4px 8px 8px 4px;flex:none;background:linear-gradient(150deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#000));color:var(--on-accent);display:flex;flex-direction:column;justify-content:flex-end;padding:8px;font-family:var(--display);font-size:11px;line-height:1.25;box-shadow:var(--shadow),inset 4px 0 0 rgba(0,0,0,.18)}
+.intro{padding:16px;display:flex;flex-direction:column;gap:10px}
+.intro p{margin:0}
+.lenrow{display:flex;gap:6px}
+.lenrow button{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px;font-size:13px;cursor:pointer;color:var(--ink-2)}
+.lenrow button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);font-weight:600}
+.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.doc{display:flex;flex-direction:column;gap:6px;padding:8px;border-radius:14px;border:1px solid var(--line);background:var(--surface);cursor:pointer;text-align:left;font-size:12.5px}
+.doc[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.paper{aspect-ratio:3/4;max-width:100%;border-radius:6px;background:#fff;border:1px solid #e5e7eb;padding:7px;display:flex;flex-direction:column;gap:4px}
+.paper i{display:block;height:4px;border-radius:2px;background:#d6dae1}
+.paper i.h{height:7px;width:60%;background:#1f2a44}
+.paper i.a{background:#2563eb;width:35%}
+.paper.cl i.h{background:#7a1d2e}.paper.cl i.a{background:#b8893b}
+.paper.md{background:#f7f9fc}.paper.md i.h{background:#0d9488;width:75%}
+.cmdbox{padding:14px;display:flex;flex-direction:column;gap:10px}
+.cmdbox .said{display:flex;gap:8px;align-items:flex-start;font-size:14.5px}
+.chan{display:flex;gap:6px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 6h14M5 12h14M5 18h9"/></symbol>
+  <symbol id="i-rec" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></symbol>
+  <symbol id="i-lib" viewBox="0 0 24 24"><path d="M4 5h6l2 2h8v12H4z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-wallet" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 15h2"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 5h11v8H8l-4 3z"/><path d="M15 9h5v8l-3-2h-6v-2"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M3 8l9-4 9 4-9 4z"/><path d="M7 10v5c3 2 7 2 10 0v-5"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5h8v2"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 4 14h7l-1 7 9-11h-7z"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .6 3 2 3 4"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-5h4v5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 4 2.5 5 5.5.8-4 3.9.9 5.5L12 16.6 7.1 19.2l.9-5.5-4-3.9 5.5-.8z"/></symbol>
+  <symbol id="i-q" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6M12 17h.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H14a4 4 0 0 1 4 4v5.5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 11h16v9H4zM12 11v9M3 7h18v4H3zM12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0"/></symbol>
+</svg>
+
+<div class="app">
+  <header class="top" id="hdr">
+    <button class="iconbtn back" type="button" id="backbtn" hidden aria-label="ফিরে যান"><svg class="i"><use href="#i-back"/></svg></button>
+    <div class="ttl"><small id="hsub">বৃহস্পতিবার, ১২ নভেম্বর</small><h1 id="htitle">শুভ সকাল, ইয়াসিন</h1></div>
+    <button class="iconbtn" type="button" data-go="auto" aria-label="সংযোগ ও অটোমেশন"><svg class="i"><use href="#i-gear"/></svg><span class="badge"></span></button>
+    <button class="avatar" type="button" data-go="me" aria-label="আমার পরিচয়">ই</button>
+  </header>
+
+  <!-- TODAY -->
+  <main id="v-today">
+    <label class="card ask" for="q">
+      <svg class="i" style="color:var(--ink-3)"><use href="#i-search"/></svg>
+      <input id="q" placeholder="খুঁজুন বা জিজ্ঞেস করুন">
+      <button class="mic" type="button" aria-label="ভয়েসে বলুন"><svg class="i"><use href="#i-mic"/></svg></button>
+    </label>
+
+    <section>
+      <div class="card daycard">
+        <div class="dayhead">
+          <div class="prog" aria-label="আজকের ৫টা কাজের ২টা শেষ"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="23" fill="none" stroke="var(--line)" stroke-width="6"/><circle cx="28" cy="28" r="23" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="144.5" stroke-dashoffset="86.7"/></svg><span>২/৫</span></div>
+          <div class="tx"><b>আজ ৩টা কাজ বাকি</b><span>পরেরটা ২০ মিনিট পরে, Accounting ক্লাস</span></div>
+          <span class="sample">নমুনা</span>
+        </div>
+        <div class="tl">
+          <div class="row past"><span class="time">০৮:৩০</span><span class="dot" style="background:var(--c-pe)"></span><span class="tx"><b>সকালের রিভিশন</b><span>শেষ</span></span></div>
+          <button class="row next" type="button" data-go="class"><span class="time">১০:০০</span><span class="dot" style="background:var(--c-aca)"></span><span class="tx"><b>Accounting ক্লাস</b><span>করিম স্যার · রুম ৩০৪ · ক্লাস মোড তৈরি</span></span><span class="pill p-acc">শুরু করুন</span></button>
+          <button class="row" type="button" data-go="money"><span class="time">১৫:০০</span><span class="dot" style="background:var(--c-biz)"></span><span class="tx"><b>রহিম ভাইয়ের ৫০০ টাকা তোলা</b><span>কাপড়ের দোকান · বাকির খাতা</span></span></button>
+          <div class="row"><span class="time">২১:০০</span><span class="dot" style="background:var(--c-fa)"></span><span class="tx"><b>আম্মুর ওষুধ</b><span>প্রতিদিন</span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>নজর দেওয়া দরকার</h2></div>
+      <div class="attn">
+        <button class="card" type="button" data-go="inbox"><span class="pill p-acc"><svg class="i" style="width:14px;height:14px"><use href="#i-inbox"/></svg>ইনবক্স</span><b class="num">৩</b><span>মেসেজের উত্তর আপনার অনুমতির অপেক্ষায়</span></button>
+        <button class="card" type="button" data-go="money"><span class="pill p-warn"><svg class="i" style="width:14px;height:14px"><use href="#i-wallet"/></svg>পাওনা</span><b class="num">৳৬,২০০</b><span>৪ জনের কাছে বাকি, ১টা আজ তোলার কথা</span></button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>AI খেয়াল করেছে</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-spark"/></svg></span><span class="tx"><b>এটা অটো করে দিই?</b><span>প্রতি শনিবার দোকানের হিসাব ভাইকে পাঠান, ৩ সপ্তাহ ধরে</span></span><button class="link" type="button">অটো করো</button></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>রাতের ২ মিনিট</b><span>রাত ১০টায় আজকের রিভিউ আর কালকের প্ল্যান</span></span><span class="pill p-plain">রাত ১০টা</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>দ্রুত নোট</h2></div>
+      <div class="quick">
+        <button class="card" type="button"><span class="tile t-aca"><svg class="i"><use href="#i-mic"/></svg></span>ভয়েস</button>
+        <button class="card" type="button"><span class="tile t-sk"><svg class="i"><use href="#i-cam"/></svg></span>ছবি</button>
+        <button class="card" type="button"><span class="tile t-so"><svg class="i"><use href="#i-link"/></svg></span>লিংক</button>
+        <button class="card" type="button" data-go="class"><span class="tile" style="background:var(--rec-soft);color:var(--rec)"><svg class="i"><use href="#i-rec"/></svg></span>ক্লাস</button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>সাম্প্রতিক নোট</h2><a href="#library">সব দেখুন</a></div>
+      <div class="card rows">
+        <button class="row" type="button" data-go="note"><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>ডেবিট-ক্রেডিটের নিয়ম</b><span>একাডেমিক › Accounting · ৪৮ মিনিট · ৩ ছবি</span></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-sk"><svg class="i"><use href="#i-bolt"/></svg></span><span class="tx"><b>Facebook পেজ খোলার ৬টা ধাপ</b><span>স্কিল › ডিজিটাল মার্কেটিং · লিংক থেকে</span></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-fa"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>আম্মুর প্রেসক্রিপশন</b><span>পরিবার › স্বাস্থ্য · ছবি থেকে</span></span><svg class="i chev"><use href="#i-chev"/></svg></button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>সাপ্তাহিক রিভিউ</h2><span class="muted">শুক্রবার</span></div>
+      <div class="card pad" style="display:flex;gap:12px;align-items:flex-start">
+        <span class="tile t-aca"><svg class="i"><use href="#i-spark"/></svg></span>
+        <p style="margin:0">এই সপ্তাহে ৬টা ক্লাস নোট, কুইজে ৮২% সঠিক, ব্যবসায় ৳৩,৪০০ লাভ। Accounting-এর Chapter ৩ দুর্বল, রবিবার ২০ মিনিট রিভিশন রেখেছি।</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- LIBRARY -->
+  <main id="v-library" hidden>
+    <div class="chips" role="group" aria-label="জীবনের ঘর">
+      <button class="chip" type="button" aria-pressed="true">সব</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-aca)"></span>একাডেমিক</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-biz)"></span>বিজনেস</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-sk)"></span>স্কিল</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-so)"></span>সোশ্যাল</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-fa)"></span>পরিবার</button>
+      <button class="chip" type="button" aria-pressed="false"><span class="dot" style="background:var(--c-pe)"></span>ব্যক্তিগত</button>
+    </div>
+
+    <section>
+      <div class="sh"><h2>স্মার্ট তালিকা</h2></div>
+      <div class="smart">
+        <button class="card" type="button"><svg class="i" style="color:var(--warn)"><use href="#i-star"/></svg><b class="num">১৪</b><span>দরকারি</span></button>
+        <button class="card" type="button" data-go="note"><svg class="i" style="color:var(--accent)"><use href="#i-q"/></svg><b class="num">৫</b><span>যা বুঝিনি</span></button>
+        <button class="card" type="button"><svg class="i" style="color:var(--good)"><use href="#i-clock"/></svg><b class="num">৮</b><span>রিমাইন্ডার আছে</span></button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>ফোল্ডার</h2><span class="muted">AI নিজে সাজায়</span></div>
+      <div class="card rows">
+        <button class="row" type="button" data-go="note"><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>একাডেমিক</b><span>Accounting, Economics, English, Math</span></span><span class="end num">৪৮</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button" data-go="money"><span class="tile t-biz"><svg class="i"><use href="#i-bag"/></svg></span><span class="tx"><b>বিজনেস</b><span>কাপড়ের দোকান, অনলাইন পেজ</span></span><span class="end num">৩১</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-sk"><svg class="i"><use href="#i-bolt"/></svg></span><span class="tx"><b>স্কিল</b><span>ডিজিটাল মার্কেটিং, ইংরেজি বলা</span></span><span class="end num">১৭</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-so"><svg class="i"><use href="#i-people"/></svg></span><span class="tx"><b>সোশ্যাল</b><span>বন্ধু, মানুষের প্রোফাইল, জন্মদিন</span></span><span class="end num">১২</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-fa"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>পরিবার</b><span>স্বাস্থ্য, বাজার, বিল, ডকুমেন্ট</span></span><span class="end num">২২</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+        <button class="row" type="button"><span class="tile t-pe"><svg class="i"><use href="#i-user"/></svg></span><span class="tx"><b>ব্যক্তিগত</b><span>ডায়েরি, লক্ষ্য, গোপন ভল্ট</span></span><span class="end num">৯</span><svg class="i chev"><use href="#i-chev"/></svg></button>
+      </div>
+    </section>
+  </main>
+
+  <!-- NOTE DETAIL -->
+  <main id="v-note" hidden>
+    <section class="nhead">
+      <span class="crumbs">একাডেমিক › <b>Accounting</b> › করিম স্যার</span>
+      <h2 class="ntitle">ডেবিট-ক্রেডিটের নিয়ম ও দ্বৈত সত্তা</h2>
+      <div class="facts"><span class="pill p-plain">১২ নভেম্বর</span><span class="pill p-plain">৪৮ মিনিট</span><span class="pill p-plain">৩ ছবি</span><span class="pill p-warn">১ বুঝিনি</span></div>
+    </section>
+
+    <div class="seg" role="tablist" aria-label="নোটের অংশ">
+      <button type="button" role="tab" aria-selected="true" data-p="sum">সারাংশ</button>
+      <button type="button" role="tab" aria-selected="false" data-p="full">পুরো লেখা</button>
+      <button type="button" role="tab" aria-selected="false" data-p="map">ম্যাপ</button>
+      <button type="button" role="tab" aria-selected="false" data-p="quiz">কুইজ</button>
+    </div>
+
+    <div class="panel" id="p-sum">
+      <div class="card pad">
+        <ol class="keys">
+          <li><i>১</i><span>প্রতিটা লেনদেন কমপক্ষে দুটো হিসাবে প্রভাব ফেলে, একে <b>দ্বৈত সত্তা</b> বলে।</span></li>
+          <li><i>২</i><span>টাকা এলে <b>Cash হিসাব ডেবিট</b> হয়।</span></li>
+          <li><i>৩</i><span>Real account-এ যা আসে ডেবিট, যা যায় ক্রেডিট।</span></li>
+        </ol>
+      </div>
+      <div class="callout">
+        <div class="h"><span>যেটা বোঝেননি · ২৩:১২</span><span>সহজ বাংলায়</span></div>
+        <p>ধরুন দোকানের জন্য একটা ফ্যান কিনলেন। ফ্যান আপনার কাছে <b>এলো</b>, তাই Furniture ডেবিট। টাকা <b>গেলো</b>, তাই Cash ক্রেডিট।</p>
+      </div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Assignment জমা</b><span>Journal entry ১০টা</span></span><span class="pill p-acc">১৫ নভে</span></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>Class test</b><span>Chapter ২ ও ৩</span></span><span class="pill p-acc">২২ নভে</span></div>
+      </div>
+      <button class="btn block" type="button"><svg class="i"><use href="#i-spark"/></svg>এই লেকচারকে প্রশ্ন করুন</button>
+    </div>
+
+    <div class="panel" id="p-full" hidden>
+      <div class="card pad" style="padding-block:6px">
+        <div class="tline"><time>21:58</time><p>Every transaction affects at least two accounts.<span class="bn">প্রতিটা লেনদেন কমপক্ষে দুটো হিসাবে প্রভাব ফেলে।</span></p></div>
+        <div class="tline"><time>22:40</time><p>When cash comes in, we debit the cash account.<span class="bn">টাকা এলে Cash হিসাব ডেবিট হয়।</span></p></div>
+        <div class="tline"><time>23:05</time><div class="board">Dr Cash ........ 5,000<br>&nbsp;&nbsp;&nbsp;Cr Capital ... 5,000</div></div>
+        <div class="tline"><time>23:12</time><p>Debit what comes in, credit what goes out, for <span class="unsure">real accounts</span>.<span class="bn">Real account-এ যা আসে ডেবিট, যা যায় ক্রেডিট।</span></p></div>
+      </div>
+      <p class="muted" style="margin:0">ঢেউ দাগের শব্দে ইঞ্জিন নিশ্চিত না। ট্যাপ করলে ওই জায়গার আসল অডিও বাজবে।</p>
+    </div>
+
+    <div class="panel" id="p-map" hidden>
+      <div class="card pad">
+        <svg class="mind" viewBox="0 0 340 200" role="img" aria-label="লেকচারের মাইন্ড ম্যাপ">
+          <path d="M170 100 C125 100 120 40 76 40"/><path d="M170 100 C215 100 220 40 264 40"/><path d="M170 100 C125 100 120 160 76 160"/><path d="M170 100 C215 100 220 160 264 160"/>
+          <rect class="nd" x="16" y="24" width="120" height="32" rx="10"/><text x="76" y="45" text-anchor="middle">দ্বৈত সত্তা</text>
+          <rect class="nd" x="204" y="24" width="120" height="32" rx="10"/><text x="264" y="45" text-anchor="middle">Real account</text>
+          <rect class="nd" x="16" y="144" width="120" height="32" rx="10"/><text x="76" y="165" text-anchor="middle">Cash ডেবিট</text>
+          <rect class="nd" x="204" y="144" width="120" height="32" rx="10"/><text x="264" y="165" text-anchor="middle">Capital ক্রেডিট</text>
+          <rect class="hub" x="108" y="81" width="124" height="38" rx="12"/><text class="hubt" x="170" y="105" text-anchor="middle">ডেবিট-ক্রেডিট</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="panel" id="p-quiz" hidden>
+      <div class="card pad" style="display:flex;flex-direction:column;gap:12px">
+        <span class="muted">প্রশ্ন ১ / ৫</span>
+        <b style="font-size:16px">মালিক ব্যবসায় ১০,০০০ টাকা আনলেন। কোন হিসাব ডেবিট হবে?</b>
+        <div class="opts" id="quiz"><button class="opt" type="button" data-ok="1">Cash</button><button class="opt" type="button">Capital</button><button class="opt" type="button">Sales</button></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- CLASS MODE -->
+  <main id="v-class" hidden>
+    <div class="card recwrap">
+      <div class="facts" style="justify-content:center"><span class="pill p-plain">Accounting</span><span class="pill p-plain">করিম স্যার</span><span class="pill p-plain">English</span></div>
+      <span class="live">রেকর্ড হচ্ছে</span>
+      <div class="clock num" id="timer">00:23:41</div>
+      <div class="wave" id="wave" aria-hidden="true"></div>
+      <button class="stop" type="button" data-go="note" aria-label="ক্লাস শেষ, নোট বানাও"><i></i></button>
+      <span class="muted">থামালে নোট তৈরি হবে</span>
+      <div class="recactions">
+        <button class="btn" type="button"><svg class="i"><use href="#i-cam"/></svg>বোর্ডের ছবি</button>
+        <button class="btn" type="button" id="huh" style="background:var(--warn-soft);border-color:transparent;color:var(--warn)"><svg class="i"><use href="#i-q"/></svg>বুঝিনি</button>
+      </div>
+    </div>
+
+    <section>
+      <div class="sh"><h2>লাইভ লেখা</h2><span style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-2)">বাংলা অনুবাদ<button class="switch" type="button" role="switch" aria-checked="true" id="trsw" aria-label="বাংলা অনুবাদ"></button></span></div>
+      <div class="card pad" style="padding-block:6px" id="trans">
+        <div class="tline"><time>22:40</time><p>When cash comes in, we debit the cash account.<span class="bn">টাকা এলে Cash হিসাব ডেবিট হয়।</span></p></div>
+        <div class="tline" id="tr"><time>23:12</time><p>Debit what comes in, credit what goes out, for <span class="unsure">real accounts</span>.<span class="bn">Real account-এ যা আসে ডেবিট, যা যায় ক্রেডিট।</span></p></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MONEY -->
+  <main id="v-money" hidden>
+    <div class="biz">
+      <select aria-label="বিজনেস বাছাই"><option>সব বিজনেস</option><option>কাপড়ের দোকান</option><option>অনলাইন পেজ</option><option>পরিবারের খরচ</option></select>
+      <span class="muted">নভেম্বর ২০২৬</span>
+    </div>
+
+    <div class="card hero">
+      <div><span class="muted">এই মাসের লাভ</span><div class="big num">৳১৪,৪৫০<span class="delta"><svg class="i" style="width:14px;height:14px"><use href="#i-up"/></svg>১৮%</span></div></div>
+      <div class="chart" aria-label="মাসিক লাভ">
+        <div><i style="height:46%"></i>জুন</div><div><i style="height:54%"></i>জুলা</div><div><i style="height:38%"></i>আগ</div><div><i style="height:64%"></i>সেপ</div><div><i style="height:68%"></i>অক্টো</div><div class="cur"><i style="height:82%"></i>নভে</div>
+      </div>
+      <div class="trio"><div>আয়<b>৳৪২,৩০০</b></div><div>খরচ<b>৳২৭,৮৫০</b></div><div>পাওনা<b style="color:var(--warn)">৳৬,২০০</b></div></div>
+    </div>
+
+    <section>
+      <div class="sh"><h2>অটো ধরা লেনদেন</h2><span class="pill p-acc">২টা দেখুন</span></div>
+      <div class="card autotx">
+        <div class="notif"><svg class="i" style="color:var(--ink-3)"><use href="#i-bell"/></svg><div><b>bKash নোটিফিকেশন · ১১:৪২</b>You have received Tk 2,500.00 from 017XXXXXXXX. Ref: three piece</div></div>
+        <span class="arrow"><svg class="i" style="width:14px;height:14px"><use href="#i-down"/></svg>AI বুঝেছে</span>
+        <div class="row" style="padding:0;border:0"><span class="tile" style="background:var(--good-soft);color:var(--good)"><svg class="i"><use href="#i-up"/></svg></span><span class="tx"><b>বিক্রি · থ্রি-পিস</b><span>কাপড়ের দোকান · কাস্টমার সুমাইয়ার অর্ডারের সাথে মিলেছে</span></span><span class="amt in">+৳২,৫০০</span></div>
+        <div class="btns"><button class="btn pri" type="button" data-toast="খাতায় উঠে গেছে">ঠিক আছে</button><button class="btn" type="button">বদলান</button></div>
+      </div>
+      <div class="card autotx">
+        <div class="notif"><svg class="i" style="color:var(--ink-3)"><use href="#i-bell"/></svg><div><b>ব্যাংক SMS · গতকাল</b>Your A/C XX4521 debited BDT 1,650.00 for DESCO bill payment.</div></div>
+        <div class="row" style="padding:0;border:0"><span class="tile t-fa"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>বিদ্যুৎ বিল</b><span>পরিবারের খরচ · গত মাসের চেয়ে ৳২০০ বেশি</span></span><span class="amt">−৳১,৬৫০</span></div>
+        <div class="btns"><button class="btn pri" type="button" data-toast="খাতায় উঠে গেছে">ঠিক আছে</button><button class="btn" type="button">বদলান</button></div>
+      </div>
+      <p class="muted" style="margin:0">bKash, Nagad, Rocket আর ব্যাংকের মেসেজ নিজে পড়ে খাতায় তোলে। একবার "এটা দোকানের" বলে দিলে পরের বার থেকে নিজেই বুঝবে। নোটিফিকেশনের লেখা ফোনেই থাকে।</p>
+    </section>
+
+    <div class="voicebar"><svg class="i" style="color:var(--accent)"><use href="#i-mic"/></svg><q>নগদে দেওয়া হিসাব মুখে বলুন: "আজ ৩ হাজার বিক্রি, রহিম ভাইয়ের ৫০০ বাকি"</q><button class="btn pri" type="button" style="padding:8px 12px">সেভ</button></div>
+
+    <section>
+      <div class="sh"><h2>লেনদেন</h2><a href="#money">সব দেখুন</a></div>
+      <div class="card rows">
+        <div class="row"><span class="tile" style="background:var(--good-soft);color:var(--good)"><svg class="i"><use href="#i-up"/></svg></span><span class="tx"><b>বিক্রি, নগদ</b><span>কাপড়ের দোকান · আজ</span></span><span class="amt in">+৳৩,০০০</span></div>
+        <div class="row"><span class="tile" style="background:var(--warn-soft);color:var(--warn)"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>রহিম ভাই, বাকি</b><span>কাপড়ের দোকান · ফেরত কাল</span></span><span class="amt" style="color:var(--warn)">৳৫০০</span></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-down"/></svg></span><span class="tx"><b>ফেসবুক বুস্ট</b><span>অনলাইন পেজ · রশিদ সংযুক্ত</span></span><span class="amt">−৳১,২০০</span></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-down"/></svg></span><span class="tx"><b>মাল কেনা, ইসলামপুর</b><span>কাপড়ের দোকান · ১০ নভে</span></span><span class="amt">−৳১৮,৫০০</span></div>
+      </div>
+    </section>
+    <p class="muted" style="margin:0">AI আপনার কথা বুঝে ঘরে বসায়। যোগ-বিয়োগ হয় সাধারণ হিসাবের কোডে, তাই সংখ্যা ভুল হয় না।</p>
+  </main>
+
+  <!-- INBOX (SOCIAL) -->
+  <main id="v-inbox" hidden>
+    <div class="card modebar">
+      <span class="tile t-aca"><svg class="i"><use href="#i-spark"/></svg></span>
+      <span class="tx"><b>AI উত্তর</b><span class="muted">৫টা অ্যাপ যুক্ত</span></span>
+      <select aria-label="পাঠানোর ধরন"><option>অনুমতি নিয়ে</option><option>অটো</option><option>বন্ধ</option></select>
+    </div>
+
+    <div class="chips" role="group" aria-label="ফিল্টার">
+      <button class="chip" type="button" aria-pressed="true">উত্তর বাকি · ২</button>
+      <button class="chip" type="button" aria-pressed="false">অটো গেছে · ৭</button>
+      <button class="chip" type="button" aria-pressed="false">AI-এর পরামর্শ · ২</button>
+    </div>
+
+    <div class="card cmdbox">
+      <div class="said"><svg class="i" style="color:var(--accent)"><use href="#i-mic"/></svg><span>"আমার পুরনো স্কুলের বন্ধু রাকিবকে একটা মেসেজ পাঠাও, অনেকদিন কথা হয় না"</span></div>
+      <div class="who"><span class="av t-so">রা</span><span class="tx"><b>রাকিব হাসান</b><span>কন্টাক্ট থেকে খুঁজে পেয়েছে · শেষ কথা ২০২৪ সালে</span></span></div>
+      <div class="reply"><small><svg class="i" style="width:14px;height:14px"><use href="#i-spark"/></svg>AI-এর লেখা</small>কিরে রাকিব, কেমন আছিস? অনেকদিন কথা হয় না। স্কুলের দিনগুলো খুব মনে পড়ে। সময় পেলে একদিন দেখা করি?</div>
+      <div class="chan"><span class="pill p-acc">WhatsApp</span><span class="pill p-plain">Messenger</span><span class="pill p-plain">SMS</span></div>
+      <div class="btns"><button class="btn pri" type="button">পাঠান</button><button class="btn" type="button">বদলান</button></div>
+    </div>
+
+    <div class="card msg">
+      <div class="who"><span class="av t-fa">আ</span><span class="tx"><b>আম্মু</b><span>WhatsApp · ভয়েস মেসেজ · ১০ মি</span></span></div>
+      <div class="bubble">বাবা আজকে বাসায় আসার সময় ডিম আর আলু নিয়ে আসিস</div>
+      <div class="reply"><small><svg class="i" style="width:14px;height:14px"><use href="#i-spark"/></svg>AI-এর উত্তর</small>জি আম্মু, নিয়ে আসবো। সন্ধ্যা ৭টার মধ্যে আসছি।</div>
+      <div class="btns"><button class="btn pri" type="button">পাঠান</button><button class="btn" type="button">বদলান</button></div>
+      <span class="muted">বাজারের লিস্টে "ডিম, আলু" যোগ হয়েছে।</span>
+    </div>
+
+    <div class="card msg">
+      <div class="who"><span class="av t-sk">র</span><span class="tx"><b>রহিম ভাই</b><span>Messenger · ১ ঘণ্টা</span></span></div>
+      <div class="bubble">ভাই টাকাটা কাল দিলে হবে?</div>
+      <div class="reply"><small><svg class="i" style="width:14px;height:14px"><use href="#i-spark"/></svg>AI-এর উত্তর · খাতা দেখে</small>সমস্যা নেই ভাই, কাল দুপুরের মধ্যে ৫০০ টাকাটা দিয়ে দিয়েন।</div>
+      <div class="btns"><button class="btn pri" type="button">পাঠান</button><button class="btn" type="button">বদলান</button></div>
+    </div>
+
+    <div class="card msg">
+      <div class="who"><span class="av t-biz">স</span><span class="tx"><b>সুমাইয়া, কাস্টমার</b><span>বিজনেস পেজ · কমেন্ট · ২ মি</span></span><span class="pill p-good">অটো গেছে</span></div>
+      <div class="bubble">নীল থ্রি-পিসটার দাম কত? ঢাকার বাইরে ডেলিভারি হয়?</div>
+      <div class="reply"><small><svg class="i" style="width:14px;height:14px"><use href="#i-check"/></svg>পাঠানো হয়েছে</small>দাম ১,৮৫০ টাকা। ঢাকার বাইরে ২-৩ দিনে ডেলিভারি, চার্জ ১২০ টাকা।</div>
+    </div>
+
+    <section>
+      <div class="sh"><h2>AI-এর পরামর্শ</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-so"><svg class="i"><use href="#i-gift"/></svg></span><span class="tx"><b>কাল তানভীরের জন্মদিন</b><span>রাত ১২টায় শুভেচ্ছা পাঠাবো?</span></span><button class="link" type="button">শিডিউল</button></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>নাসিমকে ২ দিন উত্তর দেননি</b><span>ছোট একটা উত্তর তৈরি আছে</span></span><button class="link" type="button">দেখুন</button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>কার ক্ষেত্রে কী করবে</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tx"><b>কাস্টমার</b><span>দাম, ডেলিভারি, স্টক</span></span><span class="pill p-good">অটো</span></div>
+        <div class="row"><span class="tx"><b>পরিবার ও বন্ধু</b><span>আগে আপনাকে দেখাবে</span></span><span class="pill p-acc">অনুমতি নিয়ে</span></div>
+        <div class="row"><span class="tx"><b>টাকা-পয়সা বা রাগের মেসেজ</b><span>সবসময় আপনাকে জিজ্ঞেস করবে</span></span><span class="pill p-warn">লক</span></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CIRCLE -->
+  <main id="v-circle" hidden>
+    <div class="chips" role="group" aria-label="সার্কেল বাছাই">
+      <button class="chip" type="button" aria-pressed="true">পরিবার · ৫</button>
+      <button class="chip" type="button" aria-pressed="false">বন্ধুরা · ৮</button>
+      <button class="chip" type="button" aria-pressed="false">বিজনেস টিম · ৩</button>
+      <button class="chip" type="button" aria-pressed="false">+ নতুন সার্কেল</button>
+    </div>
+
+    <div class="members" aria-label="সদস্য">
+      <button class="mem" type="button"><span class="ring2" style="--p:100%"><span class="t-fa">আ</span></span>আম্মু<small>ওষুধ ২/৩</small></button>
+      <button class="mem" type="button"><span class="ring2" style="--p:100%"><span class="t-pe">আ</span></span>আব্বু<small>ভালো আছি</small></button>
+      <button class="mem" type="button"><span class="ring2" style="--p:70%"><span class="t-aca">রি</span></span>রিয়া<small>পড়া ১ ঘ ৪০ মি</small></button>
+      <button class="mem" type="button"><span class="ring2" style="--p:40%"><span class="t-sk">সা</span></span>সাকিব<small>পড়া ৩৫ মি</small></button>
+      <button class="mem add" type="button"><span class="ring2"><span>+</span></span>যোগ করুন<small>লিংক পাঠিয়ে</small></button>
+    </div>
+
+    <div class="seg" role="tablist" aria-label="সার্কেলের অংশ">
+      <button type="button" role="tab" aria-selected="true" data-p="ctask">কমন কাজ</button>
+      <button type="button" role="tab" aria-selected="false" data-p="cchat">গ্রুপ চ্যাট</button>
+      <button type="button" role="tab" aria-selected="false" data-p="cupd">সবার খবর</button>
+    </div>
+
+    <div class="panel" id="p-ctask">
+      <div class="card ctsum"><div><b>৫</b><span>এই মাসের কাজ</span></div><div><b style="color:var(--good)">২</b><span>হয়ে গেছে</span></div><div><b style="color:var(--warn)">১</b><span>সামনে আসছে</span></div></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-plus"/></svg></span><span class="tx"><b>আম্মুর ওষুধ কেনা</b><span>দায়িত্ব: আপনি · ৪ দিনের মধ্যে · ওষুধ শেষ হওয়ার আগে নিজে মনে করাবে</span></span><span class="pill p-warn">৪ দিন</span></div>
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-people"/></svg></span><span class="tx"><b>আম্মুর খোঁজ নেওয়া</b><span>পালা করে: আজ রিয়া, কাল আপনি, পরশু সাকিব</span></span><span class="pill p-acc">আজ রিয়া</span></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>বাসা ভাড়া · ৳১২,০০০</b><span>দায়িত্ব: আব্বু · প্রতি মাসের ৫ তারিখ</span></span><span class="pill p-good">দেওয়া হয়েছে</span></div>
+        <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-bag"/></svg></span><span class="tx"><b>দোকান ভাড়া · ৳৮,৫০০</b><span>দায়িত্ব: আপনি · bKash-এ দিলে নিজে টিক পড়বে</span></span><span class="pill p-good">দেওয়া হয়েছে</span></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>রিয়ার টিউশন ফি · ৳৩,০০০</b><span>দায়িত্ব: আপনি · প্রতি মাসের ১০ তারিখ</span></span><span class="pill p-plain">১০ ডিসে</span></div>
+      </div>
+      <button class="btn block" type="button" data-toast="বলুন, AI কাজটা বানিয়ে কাউকে দায়িত্ব দেবে"><svg class="i"><use href="#i-mic"/></svg>বলে কমন কাজ যোগ করুন</button>
+      <p class="muted" style="margin:0">কাজ দিলে যার দায়িত্ব শুধু তার ফোনে রিমাইন্ডার যায়। কাজ হয়ে গেলে সবাই দেখে, তাই "দিয়েছিস?" বলে বারবার ফোন করতে হয় না।</p>
+    <section style="margin-top:6px">
+      <div class="sh"><h2>পরিবারের শেয়ার করা জিনিস</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>বাজারের লিস্ট</b><span>ডিম, আলু, চাল · আম্মু যোগ করেছেন</span></span><span class="end num">৬</span></div>
+        <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-wallet"/></svg></span><span class="tx"><b>সংসারের খরচ</b><span>এই মাসে ৳১৮,৪০০ · কে কত দিয়েছে</span></span><svg class="i chev"><use href="#i-chev"/></svg></div>
+        <div class="row"><span class="tile t-so"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>পারিবারিক ক্যালেন্ডার</b><span>জন্মদিন, দাওয়াত, ডাক্তারের তারিখ</span></span><svg class="i chev"><use href="#i-chev"/></svg></div>
+        <div class="row"><span class="tile t-sk"><svg class="i"><use href="#i-shield"/></svg></span><span class="tx"><b>"নিরাপদে পৌঁছেছি"</b><span>কেউ বাইরে গেলে পৌঁছে এক চাপে জানায়</span></span><svg class="i chev"><use href="#i-chev"/></svg></div>
+        <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-cam"/></svg></span><span class="tx"><b>পরিবারের স্মৃতি</b><span>ছবি আর ভয়েস, বছর শেষে AI একটা গল্প বানায়</span></span><svg class="i chev"><use href="#i-chev"/></svg></div>
+      </div>
+    </section>
+
+    </div>
+
+    <div class="panel" id="p-cchat" hidden>
+      <div class="card chat">
+        <div class="day">আজ</div>
+        <div class="cm"><span class="av t-fa">আ</span><div><small>আম্মু · ১০:১২</small><p>🎤 প্রেশারের ওষুধ আর ৪ দিনের আছে বাবা</p></div></div>
+        <div class="aicard"><svg class="i"><use href="#i-spark"/></svg><span>AI বুঝেছে: <b>ওষুধ কেনা</b>। কাজটা ইয়াসিনকে দেওয়া হলো, শনিবার মনে করাবে।</span></div>
+        <div class="cm"><span class="av t-aca">রি</span><div><small>রিয়া · ১১:৪০</small><p>আম্মু খেয়েছে, আমি কথা বলেছি 👍</p></div></div>
+        <div class="cm me"><div><small>আপনি · ১২:০৫</small><p>দোকান ভাড়া দিয়ে দিলাম</p></div></div>
+        <div class="aicard ok"><svg class="i"><use href="#i-check"/></svg><span>bKash-এর ৳৮,৫০০ মিলে গেছে। <b>দোকান ভাড়া</b> টিক দেওয়া হলো।</span></div>
+      </div>
+      <div class="composer"><span>মেসেজ লিখুন বা বলুন</span><button class="bigmic sm" type="button" aria-label="ভয়েস মেসেজ"><svg class="i"><use href="#i-mic"/></svg></button></div>
+      <p class="muted" style="margin:0">চ্যাটে কেউ কাজের কথা বললে AI নিজেই কাজ বানিয়ে দেয়, টাকা দিলে নিজেই টিক দেয়। আলাদা WhatsApp গ্রুপ লাগে না, তবে চাইলে WhatsApp-এ সারাংশ যেতে পারে।</p>
+    </div>
+
+    <div class="panel" id="p-cupd" hidden>
+    <div class="card care">
+      <div class="top2"><span class="tile t-fa"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>আম্মুর ওষুধ</b><span>আম্মু নিজে "খেয়েছি" চাপেন, না চাপলে আপনাকে জানাবে</span></span></div>
+      <div class="doses"><div class="ok">সকাল ✓ ৮:১০</div><div class="ok">দুপুর ✓ ২:০৫</div><div class="wait">রাত ৯টা</div></div>
+      <span class="muted">ওষুধ শেষ হতে ৪ দিন বাকি। কেনার কাজটা আপনার লিস্টে যোগ করবো?</span>
+      <div class="btns"><button class="btn" type="button">আম্মুকে কল</button><button class="btn pri" type="button" data-toast="কেনার লিস্টে যোগ হয়েছে">লিস্টে যোগ</button></div>
+    </div>
+
+    <div class="card care">
+      <div class="top2"><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>ভাইবোনের পড়াশোনা</b><span>ওরা নিজে যতটুকু শেয়ার করতে চেয়েছে</span></span></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span>রিয়া · এই সপ্তাহে ৬ দিন</span><span class="pill p-good">ভালো যাচ্ছে</span></div>
+        <div class="streak" aria-label="রিয়ার ৭ দিনের পড়া"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:6px"><span>সাকিব · এই সপ্তাহে ২ দিন</span><span class="pill p-warn">একটু উৎসাহ দরকার</span></div>
+        <div class="streak" aria-label="সাকিবের ৭ দিনের পড়া"><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div>
+      </div>
+      <button class="btn" type="button" data-toast="সাকিবকে উৎসাহের মেসেজ পাঠানো হয়েছে" style="align-self:flex-start">সাকিবকে উৎসাহ দিন</button>
+    </div>
+
+    <section>
+      <div class="sh"><h2>আজ সবাই কেমন আছে</h2><span class="muted">দিনে একবার এক চাপে</span></div>
+      <div class="moods">
+        <span class="mood"><span class="av t-fa">আ</span>আম্মু · ভালো 😊</span>
+        <span class="mood"><span class="av t-pe">আ</span>আব্বু · একটু ক্লান্ত</span>
+        <span class="mood"><span class="av t-aca">রি</span>রিয়া · পরীক্ষার চাপ</span>
+      </div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-so"><svg class="i"><use href="#i-spark"/></svg></span><span class="tx"><b>আব্বুর সাথে ৫ দিন কথা হয়নি</b><span>আজ সন্ধ্যায় একটা কল দেওয়ার কথা মনে করাবো?</span></span><button class="link" type="button" data-toast="সন্ধ্যা ৭টায় মনে করাবে">হ্যাঁ</button></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-gift"/></svg></span><span class="tx"><b>রিয়ার পরীক্ষা রবিবার</b><span>শুভকামনার একটা ভয়েস মেসেজ পাঠান</span></span><button class="link" type="button" data-toast="ভয়েস রেকর্ড খোলা হলো">রেকর্ড</button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>আম্মু-আব্বুর জন্য সহজ মোড</h2></div>
+      <div class="phonebox" aria-label="সহজ মোডের নমুনা">
+        <b style="font-family:var(--display);font-size:18px;text-align:center">আসসালামু আলাইকুম আম্মু</b>
+        <div class="elder">
+          <button class="e1" type="button" data-toast="ইয়াসিনকে জানানো হয়েছে">✓<span>ওষুধ খেয়েছি</span></button>
+          <button class="e2" type="button">🎤<span>ভয়েস পাঠাই</span></button>
+          <button class="e4" type="button">😊<span>ভালো আছি</span></button>
+          <button class="e3" type="button">☎<span>ছেলেকে কল</span></button>
+        </div>
+      </div>
+      <p class="muted" style="margin:0;text-align:center">বড় বোতাম, লেখা ছাড়াই চলে। টাইপ করতে না পারলেও সমস্যা নেই।</p>
+    </section>
+
+    <section>
+      <div class="sh"><h2>প্রাইভেসি, যার যার হাতে</h2></div>
+      <div class="priv">
+        <div class="yes"><b style="color:var(--good)">শেয়ার হয় (নিজে চালু করলে)</b><ul><li>ওষুধ খাওয়া</li><li>পড়ার সময়</li><li>আজ কেমন আছি</li><li>পৌঁছেছি</li></ul></div>
+        <div class="no"><b style="color:var(--ink-2)">কখনো শেয়ার হয় না</b><ul><li>ব্যক্তিগত নোট</li><li>মেসেজ</li><li>টাকার হিসাব</li><li>লোকেশন সবসময়</li></ul></div>
+      </div>
+      <p class="muted" style="margin:0">প্রত্যেকে নিজে ঠিক করে কী শেয়ার করবে, যেকোনো সময় বন্ধ করতে পারে। গোপনে নজরদারির কোনো অপশন রাখা হয়নি, এতে বিশ্বাস আর সম্পর্ক দুটোই ভালো থাকে।</p>
+    </section>
+    </div>
+  </main>
+
+  <!-- AUTOMATION SETTINGS -->
+  <main id="v-auto" hidden>
+    <section>
+      <div class="sh"><h2>চলমান অটোমেশন</h2><span class="pill p-good">৪টা চালু</span></div>
+      <div class="card rows">
+        <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-flow"/></svg></span><span class="tx"><b>প্রতি শনিবার রাত ৯টা</b><span>দোকানের হিসাব PDF বানিয়ে ভাইকে WhatsApp</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="চালু"></button></div>
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-flow"/></svg></span><span class="tx"><b>কারো বাকি তোলার দিন এলে</b><span>সকালে আপনাকে জানাবে, ভদ্রভাবে তাকে মনে করিয়ে মেসেজ</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="চালু"></button></div>
+        <div class="row"><span class="tile t-so"><svg class="i"><use href="#i-flow"/></svg></span><span class="tx"><b>কাছের কারো জন্মদিনে</b><span>রাত ১২টায় শুভেচ্ছা, আগে আপনাকে দেখিয়ে</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="চালু"></button></div>
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-flow"/></svg></span><span class="tx"><b>ক্লাস শেষ হলেই</b><span>নোট বানিয়ে Google Drive-এ ব্যাকআপ, কুইজ রাতে</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="চালু"></button></div>
+      </div>
+      <button class="btn block" type="button" id="newauto"><svg class="i"><use href="#i-mic"/></svg>মুখে বলে নতুন অটোমেশন বানান</button>
+    </section>
+
+    <section>
+      <div class="sh"><h2>রিমাইন্ডার ইঞ্জিন</h2><span class="pill p-good">অ্যাপের নিজস্ব</span></div>
+      <div class="card pad" style="display:flex;flex-direction:column;gap:12px">
+        <span class="muted">কাজের গুরুত্ব বুঝে কীভাবে মনে করাবে</span>
+        <div class="card rows" style="box-shadow:none">
+          <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-bell"/></svg></span><span class="tx"><b>সাধারণ</b><span>নোটিফিকেশন, হালকা শব্দ</span></span><span class="pill p-plain">বাজারের লিস্ট</span></div>
+          <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>জরুরি</b><span>অ্যালার্ম, সাইলেন্ট মোডেও বাজবে</span></span><span class="pill p-warn">ক্লাস, বাকি</span></div>
+          <div class="row"><span class="tile" style="background:var(--rec-soft);color:var(--rec)"><svg class="i"><use href="#i-people"/></svg></span><span class="tx"><b>খুব জরুরি</b><span>কলের মতো পুরো স্ক্রিন, না ধরা পর্যন্ত বাজবে</span></span><span class="pill p-rec">ওষুধ, পরীক্ষা</span></div>
+        </div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>না দেখলে ধাপে ধাপে বাড়াবে</b><span>নোটিফিকেশন → ৫ মিনিট পরে অ্যালার্ম → তারপর কল</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="ধাপে ধাপে বাড়ানো"></button></div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>কাজ শেষ বা স্নুজ</b><span>এক চাপে "হয়ে গেছে", ১০ মি / ১ ঘণ্টা / কাল</span></span><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>নেট ছাড়াও, ফোন রিস্টার্ট হলেও</b><span>সব রিমাইন্ডার ফোনেই থাকে, কোনোটা হারায় না</span></span><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>ডাবল হবে না</b><span>একই কাজ আবার বললে জিজ্ঞেস করবে, নতুন বানাবে না</span></span><svg class="i" style="color:var(--good)"><use href="#i-check"/></svg></div>
+        <div class="row" style="padding:0;border:0"><span class="tx"><b>Google / Outlook-এ কপি</b><span>ঐচ্ছিক, শুধু দেখার জন্য; শব্দ দেবে না</span></span><button class="switch" type="button" role="switch" aria-checked="false" aria-label="ক্যালেন্ডারে কপি"></button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>যুক্ত অ্যাপ ও অ্যাকাউন্ট</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="av" style="background:#ea4335;color:#fff;width:36px;height:36px">G</span><span class="tx"><b>Google</b><span>Gmail, Calendar, Drive, Contacts</span></span><span class="pill p-good">যুক্ত</span></div>
+        <div class="row"><span class="av" style="background:#1fae5b;color:#fff;width:36px;height:36px">W</span><span class="tx"><b>WhatsApp</b><span>নোটিফিকেশন থেকে পড়া ও উত্তর</span></span><span class="pill p-good">যুক্ত</span></div>
+        <div class="row"><span class="av" style="background:#2563eb;color:#fff;width:36px;height:36px">f</span><span class="tx"><b>Facebook পেজ ও Messenger</b><span>পেজের মেসেজ, কমেন্ট, পোস্ট</span></span><span class="pill p-good">যুক্ত</span></div>
+        <div class="row"><span class="av" style="background:#c13584;color:#fff;width:36px;height:36px">I</span><span class="tx"><b>Instagram বিজনেস</b><span>DM ও কমেন্ট</span></span><button class="link" type="button">যুক্ত করুন</button></div>
+        <div class="row"><span class="av t-pe" style="width:36px;height:36px">S</span><span class="tx"><b>SMS ও কল লিস্ট</b><span>বাকির মেসেজ, মিসড কলের রিমাইন্ডার</span></span><button class="link" type="button">যুক্ত করুন</button></div>
+        <div class="row"><span class="av t-sk" style="width:36px;height:36px"><svg class="i"><use href="#i-link"/></svg></span><span class="tx"><b>নিজের লিংক যোগ করুন</b><span>ওয়েবসাইট, পেজ, ফর্ম, শিট</span></span><button class="link" type="button">যোগ</button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>ফোনের অনুমতি</h2></div>
+      <div class="card rows">
+        <div class="row"><span class="tx"><b>নোটিফিকেশন পড়া</b><span>মেসেজ বুঝে উত্তর দিতে</span></span><span class="pill p-good">দেওয়া আছে</span></div>
+        <div class="row"><span class="tx"><b>মাইক্রোফোন ও ক্যামেরা</b><span>ভয়েস, ক্লাস রেকর্ড, ছবি</span></span><span class="pill p-good">দেওয়া আছে</span></div>
+        <div class="row"><span class="tx"><b>লোকেশন</b><span>"মার্কেটে গেলে মনে করাও"</span></span><button class="link" type="button">দিন</button></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sh"><h2>নিরাপত্তা</h2></div>
+      <div class="card pad" style="display:flex;gap:12px;align-items:flex-start">
+        <span class="tile t-sk"><svg class="i"><use href="#i-shield"/></svg></span>
+        <div style="display:flex;flex-direction:column;gap:4px"><b>টাকা পাঠানো, পাসওয়ার্ড আর কিছু মুছে ফেলা</b><span class="muted">এই তিনটা কাজ AI কখনো একা করবে না, সবসময় আপনার আঙুলের ছাপ চাইবে। সব কাজের লগ এখানে থাকবে।</span><button class="link" type="button" style="align-self:flex-start;margin-top:4px">কাজের লগ দেখুন</button></div>
+      </div>
+    </section>
+      <section>
+      <div class="sh"><h2>চেহারা ও থিম</h2><span class="muted">আপনার মতো করে</span></div>
+      <div class="card pad themecard">
+        <div class="og"><span class="muted">মোড</span>
+          <div class="seg" role="radiogroup" aria-label="মোড" id="modeseg"><button type="button" role="radio" aria-selected="true" data-m="auto">অটো</button><button type="button" role="radio" aria-selected="false" data-m="light">আলো</button><button type="button" role="radio" aria-selected="false" data-m="dark">অন্ধকার</button></div></div>
+        <div class="og"><span class="muted">ভাষা</span>
+          <div class="seg" role="radiogroup" aria-label="ভাষা" id="langseg"><button type="button" role="radio" aria-selected="false" data-href="index.html">English</button><button type="button" role="radio" aria-selected="true" data-href="bn.html">বাংলা</button></div></div>
+        <div class="og"><span class="muted">মূল রং</span>
+          <div class="swatches" role="radiogroup" aria-label="মূল রং" id="swatches">
+            <button type="button" role="radio" aria-checked="true" aria-label="নীল" data-c="blue" style="--sw:#2563eb"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="পান্না" data-c="emerald" style="--sw:#059669"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="বেগুনি" data-c="violet" style="--sw:#7c3aed"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="অ্যাম্বার" data-c="amber" style="--sw:#c2410c"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="গোলাপি" data-c="rose" style="--sw:#db2777"></button>
+            <button type="button" role="radio" aria-checked="false" aria-label="গ্রাফাইট" data-c="graphite" style="--sw:#334155"></button>
+          </div></div>
+        <div class="og"><span class="muted">লেখার আকার</span>
+          <div class="seg" role="radiogroup" aria-label="লেখার আকার" id="sizeseg"><button type="button" role="radio" aria-selected="false" data-z="14">ছোট</button><button type="button" role="radio" aria-selected="true" data-z="15">স্বাভাবিক</button><button type="button" role="radio" aria-selected="false" data-z="16.5">বড়</button></div></div>
+        <div class="row" style="padding:0;background:none"><span class="tx"><b>হালকা কম্পন</b><span>চাপ দিলে আঙুলে হালকা সাড়া</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="কম্পন"></button></div>
+      </div>
+    </section>
+      <section>
+      <div class="sh"><h2>আরও অ্যাপ, একই নির্মাতার</h2><span class="pill p-acc">নতুন ১</span></div>
+      <div class="shelf" aria-label="অন্য অ্যাপ">
+        <a class="appc" href="#auto" data-toast="Play Store-এ খোলা হচ্ছে"><span class="aico" style="--g1:#0ea5e9;--g2:#2563eb">হি</span><b>হিসাব প্রো</b><span>দোকানের পুরো হিসাব</span><span class="price">৳৫৯৬ · একবার</span></a>
+        <a class="appc" href="#auto" data-toast="Play Store-এ খোলা হচ্ছে"><span class="aico" style="--g1:#f59e0b;--g2:#ea580c">প</span><b>পড়ার সাথী</b><span>পরীক্ষার প্রস্তুতি</span><span class="price">ফ্রি</span></a>
+        <a class="appc" href="#auto" data-toast="Play Store-এ খোলা হচ্ছে"><span class="aico" style="--g1:#10b981;--g2:#047857">আ</span><b>আমলনামা</b><span>রোজকার আমল</span><span class="price">৳৫৯৬</span></a>
+        <a class="appc more" href="#auto" data-toast="সব অ্যাপের তালিকা খোলা হলো"><span class="aico" style="--g1:var(--sunken);--g2:var(--sunken);color:var(--ink-3)!important">+</span><b>সব দেখুন</b><span>নতুন অ্যাপ এলে এখানে নিজে আসবে</span></a>
+      </div>
+      <p class="muted" style="margin:0">কোনো বিরক্তিকর বিজ্ঞাপন নেই। নতুন অ্যাপ এলে শুধু একবার ছোট্ট করে জানাবে, চাইলে বন্ধ করা যাবে।</p>
+    </section>
+  </main>
+
+  <!-- ME / IDENTITY -->
+  <main id="v-me" hidden>
+    <div class="card idcard">
+      <span class="bigav">ই</span>
+      <div class="tx"><b>ইয়াসিন আরাফাত</b><span class="muted">ছাত্র · উদ্যোক্তা · নমুনা তথ্য</span>
+        <div class="meter" aria-label="প্রোফাইল ৭৮% সম্পূর্ণ"><i></i></div><span class="muted">প্রোফাইল ৭৮% সম্পূর্ণ · বাকি: ভাষা দক্ষতা</span></div>
+    </div>
+
+    <button class="card rows" type="button" data-go="life" style="border:0;text-align:left;width:100%;padding:0;cursor:pointer;font:inherit;color:inherit">
+      <div class="row"><span class="tile t-pe"><svg class="i"><use href="#i-star"/></svg></span><span class="tx"><b>আমার জীবনী</b><span>জন্ম থেকে আজ পর্যন্ত · জীবনের মানুষেরা</span></span><svg class="i" style="color:var(--ink-3)"><use href="#i-chev"/></svg></div>
+    </button>
+
+    <section>
+      <div class="sh"><h2>পরিচয়, মেসেজ ও ডকুমেন্ট</h2></div>
+      <button class="card magic" type="button" id="opendoc">
+        <span class="tile" style="background:var(--accent);color:var(--on-accent)"><svg class="i"><use href="#i-spark"/></svg></span>
+        <span class="tx"><b>এক চাপে তৈরি</b><span>মেসেজ, পরিচয়, ইমেইল বা CV। শুধু বাছুন, বাকিটা AI লিখবে।</span></span>
+        <svg class="i" style="color:var(--ink-3)"><use href="#i-chev"/></svg>
+      </button>
+      <div class="card rows">
+        <div class="row"><span class="tile t-aca"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>CV, চাকরির জন্য</b><span>ইংরেজি · প্রফেশনাল · ৩ নভে</span></span><span class="pill p-plain">PDF</span></div>
+        <div class="row"><span class="tile t-biz"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>ব্যবসার প্রোফাইল</b><span>কাপড়ের দোকান · পার্টনারের জন্য</span></span><span class="pill p-plain">PDF</span></div>
+        <div class="row"><span class="tile t-fa"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>আবেদনপত্র</b><span>বৃত্তির জন্য · বাংলা</span></span><span class="pill p-plain">PDF</span></div>
+      </div>
+    </section>
+    <p class="muted" style="margin:0">একবার তথ্য দিলেই হবে। কে জানতে চাইছে সেই অনুযায়ী AI ঠিক করে কোন তথ্য দেখাবে আর কোনটা লুকিয়ে রাখবে।</p>
+  </main>
+
+  <main id="v-life" hidden>
+    <div class="card lifehero">
+      <span class="muted">ইয়াসিন আরাফাতের জীবনী · নমুনা</span>
+      <h2>জন্ম থেকে আজ পর্যন্ত</h2>
+      <div class="lstats"><div><b>৬</b><span>অধ্যায়</span></div><div><b>৪১২</b><span>দিনের কথা</span></div><div><b>৩৮</b><span>জন মানুষ</span></div></div>
+      <div><div class="meter" aria-label="জীবনী ৬৪% লেখা"><i></i></div><span class="muted">৬৪% লেখা · ছোটবেলার অংশে আরও গল্প দরকার</span></div>
+    </div>
+
+    <section class="card askq">
+      <div class="sh"><span class="pill p-acc">আজকের প্রশ্ন</span><span class="muted">রাত ১০টায় একবার</span></div>
+      <p class="q">"আজ দোকানে প্রথমবার পাইকারি অর্ডার এলো। কেমন লাগলো, কে সাহায্য করেছে?"</p>
+      <div class="from"><span class="pill p-plain">হিসাব থেকে দেখেছি</span><span class="pill p-plain">ক্যালেন্ডার: ২টা ক্লাস</span></div>
+      <div class="btns"><button class="btn pri" type="button" data-toast="বলুন, শুনছি। লেখা জীবনীতে যোগ হবে"><svg class="i"><use href="#i-mic"/></svg>বলে দিন</button><button class="btn" type="button" data-toast="ঠিক আছে, কাল আবার জিজ্ঞেস করবো">আজ না</button></div>
+    </section>
+
+    <div class="seg" role="tablist" aria-label="জীবনীর অংশ">
+      <button type="button" role="tab" aria-selected="true" data-p="chap">অধ্যায়</button>
+      <button type="button" role="tab" aria-selected="false" data-p="ppl">মানুষ</button>
+      <button type="button" role="tab" aria-selected="false" data-p="book">বই</button>
+    </div>
+
+    <div class="panel" id="p-chap">
+      <div class="card rows chap">
+        <div class="row"><span class="yr">২০০৩</span><span class="tile t-fa"><svg class="i"><use href="#i-house"/></svg></span><span class="tx"><b>জন্ম ও ছোটবেলা</b><span>গ্রামের বাড়ি, নানাবাড়ির দিনগুলো</span></span><span class="pill p-warn">৩ প্রশ্ন বাকি</span></div>
+        <div class="row"><span class="yr">২০০৯–১৩</span><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>প্রাথমিক বিদ্যালয়</b><span>প্রথম বন্ধু, প্রথম পুরস্কার</span></span><span class="pill p-plain">৯ গল্প</span></div>
+        <div class="row"><span class="yr">২০১৪–১৮</span><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>হাই স্কুল ও SSC</b><span>যে স্যার অঙ্ক ভালোবাসতে শিখিয়েছেন</span></span><span class="pill p-plain">১৪ গল্প</span></div>
+        <div class="row"><span class="yr">২০১৯–২১</span><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>কলেজ ও HSC</b><span>করোনার সময়, অনলাইন ক্লাস</span></span><span class="pill p-plain">১১ গল্প</span></div>
+        <div class="row"><span class="yr">২০২২–</span><span class="tile t-biz"><svg class="i"><use href="#i-bag"/></svg></span><span class="tx"><b>ব্যবসার শুরু</b><span>প্রথম দোকান, প্রথম লাভ ও লস</span></span><span class="pill p-plain">২৩ গল্প</span></div>
+        <div class="row now"><span class="yr">২০২৩–</span><span class="tile t-aca"><svg class="i"><use href="#i-cap"/></svg></span><span class="tx"><b>বিশ্ববিদ্যালয়, Accounting</b><span>চলছে · প্রতিদিন নিজে থেকে যোগ হচ্ছে</span></span><span class="pill p-acc">এখন</span></div>
+      </div>
+      <p class="muted" style="margin:0">আপনার নোট, ক্লাস, হিসাব আর রোজকার উত্তর থেকে AI নিজেই সঠিক অধ্যায়ে গল্প বসায়। আপনি শুধু ঠিক আছে কিনা দেখবেন।</p>
+    </div>
+
+    <div class="panel" id="p-ppl" hidden>
+      <div class="chips" role="group" aria-label="সম্পর্ক">
+        <button class="chip" type="button" aria-pressed="true">সবাই ৩৮</button>
+        <button class="chip" type="button" aria-pressed="false">পরিবার</button>
+        <button class="chip" type="button" aria-pressed="false">শিক্ষক</button>
+        <button class="chip" type="button" aria-pressed="false">বন্ধু</button>
+        <button class="chip" type="button" aria-pressed="false">কাজের</button>
+      </div>
+      <article class="card person">
+        <div class="ptop"><span class="av t-aca">র</span><span class="tx" style="flex:1;min-width:0"><b>রফিক স্যার</b><span class="muted">অঙ্কের শিক্ষক · হাই স্কুল · ২০১৪ থেকে</span></span><span class="pill p-plain">শুধু আপনি</span></div>
+        <dl class="facets">
+          <div><dt>কেমন ছিলেন</dt><dd>কড়া কিন্তু ধৈর্যশীল। কেউ না বুঝলে ক্লাসের পরে আলাদা বসাতেন।</dd></div>
+          <div><dt>কী করতেন</dt><dd>বিনা টাকায় শনিবার অঙ্কের বাড়তি ক্লাস নিতেন।</dd></div>
+          <div><dt>আমার জীবনে অবদান</dt><dd>অঙ্কের ভয় কাটিয়েছেন, তাই আজ Accounting পড়ছি।</dd></div>
+          <div class="rem"><dt>যেভাবে মনে রাখতে চাই</dt><dd>"যিনি আমাকে প্রথম বিশ্বাস করতে শিখিয়েছিলেন যে আমি পারবো।"</dd></div>
+        </dl>
+        <div class="btns"><button class="btn" type="button" data-toast="ওনার সাথে জড়িত ৭টা গল্প খোলা হলো">৭ গল্প দেখুন</button><button class="btn" type="button" data-toast="ধন্যবাদের খসড়া তৈরি, পাঠানোর আগে দেখাবো">ধন্যবাদ জানান</button></div>
+      </article>
+      <div class="card rows">
+        <div class="row"><span class="tile t-fa">আ</span><span class="tx"><b>আম্মু</b><span>পরিবার · জন্ম থেকে · ৬৪ গল্প</span></span><svg class="i" style="color:var(--ink-3)"><use href="#i-chev"/></svg></div>
+        <div class="row"><span class="tile t-so">স</span><span class="tx"><b>সাকিব</b><span>ছোটবেলার বন্ধু · ২০০৯ থেকে · অনেকদিন কথা হয়নি</span></span><span class="pill p-warn">যোগাযোগ</span></div>
+        <div class="row"><span class="tile t-biz">ক</span><span class="tx"><b>করিম চাচা</b><span>প্রথম পাইকার · বাকিতে মাল দিয়ে শুরু করিয়েছিলেন</span></span><svg class="i" style="color:var(--ink-3)"><use href="#i-chev"/></svg></div>
+      </div>
+      <p class="muted" style="margin:0">কথাবার্তা আর নোটে কারও নাম এলে AI জিজ্ঞেস করে তাকে এখানে রাখবে কিনা। আপনি না বললে কারও তথ্য জমা হয় না।</p>
+    </div>
+
+    <div class="panel" id="p-book" hidden>
+      <div class="card book">
+        <span class="cover">আমার গল্প<br><b style="font-size:13px">ইয়াসিন আরাফাত</b></span>
+        <span class="tx" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><b style="font-family:var(--display);font-size:16px">জীবনী বই</b><span class="muted">৬ অধ্যায় · ছবি সহ · প্রায় ৮৫ পাতা</span><span class="muted">সব গল্প থেকে AI সুন্দর ভাষায় লিখে দেবে</span></span>
+      </div>
+      <div class="card rows">
+        <div class="row"><span class="tx"><b>ধরন</b><span>পুরো বই, এক পাতার সারাংশ, বা বছরভিত্তিক</span></span><span class="pill p-acc">পুরো বই</span></div>
+        <div class="row"><span class="tx"><b>ভাষা</b><span>বাংলা, চাইলে ইংরেজি কপি</span></span><span class="pill p-plain">বাংলা</span></div>
+        <div class="row"><span class="tx"><b>শেয়ার করলে লুকানো থাকবে</b><span>অন্যদের ব্যক্তিগত কথা ও পরিবারের গোপন বিষয়</span></span><button class="switch" type="button" role="switch" aria-checked="true" aria-label="ব্যক্তিগত অংশ লুকান"></button></div>
+      </div>
+      <div class="btns"><button class="btn pri" type="button" data-toast="জীবনী বই PDF তৈরি হচ্ছে">PDF বই বানান</button><button class="btn" type="button" data-toast="আগে দেখার জন্য খোলা হলো">আগে পড়ুন</button></div>
+    </div>
+    <p class="muted" style="margin:0;display:flex;gap:6px;align-items:center"><svg class="i" style="width:16px;height:16px;color:var(--good)"><use href="#i-shield"/></svg>জীবনী শুধু আপনার। খুলতে আঙুলের ছাপ লাগে, সার্কেলেও কখনো যায় না।</p>
+  </main>
+
+  <div class="scrim" id="docsheet" hidden>
+    <div class="sheet" role="dialog" aria-label="ডকুমেন্ট বানান">
+      <span class="grab"></span>
+      <div id="dstep1" style="display:flex;flex-direction:column;gap:14px">
+        <h3>কী তৈরি করবো?</h3>
+        <div class="kinds" role="group" aria-label="ধরন" id="kinds">
+          <button type="button" aria-pressed="true" data-k="msg"><svg class="i"><use href="#i-inbox"/></svg>মেসেজ</button>
+          <button type="button" aria-pressed="false" data-k="intro"><svg class="i"><use href="#i-user"/></svg>পরিচয়</button>
+          <button type="button" aria-pressed="false" data-k="mail"><svg class="i"><use href="#i-text"/></svg>ইমেইল</button>
+          <button type="button" aria-pressed="false" data-k="cv"><svg class="i"><use href="#i-star"/></svg>CV / PDF</button>
+        </div>
+        <div class="og"><span class="muted" style="display:flex;gap:6px;align-items:center"><svg class="i" style="width:14px;height:14px;color:var(--accent)"><use href="#i-spark"/></svg>কাকে · AI-এর সাজেশন</span><div class="sugg" role="group" aria-label="কাকে" id="whom"></div></div>
+        <div class="og"><span class="muted">কেন</span><div class="chips wrap" role="group" aria-label="কেন" id="why"></div></div>
+        <div class="og"><span class="muted">ভাষা</span><div class="chips wrap" role="group" aria-label="ভাষা">
+          <button class="chip" type="button" aria-pressed="true">বাংলা</button><button class="chip" type="button" aria-pressed="false">English</button><button class="chip" type="button" aria-pressed="false">দুটোই</button></div></div>
+        <div class="og" id="dgroup" hidden><span class="muted">ডিজাইন</span><div class="docs" role="group" aria-label="ডিজাইন">
+          <button class="doc" type="button" aria-pressed="true"><span class="paper"><i class="h"></i><i class="a"></i><i></i><i></i><i style="width:70%"></i><i class="a"></i><i></i><i style="width:80%"></i></span>প্রফেশনাল</button>
+          <button class="doc" type="button" aria-pressed="false"><span class="paper cl"><i class="h"></i><i class="a"></i><i></i><i style="width:60%"></i><i></i><i class="a"></i><i style="width:85%"></i></span>ক্লাসিক</button>
+          <button class="doc" type="button" aria-pressed="false"><span class="paper md"><i class="h"></i><i></i><i class="a"></i><i style="width:75%"></i><i></i><i style="width:55%"></i></span>মডার্ন</button>
+        </div></div>
+        <button class="btn pri block" type="button" id="makedoc"><svg class="i"><use href="#i-spark"/></svg>বানিয়ে দাও</button>
+        <p class="muted" style="margin:0">তথ্য প্রোফাইল থেকে নেবে। কিছু কম থাকলে শুধু সেটুকু জিজ্ঞেস করবে।</p>
+      </div>
+      <div id="dstep2" hidden style="flex-direction:column;gap:14px">
+        <h3>তৈরি হয়ে গেছে</h3>
+        <div class="card outp" style="box-shadow:none;border:1px solid var(--line)">
+          <span class="muted" id="otitle"></span>
+          <p id="obody"></p>
+          <span class="pill p-good" id="ohide" style="align-self:flex-start"></span>
+        </div>
+        <div class="btns"><button class="btn pri" type="button" id="oact" data-toast="">পাঠান</button><button class="btn" type="button" data-toast="বদলানোর জন্য খসড়া খোলা হলো">এডিট</button><button class="btn" type="button" id="redoc">আবার বাছুন</button></div>
+        <p class="muted" style="margin:0">আপনি "পাঠান" না চাপলে কিছুই যাবে না।</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrim" id="sheet" hidden>
+    <div class="sheet" role="dialog" aria-label="নতুন নোট">
+      <span class="grab"></span>
+      <h3>বলুন, কী করতে হবে</h3>
+      <div class="cmdlive">
+        <button class="bigmic" type="button" aria-label="বলা শুরু করুন"><svg class="i"><use href="#i-mic"/></svg></button>
+        <p class="heard">"আজ বিকাল ৪টায় দোকানে মাল আসবে, কাল সকালে আম্মুকে ডাক্তারের কাছে নিতে হবে, আর শুক্রবারের মধ্যে যুব সংগঠনের জন্য CV বানাও"</p>
+      </div>
+      <div class="parsed">
+        <span class="muted">AI বুঝেছে, ৩টা কাজ:</span>
+        <div class="prow"><span class="tile t-biz"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>দোকানে মাল আসবে</b><span>৩:৩০-এ অ্যালার্ম, ভাইকেও অটো WhatsApp</span></span><span class="pill p-good">অটোমেশন</span></div>
+        <div class="prow"><span class="tile t-fa"><svg class="i"><use href="#i-clock"/></svg></span><span class="tx"><b>আম্মুকে ডাক্তারের কাছে</b><span>কাল সকাল ৯:০০ · ক্যালেন্ডারে</span></span><span class="pill p-plain">ইভেন্ট</span></div>
+        <div class="prow"><span class="tile t-so"><svg class="i"><use href="#i-text"/></svg></span><span class="tx"><b>CV, যুব সংগঠনের জন্য</b><span>খসড়া তৈরি · শুক্রবার পর্যন্ত সময়</span></span><span class="pill p-acc">PDF</span></div>
+        <div class="btns"><button class="btn pri" type="button" data-toast="সব কাজ সেট হয়ে গেছে">সব ঠিক আছে</button><button class="btn" type="button">বদলান</button></div>
+      </div>
+      <span class="muted">অথবা সরাসরি যোগ করুন</span>
+      <div class="capgrid">
+        <button class="wide" type="button" id="opendoc2"><span class="tile" style="background:var(--accent);color:var(--on-accent)"><svg class="i"><use href="#i-spark"/></svg></span><span><b>এক চাপে তৈরি</b><span>মেসেজ, পরিচয়, ইমেইল, CV · শুধু বাছুন</span></span></button>
+        <button class="wide" type="button" data-go="class"><span class="tile" style="background:var(--rec);color:#fff"><svg class="i"><use href="#i-rec"/></svg></span><span><b>ক্লাস মোড</b><span>পুরো লেকচার রেকর্ড, ছবি জুড়ে গোছানো নোট</span></span></button>
+        <button type="button"><span class="tile t-aca"><svg class="i"><use href="#i-mic"/></svg></span><span><b>ভয়েস</b><span>বললেই নোট</span></span></button>
+        <button type="button"><span class="tile t-sk"><svg class="i"><use href="#i-cam"/></svg></span><span><b>ছবি</b><span>বোর্ড, রশিদ, খাতা</span></span></button>
+        <button type="button"><span class="tile t-so"><svg class="i"><use href="#i-link"/></svg></span><span><b>লিংক</b><span>পড়ে সারাংশ</span></span></button>
+        <button type="button"><span class="tile t-pe"><svg class="i"><use href="#i-text"/></svg></span><span><b>লেখা</b><span>টাইপ করে</span></span></button>
+      </div>
+      <p class="muted" style="margin:0">কোন ফোল্ডারে যাবে, AI নিজে ঠিক করবে।</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"><svg class="i" style="width:16px;height:16px"><use href="#i-check"/></svg><span id="toastt"></span></div>
+
+  <div class="tabs"><nav aria-label="প্রধান মেনু">
+    <button class="tab" type="button" data-go="today" aria-current="page"><svg class="i"><use href="#i-home"/></svg>আজ</button>
+    <button class="tab" type="button" data-go="circle"><svg class="i"><use href="#i-people"/></svg>সার্কেল</button>
+    <button class="tab plus" type="button" id="plus" aria-label="নতুন নোট"><span><svg class="i"><use href="#i-plus"/></svg></span></button>
+    <button class="tab" type="button" data-go="money"><svg class="i"><use href="#i-wallet"/></svg>হিসাব</button>
+    <button class="tab" type="button" data-go="inbox"><svg class="i"><use href="#i-inbox"/></svg>ইনবক্স</button>
+  </nav></div>
+</div>
+
+<script>
+(function(){
+  const V={
+    today:{t:"শুভ সকাল, ইয়াসিন",s:"বৃহস্পতিবার, ১২ নভেম্বর",tab:"today"},
+    library:{t:"লাইব্রেরি",s:"১৩৯টা নোট, ৬ ঘরে সাজানো",tab:null,back:"today"},
+    note:{t:"ক্লাস নোট",s:"Accounting",tab:null,back:"library"},
+    circle:{t:"সার্কেল",s:"কমন কাজ, চ্যাট ও খবর",tab:"circle"},
+    class:{t:"ক্লাস মোড",s:"রুটিন থেকে চেনা",tab:null,back:"today"},
+    money:{t:"হিসাব",s:"২টা বিজনেস ও পরিবার",tab:"money"},
+    inbox:{t:"ইনবক্স",s:"WhatsApp, Messenger, পেজ, Gmail",tab:"inbox"},
+    me:{t:"আমার পরিচয়",s:"জীবনী, পরিচয় ও ডকুমেন্ট",tab:null,back:"today"},
+    life:{t:"আমার জীবনী",s:"অধ্যায়, মানুষ ও বই",tab:null,back:"me"},
+    auto:{t:"সেটিংস",s:"সংযোগ, রিমাইন্ডার, থিম ও নিরাপত্তা",tab:null,back:"today"}
+  };
+  const sheet=document.getElementById("sheet");
+  function show(v){
+    if(!V[v]) v="today";
+    sheet.hidden=true;document.getElementById("docsheet").hidden=true;
+    Object.keys(V).forEach(n=>document.getElementById("v-"+n).hidden=(n!==v));
+    document.querySelectorAll(".tab[data-go]").forEach(t=>t.dataset.go===V[v].tab?t.setAttribute("aria-current","page"):t.removeAttribute("aria-current"));
+    document.getElementById("htitle").textContent=V[v].t;
+    document.getElementById("hsub").textContent=V[v].s;
+    const bb=document.getElementById("backbtn");bb.hidden=!V[v].back;bb.dataset.go=V[v].back||"";
+    window.scrollTo(0,0);
+  }
+  document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b&&b.dataset.go){location.hash=b.dataset.go}});
+  window.addEventListener("hashchange",()=>show(location.hash.slice(1)));
+  show(location.hash.slice(1));
+
+  const toast=document.getElementById("toast");let tt;
+  const msgs={"পাঠান":"পাঠানো হয়েছে","সেভ":"খাতায় সেভ হয়েছে","শিডিউল":"রাত ১২টায় পাঠানো হবে","দেখুন":"উত্তরটা খোলা হলো","অটো করো":"এখন থেকে প্রতি শনিবার অটো যাবে","কপি":"কপি হয়েছে","PDF বানান":"PDF তৈরি হয়েছে, ডকুমেন্টে সেভ"};
+  document.querySelectorAll(".lenrow,.docs").forEach(g=>g.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true")})));
+  document.addEventListener("click",e=>{
+    const b=e.target.closest(".btn.pri,.link,[data-toast]");if(!b||(b.tagName==="A"&&!b.dataset.toast))return;if(b.tagName==="A")e.preventDefault();
+    const m=b.dataset.toast||msgs[b.textContent.trim()];if(!m)return;
+    if(b.dataset.toast)sheet.hidden=true;
+    document.getElementById("toastt").textContent=m;toast.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove("on"),1800);
+  });
+  const K={
+    msg:{who:[["স","সাকিব","ছোটবেলার বন্ধু · ৩ মাস কথা হয়নি","t-so"],["আ","আব্বু","৫ দিন কথা হয়নি","t-pe"],["ক","করিম চাচা","পাইকার · বাকি ৳৪,২০০","t-biz"]],why:["খোঁজ নেওয়া","শুভেচ্ছা","টাকার কথা","দেখা করা"],act:"পাঠান",toast:"WhatsApp-এ পাঠানো হয়েছে",
+      out:"সাকিব, কেমন আছিস? অনেকদিন কথা হয় না, হঠাৎ তোর কথা মনে পড়লো। এই শুক্রবার বিকালে ফ্রি থাকলে চল একটু দেখা করি।",hide:"WhatsApp-এ যাবে · আপনার লেখার ঢঙে"},
+    intro:{who:[["ন","নতুন HR","কাল ইন্টারভিউ · ক্যালেন্ডার থেকে","t-aca"],["য","যুব সংগঠন","শনিবার মিটিং","t-so"],["ব","নতুন পার্টনার","গতকাল নম্বর সেভ করেছেন","t-biz"]],why:["চাকরি","সংগঠন","ব্যবসা","নতুন পরিচয়"],act:"কপি",toast:"কপি হয়েছে",
+      out:"আমি ইয়াসিন আরাফাত, Accounting-এর ছাত্র। পড়াশোনার পাশাপাশি একটা কাপড়ের ব্যবসা চালাই, তাই হিসাব আর মানুষের সাথে কাজের বাস্তব অভিজ্ঞতা আছে।",hide:"লুকানো: পরিবার, আয়, ঠিকানা"},
+    mail:{who:[["র","রফিক স্যার","Assignment-এর সময় বাড়ানো","t-aca"],["স","সাপ্লায়ার","অর্ডারের ইনভয়েস বাকি","t-biz"],["ব","বৃত্তি অফিস","আবেদনের শেষ দিন ২০ নভে","t-so"]],why:["সময় চাওয়া","আবেদন","ধন্যবাদ","অভিযোগ"],act:"পাঠান",toast:"Gmail থেকে পাঠানো হয়েছে",
+      out:"Dear Sir, I am Yeasin Arafat from your Accounting class. Due to a family emergency, I kindly request two more days to submit the journal entry assignment. Thank you for your understanding.",hide:"ইংরেজি · ভদ্র ভাষা · Gmail"},
+    cv:{who:[["য","যুব সংগঠন","শুক্রবারের মধ্যে জমা","t-so"],["চ","চাকরির আবেদন","Bank officer · ৩০ নভে","t-aca"],["ব","বৃত্তি","২০ নভে শেষ দিন","t-fa"]],why:["CV","আবেদনপত্র","বিজনেস প্রোফাইল"],act:"PDF সেভ",toast:"PDF সেভ হয়েছে, ডকুমেন্টে আছে",
+      out:"CV, যুব সংগঠনের জন্য · বাংলা · প্রফেশনাল ডিজাইন · ২ পাতা। সমাজসেবা আর নেতৃত্ব আগে সাজানো, ছবি ও স্বাক্ষর প্রোফাইল থেকে।",hide:"লুকানো: ব্যবসার আয়"}};
+  let kind="msg";
+  const ds=document.getElementById("docsheet"),s1=document.getElementById("dstep1"),s2=document.getElementById("dstep2");
+  function pick(g,b){g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true")}
+  function setKind(k){kind=k;const d=K[k];
+    const w=document.getElementById("whom");w.innerHTML=d.who.map((p,i)=>'<button type="button" aria-pressed="'+(i===0)+'"><span class="av '+p[3]+'">'+p[0]+'</span><span class="tx"><b>'+p[1]+'</b><span>'+p[2]+'</span></span></button>').join("")+'<button type="button" aria-pressed="false"><span class="av" style="background:var(--sunken);color:var(--ink-3)">+</span><span class="tx"><b>অন্য কেউ</b><span>নাম বলুন বা খুঁজুন</span></span></button>';
+    w.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pick(w,b)));
+    const y=document.getElementById("why");y.innerHTML=d.why.map((t,i)=>'<button class="chip" type="button" aria-pressed="'+(i===0)+'">'+t+'</button>').join("");
+    y.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>pick(y,b)));
+    document.getElementById("dgroup").hidden=k!=="cv";}
+  document.querySelectorAll("#kinds button").forEach(b=>b.addEventListener("click",()=>{pick(document.getElementById("kinds"),b);setKind(b.dataset.k)}));
+  setKind("msg");
+  function docStep(n){s1.style.display=n===1?"flex":"none";s2.hidden=n!==2;s2.style.display=n===2?"flex":"none"}
+  function openDoc(){docStep(1);sheet.hidden=true;ds.hidden=false}
+  document.querySelectorAll("#opendoc,#opendoc2").forEach(b=>b.addEventListener("click",openDoc));
+  document.getElementById("makedoc").addEventListener("click",()=>{const d=K[kind],who=document.querySelector("#whom [aria-pressed=true] b").textContent;
+    document.getElementById("otitle").textContent=document.querySelector("#kinds [aria-pressed=true]").textContent+" · "+who;
+    document.getElementById("obody").textContent=d.out;document.getElementById("ohide").textContent=d.hide;
+    const a=document.getElementById("oact");a.textContent=d.act;a.dataset.toast=d.toast;docStep(2)});
+  document.getElementById("redoc").addEventListener("click",()=>docStep(1));
+  ds.addEventListener("click",e=>{if(e.target===ds||e.target.closest("[data-toast]"))ds.hidden=true});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")ds.hidden=true});
+  document.getElementById("plus").addEventListener("click",()=>{sheet.hidden=false});
+  document.querySelector(".ask .mic").addEventListener("click",e=>{e.preventDefault();sheet.hidden=false});
+  document.getElementById("newauto").addEventListener("click",()=>{sheet.hidden=false});
+  document.querySelectorAll(".switch:not(#trsw)").forEach(s=>s.addEventListener("click",()=>s.setAttribute("aria-checked",s.getAttribute("aria-checked")==="true"?"false":"true")));
+  sheet.addEventListener("click",e=>{if(e.target===sheet)sheet.hidden=true});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")sheet.hidden=true});
+
+  const ACC={blue:["#2563eb","#6b9bff"],emerald:["#059669","#34d399"],violet:["#7c3aed","#a78bfa"],amber:["#c2410c","#fb923c"],rose:["#db2777","#f472b6"],graphite:["#334155","#cbd5e1"]};
+  const R=document.documentElement;let st={m:"auto",c:"blue",z:"15"};
+  try{Object.assign(st,JSON.parse(localStorage.getItem("sn-theme")||"{}"))}catch(e){}
+  function isDark(){return st.m==="dark"||(st.m==="auto"&&matchMedia("(prefers-color-scheme: dark)").matches)}
+  function applyTheme(){
+    if(st.m==="auto")R.removeAttribute("data-theme");else R.setAttribute("data-theme",st.m);
+    const c=ACC[st.c]||ACC.blue,d=isDark(),a=d?c[1]:c[0];
+    R.style.setProperty("--accent",a);R.style.setProperty("--accent-soft","color-mix(in srgb,"+a+" "+(d?"18%":"11%")+",var(--surface))");
+    document.body.style.fontSize=st.z+"px";
+    document.querySelectorAll("#modeseg button").forEach(b=>b.setAttribute("aria-selected",b.dataset.m===st.m));
+    document.querySelectorAll("#swatches button").forEach(b=>b.setAttribute("aria-checked",b.dataset.c===st.c));
+    document.querySelectorAll("#sizeseg button").forEach(b=>b.setAttribute("aria-selected",b.dataset.z===st.z));
+    try{localStorage.setItem("sn-theme",JSON.stringify(st))}catch(e){}
+  }
+  document.querySelectorAll("#modeseg button").forEach(b=>b.addEventListener("click",()=>{st.m=b.dataset.m;applyTheme()}));
+  document.querySelectorAll("#swatches button").forEach(b=>b.addEventListener("click",()=>{st.c=b.dataset.c;applyTheme()}));
+  document.querySelectorAll("#sizeseg button").forEach(b=>b.addEventListener("click",()=>{st.z=b.dataset.z;applyTheme()}));
+  document.querySelectorAll("#langseg button").forEach(b=>b.addEventListener("click",()=>{if(b.getAttribute("aria-selected")!=="true")location.href=b.dataset.href+location.hash}));
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change",applyTheme);
+  applyTheme();
+
+  document.querySelectorAll(".seg[role=tablist]").forEach(g=>{const bs=[...g.querySelectorAll("button")];bs.forEach(b=>b.addEventListener("click",()=>{
+    bs.forEach(x=>{x.setAttribute("aria-selected","false");document.getElementById("p-"+x.dataset.p).hidden=true});
+    b.setAttribute("aria-selected","true");document.getElementById("p-"+b.dataset.p).hidden=false;
+  }))});
+  document.querySelectorAll(".chips").forEach(g=>g.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
+    g.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");
+  })));
+  document.querySelectorAll("#quiz .opt").forEach(b=>b.addEventListener("click",()=>{
+    document.querySelectorAll("#quiz .opt").forEach(x=>x.classList.remove("right","wrong"));b.classList.add(b.dataset.ok?"right":"wrong");
+  }));
+  const sw=document.getElementById("trsw");
+  sw.addEventListener("click",()=>{const on=sw.getAttribute("aria-checked")!=="true";sw.setAttribute("aria-checked",on);document.getElementById("trans").classList.toggle("notr",!on)});
+
+  const wave=document.getElementById("wave");
+  for(let i=0;i<36;i++){const s=document.createElement("span");s.style.height=(25+Math.round(Math.abs(Math.sin(i*1.3)*Math.cos(i*.45))*75))+"%";s.style.animationDelay=(i*.04)+"s";wave.appendChild(s)}
+  let sec=23*60+41;const tm=document.getElementById("timer");
+  setInterval(()=>{sec++;tm.textContent=[Math.floor(sec/3600),Math.floor(sec/60)%60,sec%60].map(n=>String(n).padStart(2,"0")).join(":")},1000);
+  document.getElementById("huh").addEventListener("click",()=>{
+    const d=document.createElement("div");d.className="tline";
+    d.innerHTML="<time>"+tm.textContent.slice(3)+"</time><p><span class=\"pill p-warn\">বুঝিনি</span> ক্লাস শেষে সহজ বাংলায় বুঝিয়ে দেবে।</p>";
+    document.getElementById("trans").appendChild(d);
+  });
+})();
+</script>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Super Note · AI notes, reminders and money tracking in Bangla & English | Yeasin Arafat</title>
+<meta name="description" content="Say it once, the AI does the rest: voice notes in Bangla and English, its own reminders and alarms, class mode, automatic money tracking, one-tap messages and CVs. Free plan, Pro and Lifetime.">
+<link rel="canonical" href="https://yeasinarafatbd.vercel.app/super-note/">
+<meta property="og:title" content="Super Note · Say it once, the AI does the rest">
+<meta property="og:description" content="Voice notes, reminders, class mode, money tracking and one-tap messages in one Android app. Try the live demo.">
+<meta property="og:image" content="https://yeasinarafatbd.vercel.app/img/dev-super-note.webp">
+<meta name="theme-color" content="#060C18">
+<link rel="icon" href="https://yeasinarafatbd.vercel.app/favicon.ico">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Hind+Siliguri:wght@400;500;600&display=swap">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Super Note","applicationCategory":"ProductivityApplication","operatingSystem":"Android","url":"https://yeasinarafatbd.vercel.app/super-note/","image":"https://yeasinarafatbd.vercel.app/img/dev-super-note.webp","description":"An AI life assistant for Bangla and English speakers: voice notes, reminders and alarms, class mode, automatic money tracking and one-tap messages.","offers":[{"@type":"Offer","name":"Free","price":"0","priceCurrency":"BDT"},{"@type":"Offer","name":"Pro monthly","price":"149","priceCurrency":"BDT"},{"@type":"Offer","name":"Lifetime","price":"596","priceCurrency":"BDT"}],"creator":{"@id":"https://yeasinarafatbd.vercel.app/#person"}}</script>
+<style>
+:root{--bg:#060C18;--card:#0C1526;--raise:#131F36;--line:#1D2A43;--text:#E9EEF8;--soft:#9BA9C2;--accent:#5B8CFF;--ok:#3DD68C;--wa:#25D366}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Geist,system-ui,sans-serif}
+[lang="bn"]{font-family:"Hind Siliguri",Geist,system-ui,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+nav.top{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+nav.top a{color:var(--text);text-decoration:none;font-weight:600}
+.mono{font:500 .75rem "Geist Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(2.1rem,5.4vw,3.8rem);line-height:1.05;letter-spacing:-.03em;margin:.3em 0}
+h1 em{font-style:normal;color:var(--accent)}
+h2{font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-.02em;margin:0 0 .4em}
+.lead{color:var(--soft);font-size:1.12rem;max-width:62ch}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center;padding:30px 0 50px}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+.phone{justify-self:center;width:300px;height:620px;border-radius:44px;padding:10px;background:#0b0f17;border:1px solid #2a3550;box-shadow:0 40px 80px -30px #000,0 0 120px -20px rgba(91,140,255,.35);position:relative}
+.phone::before{content:"";position:absolute;top:19px;left:50%;transform:translateX(-50%);width:84px;height:22px;border-radius:20px;background:#0b0f17;z-index:2}
+.phone iframe{width:100%;height:100%;border:0;border-radius:35px;background:#f5f6f8}
+.cap{text-align:center;color:var(--soft);font-size:.85rem;margin-top:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:12px 18px;font:600 .95rem Geist,sans-serif;text-decoration:none;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn.wa{background:var(--wa);color:#05210f}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.status{display:inline-flex;gap:8px;align-items:center;margin-top:16px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;font-size:.85rem;color:var(--soft)}
+.status i{width:8px;height:8px;border-radius:50%;background:#f2a54a;box-shadow:0 0 0 4px rgba(242,165,74,.15)}
+section{padding:46px 0;border-top:1px solid var(--line)}
+.say{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:14px}
+.say q{font-size:1.1rem;quotes:"“" "”"}
+.say .res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.say .res div{background:var(--raise);border-radius:10px;padding:12px 14px;font-size:.92rem}
+.say .res b{display:block}
+.say .res span{color:var(--soft);font-size:.85rem}
+@media(max-width:700px){.say .res{grid-template-columns:1fr}}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+.card .ic{font-size:1.5rem;line-height:1}
+.card h3{margin:.4em 0 .3em;font-size:1.05rem}
+.card p{margin:0;color:var(--soft);font-size:.92rem}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:8px}
+.plan.best{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.plan .price{font-size:1.45rem;font-weight:700}
+.plan .price small{font-size:.9rem;font-weight:500;color:var(--soft)}
+.plan ul{margin:6px 0 14px;padding-left:18px;color:var(--soft);font-size:.92rem}
+.plan .btn{margin-top:auto;justify-content:center}
+ol.steps{counter-reset:s;list-style:none;padding:0;display:grid;gap:10px}
+ol.steps li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px 14px 56px;position:relative}
+ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:16px;top:13px;width:28px;height:28px;border-radius:50%;background:var(--raise);display:grid;place-items:center;font-weight:700;color:var(--accent)}
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.road div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.road b{display:block}
+.road span{color:var(--soft);font-size:.88rem}
+.road .now{border-color:var(--accent)}
+footer{padding:30px 0 50px;color:var(--soft);font-size:.9rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="top"><a href="https://yeasinarafatbd.vercel.app/">← Yeasin Arafat</a><a class="btn ghost" href="#plans">Plans & prices</a></nav>
+
+  <div class="hero">
+    <div>
+      <span class="mono">New app · Super Note · Averroes AI</span>
+      <h1>Say it once. <em>The AI does the rest.</em></h1>
+      <p class="lead">An AI life assistant for Android. Speak in Bangla or English and Super Note writes the note, files it, sets the reminder, counts the money, drafts the message and builds the CV. Study, business, family and personal life in one calm app.</p>
+      <p class="lead">Works in English and Bangla. Switch the app language any time in Settings.</p>
+      <div class="acts">
+        <a class="btn" href="demo/" target="_blank" rel="noopener">Open the live demo ↗</a>
+        <a class="btn wa" id="wa" href="https://wa.me/60178151865?text=Hi%20Yeasin%2C%20I%20want%20to%20pre-order%20Super%20Note." target="_blank" rel="noopener">Pre-order on WhatsApp</a>
+        <a class="btn ghost" href="https://yeasinarafatbd.vercel.app/downloads/super-note-demo.zip" download>Download demo</a>
+      </div>
+      <span class="status"><i></i>In development · Android beta next · pre-order now, pay at launch</span>
+    </div>
+    <div>
+      <div class="phone"><iframe src="demo/index.html#today" title="Super Note live demo" loading="lazy"></iframe></div>
+      <p class="cap">Live demo. Tap around.</p>
+    </div>
+  </div>
+</div>
+
+<section><div class="wrap">
+  <span class="mono">One sentence, three jobs</span>
+  <h2>No forms. Just talk.</h2>
+  <div class="say">
+    <q>Goods arrive at the shop at 4 pm today, take Mum to the doctor tomorrow morning, and make a CV for the youth club by Friday.</q>
+    <div class="res">
+      <div><b>Shop delivery at 4 pm</b><span>Alarm at 3:30, WhatsApp to brother</span></div>
+      <div><b>Mum's doctor visit</b><span>Tomorrow 9 am, reminder the night before</span></div>
+      <div><b>CV for the youth club</b><span>Draft ready, due Friday</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="mono">What's inside</span>
+  <h2>Every part of life, sorted for you</h2>
+  <div class="cards">
+    <div class="card"><div class="ic">🎙️</div><h3>Accurate voice notes</h3><p>Bangla, English or both mixed. Photos and links become notes too, and the AI files each one into the right life area.</p></div>
+    <div class="card"><div class="ic">⏰</div><h3>Its own reminder engine</h3><p>Notification, alarm even on silent, or a full-screen call-style alert. Works offline and after restart, never duplicates.</p></div>
+    <div class="card"><div class="ic">🎓</div><h3>Class mode</h3><p>Records the whole lecture with board photos. Mark "didn't get it" and get a simple Bangla explanation and a quiz.</p></div>
+    <div class="card"><div class="ic">💳</div><h3>Automatic money tracking</h3><p>Counts bKash, Nagad and bank payments from notifications. Several businesses, dues and who owes what.</p></div>
+    <div class="card"><div class="ic">✨</div><h3>One-tap create</h3><p>Pick message, intro, email or CV. The AI suggests who to send it to and why, writes it, and sends only when you tap.</p></div>
+    <div class="card"><div class="ic">💬</div><h3>Inbox & auto-reply</h3><p>WhatsApp, Messenger, page comments and Gmail in one place. Replies for you when busy, with your permission.</p></div>
+    <div class="card"><div class="ic">👨‍👩‍👧</div><h3>Family circle</h3><p>Shared duties like mum's medicine, rent and tuition fees, a group chat that turns talk into tasks, and an easy mode for parents.</p></div>
+    <div class="card"><div class="ic">📖</div><h3>My life story</h3><p>One small question each night builds your biography: chapters from birth to now and the people who shaped you. Export as a PDF book.</p></div>
+  </div>
+</div></section>
+
+<section id="plans"><div class="wrap">
+  <span class="mono">Plans & prices</span>
+  <h2>Start free, upgrade when you need</h2>
+  <div class="plans">
+    <div class="plan"><span class="mono">Free</span><div class="price">৳0 <small>forever</small></div><ul><li>20 voice notes a day</li><li>Reminders and alarms</li><li>Auto folders</li><li>One business ledger</li></ul><a class="btn ghost buy" data-plan="Free" href="#">Join the beta</a></div>
+    <div class="plan best"><span class="mono">Pro · most popular</span><div class="price">৳149 <small>a month · ৳1,490 a year</small></div><ul><li>Unlimited voice notes</li><li>Class mode, explanations and quizzes</li><li>Money tracking for several businesses</li><li>Automations and one-tap create</li><li>Family circle for up to 5 people</li></ul><a class="btn buy" data-plan="Pro" href="#">Pre-order Pro</a></div>
+    <div class="plan"><span class="mono">Lifetime</span><div class="price">৳596 <small>once</small></div><ul><li>Everything in Pro, forever</li><li>Every future update</li><li>Life story PDF book</li><li>New features first, direct support</li></ul><a class="btn ghost buy" data-plan="Lifetime" href="#">Pre-order lifetime</a></div>
+  </div>
+  <p class="lead" style="margin-top:16px">No payment now. Pre-order on WhatsApp and you are first in line for the Android beta. You pay by bKash, Nagad or card when it launches and get a license key for your plan.</p>
+</div></section>
+
+<section><div class="wrap">
+  <span class="mono">Roadmap</span>
+  <h2>Where it is now</h2>
+  <div class="road">
+    <div><b>✓ Design & live demo</b><span>Every screen, ready to try</span></div>
+    <div class="now"><b>Now · Android beta</b><span>Voice notes, auto folders, voice commands, reminder engine</span></div>
+    <div><b>Next</b><span>Money tracking, then class mode</span></div>
+    <div><b>Later</b><span>Inbox & auto-reply, family circle, life story</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="mono">Safe by design</span>
+  <h2>Your data stays yours</h2>
+  <ol class="steps">
+    <li>Sending money, passwords and deleting anything always need your fingerprint.</li>
+    <li>Nothing is sent in your name before you see it, unless you switch on auto mode yourself.</li>
+    <li>No hidden tracking in the family circle. Each person chooses what to share.</li>
+    <li>Reminders and notes work offline. Your notes are never sold.</li>
+  </ol>
+</div></section>
+
+<div class="wrap"><footer>Super Note by <a href="https://yeasinarafatbd.vercel.app/">Yeasin Arafat</a> · Averroes AI</footer></div>
+<script>
+(function(){
+  var wa = "60178151865";
+  document.querySelectorAll(".buy").forEach(function(a){
+    a.addEventListener("click", function(e){ e.preventDefault(); window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent("Hi Yeasin, I want to pre-order Super Note (" + a.dataset.plan + " plan)."), "_blank", "noopener"); });
+  });
+})();
+</script>
+</body>
+</html>
