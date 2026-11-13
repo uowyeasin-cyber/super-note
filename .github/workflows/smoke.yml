@@ -70,6 +70,7 @@ jobs:
           - { name: api35, api: 35, variant: plain }
           - { name: api36, api: 36, variant: plain }
           - { name: api29, api: 29, variant: plain }
+          - { name: api35-nogrant, api: 35, variant: nogrant }
     defaults:
       run:
         working-directory: app

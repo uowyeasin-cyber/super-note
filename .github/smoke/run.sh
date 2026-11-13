@@ -7,7 +7,8 @@ mkdir -p "$OUT"
 APK=android/app/build/outputs/apk/release/app-release.apk
 
 adb logcat -c || true
-adb install -r -g "$APK" > "$OUT/install.txt" 2>&1
+G=-g; [ "${VARIANT:-plain}" = "nogrant" ] && G=""
+adb install -r $G "$APK" > "$OUT/install.txt" 2>&1
 cat "$OUT/install.txt"
 if [ "${VARIANT:-plain}" = "bn-dark" ]; then
   adb shell cmd uimode night yes || true
