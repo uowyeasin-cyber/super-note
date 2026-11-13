@@ -1,0 +1,57 @@
+11-13 19:27:20.397  2864  2864 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:27:20.410  2864  2864 I AndroidRuntime: Using default boot image
+11-13 19:27:20.410  2864  2864 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:27:20.685  2864  2864 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+11-13 19:27:21.441  2864  2864 I AndroidRuntime: VM exiting with result code 0.
+11-13 19:27:22.106  2922  2922 W SoLoader: Initializing SoLoader: 0
+11-13 19:27:22.109  2922  2922 W SoLoader: Recording new base apk path: /data/app/~~8MpvZZvjXII4CvhyW9dMjw==/com.averroesai.easylife-q4FeZkVIp81QNNdStirljQ==/base.apk
+11-13 19:27:22.109  2922  2922 W SoLoader: Previously recorded 0 base apk paths.
+11-13 19:27:22.110  2922  2922 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+11-13 19:27:22.110  2922  2922 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+11-13 19:27:22.110  2922  2922 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/~~8MpvZZvjXII4CvhyW9dMjw==/com.averroesai.easylife-q4FeZkVIp81QNNdStirljQ==/base.apk!/lib/x86_64]]
+11-13 19:27:22.120  2922  2922 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/~~8MpvZZvjXII4CvhyW9dMjw==/com.averroesai.easylife-q4FeZkVIp81QNNdStirljQ==/lib/x86_64 flags = 0]]
+11-13 19:27:22.120  2922  2922 I SoLoader: init finish: 4 SO sources prepared
+11-13 19:27:22.121  2922  2922 W SoLoader: SoLoader initialized: 8
+11-13 19:27:22.762  2922  3109 I ExpoModulesCore: ✅ AppContext was initialized
+11-13 19:27:22.878  2922  3127 I ExpoModulesCore: ✅ JSI interop was installed
+11-13 19:27:22.880  2922  3127 W ExpoModulesV2: du1 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:22.880  2922  3127 W ExpoModulesV2: kz0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:22.880  2922  3127 W ExpoModulesV2: lu0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:22.881  2922  3127 I ExpoModulesCore: ✅ Expo Modules v2 installed 3 module(s) on globalThis.expo.modules
+11-13 19:27:23.085  2922  3127 I ExpoModulesCore: ✅ Constants were exported
+11-13 19:27:23.723  2922  3127 I ReactNativeJS: Running "main"
+11-13 19:27:23.752  2922  3127 W ExpoModulesV2: am2 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:53.718  2922  3127 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.AudioSourceOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:27:53.718  2922  3127 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.RecordingOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:27:53.718  2922  3127 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.VolumeChangeEventOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:27:53.726  2922  2922 D ExpoSpeechService: Start recognition.
+11-13 19:27:53.771  2922  2922 D ExpoSpeechService: androidIntentOptions: {EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS=2500.0, EXTRA_LANGUAGE_MODEL=free_form}
+11-13 19:27:53.772  2922  2922 D ExpoSpeechService: Resolved key EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS -> android.speech.extras.SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS with value: 2500.0 (java.lang.Double)
+11-13 19:27:53.772  2922  2922 D ExpoSpeechService: Resolved key EXTRA_LANGUAGE_MODEL -> android.speech.extra.LANGUAGE_MODEL with value: free_form (java.lang.String)
+11-13 19:27:55.663  2922  2922 D ExpoSpeechService: onEndOfSpeech()
+11-13 19:27:56.188  2922  2922 D ExpoSpeechService: onSegmentResults(), transcriptions: []
+11-13 19:28:18.843   517  1887 W ActivityManager: Scheduling restart of crashed service com.google.android.gms/.nearby.exposurenotification.service.ExposureMatchingService in 20999ms for start-requested
+11-13 19:28:18.862   517  1887 W ActivityManager: Scheduling restart of crashed service com.google.android.gms/.nearby.exposurenotification.service.ExposureNotificationInternalService in 230979ms for start-requested
+11-13 19:28:20.525  5450  5450 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:28:20.543  5450  5450 I AndroidRuntime: Using default boot image
+11-13 19:28:20.543  5450  5450 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:28:20.763  5450  5450 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+11-13 19:28:20.830  5450  5450 I AndroidRuntime: VM exiting with result code 0.
+11-13 19:28:21.031  5480  5480 W SoLoader: Initializing SoLoader: 0
+11-13 19:28:21.031  5480  5480 W SoLoader: Recording new base apk path: /data/app/~~8MpvZZvjXII4CvhyW9dMjw==/com.averroesai.easylife-q4FeZkVIp81QNNdStirljQ==/base.apk
+11-13 19:28:21.031  5480  5480 W SoLoader: Previously recorded 0 base apk paths.
+11-13 19:28:21.031  5480  5480 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+11-13 19:28:21.032  5480  5480 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+11-13 19:28:21.032  5480  5480 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/~~8MpvZZvjXII4CvhyW9dMjw==/com.averroesai.easylife-q4FeZkVIp81QNNdStirljQ==/base.apk!/lib/x86_64]]
+11-13 19:28:21.035  5480  5480 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/~~8MpvZZvjXII4CvhyW9dMjw==/com.averroesai.easylife-q4FeZkVIp81QNNdStirljQ==/lib/x86_64 flags = 0]]
+11-13 19:28:21.043  5480  5480 I SoLoader: init finish: 4 SO sources prepared
+11-13 19:28:21.043  5480  5480 W SoLoader: SoLoader initialized: 8
+11-13 19:28:21.222  5480  5518 I ExpoModulesCore: ✅ AppContext was initialized
+11-13 19:28:21.350  5480  5520 I ExpoModulesCore: ✅ JSI interop was installed
+11-13 19:28:21.354  5480  5520 W ExpoModulesV2: du1 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:21.357  5480  5520 W ExpoModulesV2: kz0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:21.357  5480  5520 W ExpoModulesV2: lu0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:21.358  5480  5520 I ExpoModulesCore: ✅ Expo Modules v2 installed 3 module(s) on globalThis.expo.modules
+11-13 19:28:21.372  5480  5520 I ExpoModulesCore: ✅ Constants were exported
+11-13 19:28:21.480  5480  5520 I ReactNativeJS: Running "main"
+11-13 19:28:21.484  5480  5520 W ExpoModulesV2: am2 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
