@@ -9,6 +9,7 @@ import { toBnDigits } from '../../lib/i18n';
 import { Icon } from '../../components/Icon';
 import { IconBtn, Press, Section, T } from '../../components/ui';
 import { ListCard, NoteRow, TaskRow } from '../../components/rows';
+import { PlanPill } from '../../components/PlanBadge';
 
 export default function Today() {
   const { c, t, s, version, bump } = useApp();
@@ -47,6 +48,7 @@ export default function Today() {
         <View style={{ flex: 1 }}>
           <T kind="small">{dateLabel}</T>
           <T kind="h1" style={{ marginTop: 2 }}>{hello}</T>
+          <PlanPill />
         </View>
         <IconBtn name="settings" label={t.settings} onPress={() => router.push('/settings')} />
       </View>

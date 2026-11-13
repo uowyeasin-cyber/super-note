@@ -6,7 +6,9 @@ import * as Haptics from 'expo-haptics';
 import { ExpoSpeechRecognitionModule, useSpeechRecognitionEvent } from 'expo-speech-recognition';
 import { useApp } from '../lib/store';
 import { aiDraft, offlineDraft, saveDraft, type Draft } from '../lib/capture';
-import { aiRead } from '../lib/ai';
+import { aiRead, type AiResult } from '../lib/ai';
+import { FREE_NOTES_PER_DAY, notesToday, proAiRead } from '../lib/plan';
+import { needPro } from '../components/PlanBadge';
 import { askNotificationPermission } from '../lib/alarms';
 import { whenLabel } from '../lib/i18n';
 import { AREAS } from '../lib/classify';
@@ -18,7 +20,8 @@ import { Btn, Chip, IconBtn, Press, T, toast } from '../components/ui';
 const NEXT_LEVEL: Record<Level, Level> = { normal: 'urgent', urgent: 'critical', critical: 'normal' };
 
 export default function Capture() {
-  const { c, t, s, set, bump } = useApp();
+  const app = useApp();
+  const { c, t, s, set, bump, pro, plan } = app;
   const insets = useSafeAreaInsets();
   const [text, setText] = useState('');
   const [partial, setPartial] = useState('');
@@ -73,17 +76,18 @@ export default function Capture() {
     const full = text.trim();
     if (!full) { setDraft(null); return; }
     setDraft(offlineDraft(full, s.defaultLevel));
-    if (!s.aiKey || listening) return;
+    // Own Gemini key works on any plan; Pro uses the built-in AI with no key.
+    if ((!s.aiKey && !pro) || listening) return;
     const seq = ++aiSeq.current;
     setAiBusy(true);
     const timer = setTimeout(async () => {
-      const r = await aiRead(full, s.aiKey, s.aiModel);
+      const r = s.aiKey ? await aiRead(full, s.aiKey, s.aiModel) : ((await proAiRead(full, plan)) as AiResult | null);
       if (seq !== aiSeq.current) return;
       setAiBusy(false);
       if (r) setDraft(aiDraft(r, s.defaultLevel));
     }, 700);
     return () => { clearTimeout(timer); setAiBusy(false); };
-  }, [text, listening, s.aiKey, s.aiModel, s.defaultLevel]);
+  }, [text, listening, s.aiKey, s.aiModel, s.defaultLevel, pro, plan]);
 
   async function start() {
     setErr('');
@@ -111,10 +115,11 @@ export default function Capture() {
 
   function save() {
     if (!text.trim() || !draft || saving) return;
+    if (!pro && notesToday() >= FREE_NOTES_PER_DAY && needPro(app, toast, t.freeLimit(FREE_NOTES_PER_DAY))) return;
     setSaving(true);
     stop();
     try {
-      const r = saveDraft(text, s.speech === 'bn-BD' ? 'bn' : 'en', draft, s.escalate);
+      const r = saveDraft(text, s.speech === 'bn-BD' ? 'bn' : 'en', pro ? draft : { ...draft, tasks: draft.tasks.map((x) => (x.level === 'critical' ? { ...x, level: 'urgent' as const } : x)) }, s.escalate && pro);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
       toast(r.armed ? t.remindersSet(r.armed) : t.saved);
       bump();
@@ -195,7 +200,10 @@ export default function Capture() {
                       {x.at !== null ? whenLabel(x.at, s.lang) : ''}{x.repeat !== 'none' ? ' · ' + (x.repeat === 'daily' ? t.repeatDaily : t.repeatWeekly) : ''}{x.duplicate ? ' · ' + t.duplicate : ''}
                     </T>
                   </View>
-                  <Press accessibilityLabel={t.tapLevel} onPress={() => setDraft({ ...draft, tasks: draft.tasks.map((y) => (y.key === x.key ? { ...y, level: NEXT_LEVEL[y.level] } : y)) })} style={{
+                  <Press accessibilityLabel={t.tapLevel} onPress={() => {
+                    if (NEXT_LEVEL[x.level] === 'critical' && !pro) { needPro(app, toast, t.proFeature); return; }
+                    setDraft({ ...draft, tasks: draft.tasks.map((y) => (y.key === x.key ? { ...y, level: NEXT_LEVEL[y.level] } : y)) });
+                  }} style={{
                     flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 10, height: 32, borderRadius: 999, backgroundColor: c.sunken,
                   }}>
                     <Icon name={x.level === 'critical' ? 'phone' : x.level === 'urgent' ? 'alarm' : 'bell'} size={14} color={x.level === 'critical' ? c.danger : x.level === 'urgent' ? c.warn : c.ink2} />

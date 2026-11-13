@@ -60,7 +60,7 @@ jobs:
         id: apk
         run: |
           V=$(node -p "require('./app.json').expo.version")
-          OUT="super-note-${V}-beta.${{ github.run_number }}.apk"
+          OUT="easy-life-${V}-beta.${{ github.run_number }}.apk"
           cp android/app/build/outputs/apk/release/app-release.apk "../$OUT"
           echo "file=$OUT" >> "$GITHUB_OUTPUT"
           echo "version=$V" >> "$GITHUB_OUTPUT"
@@ -78,8 +78,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="v${{ steps.apk.outputs.version }}-beta.${{ github.run_number }}"
-          cp "${{ steps.apk.outputs.file }}" super-note-beta.apk
-          gh release create "$TAG" "${{ steps.apk.outputs.file }}" super-note-beta.apk \
-            --title "Super Note ${{ steps.apk.outputs.version }} beta ${{ github.run_number }}" \
+          cp "${{ steps.apk.outputs.file }}" easy-life-beta.apk
+          gh release create "$TAG" "${{ steps.apk.outputs.file }}" easy-life-beta.apk \
+            --title "Easy Life ${{ steps.apk.outputs.version }} beta ${{ github.run_number }}" \
             --notes "Beta build for testing. Install on Android 8 or newer. Allow 'install unknown apps' when asked." \
             --latest

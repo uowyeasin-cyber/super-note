@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Super Note",
-    "slug": "super-note",
+    "name": "Easy Life",
+    "slug": "easy-life",
     "version": "0.1.0",
-    "scheme": "supernote",
+    "scheme": "easylife",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -11,7 +11,7 @@
       "android"
     ],
     "android": {
-      "package": "com.averroesai.supernote",
+      "package": "com.averroesai.easylife",
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#2563EB",
@@ -42,8 +42,8 @@
       [
         "expo-speech-recognition",
         {
-          "microphonePermission": "Super Note listens only while you hold the mic, to turn your voice into notes.",
-          "speechRecognitionPermission": "Super Note turns your voice into notes.",
+          "microphonePermission": "Easy Life listens only while the mic is on, to turn your voice into notes.",
+          "speechRecognitionPermission": "Easy Life turns your voice into notes.",
           "androidSpeechServicePackages": [
             "com.google.android.googlequicksearchbox",
             "com.google.android.as",

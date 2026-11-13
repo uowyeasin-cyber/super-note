@@ -77,7 +77,7 @@ class AlarmActivity : Activity() {
       text = s; textSize = size; setTextColor(color); gravity = Gravity.CENTER
       if (bold) typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
     }
-    root.addView(text("SUPER NOTE · REMINDER", 12f, Color.parseColor("#7C8799"), true))
+    root.addView(text("EASY LIFE · REMINDER", 12f, Color.parseColor("#7C8799"), true))
     root.addView(text(DateFormat.getTimeInstance(DateFormat.SHORT).format(Date()), 56f, Color.WHITE, true).apply { setPadding(0, dp(24), 0, dp(8)) })
     root.addView(text(title, 26f, Color.parseColor("#EEF1F6"), true).apply { setPadding(0, dp(16), 0, dp(8)) })
     if (body.isNotBlank()) root.addView(text(body, 16f, Color.parseColor("#B3BCCB")))
