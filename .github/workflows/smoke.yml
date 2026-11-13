@@ -1,0 +1,90 @@
+name: Emulator smoke test
+
+# Builds the release APK for x86_64, installs it on an Android emulator,
+# opens the app and records logcat and screenshots, so a crash on launch
+# is caught before a build reaches anyone's phone.
+
+on:
+  pull_request:
+    paths: ['app/**', '.github/workflows/smoke.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Install
+        run: npm ci
+
+      - name: Generate native project
+        run: npx expo prebuild --platform android --no-install
+        env:
+          CI: 1
+          EXPO_OFFLINE: 1
+
+      - name: Build release APK (x86_64 for the emulator)
+        working-directory: app/android
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=x86_64
+
+      - name: Enable KVM
+        working-directory: .
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          working-directory: app
+          script: bash ../.github/smoke/run.sh
+
+      - name: Publish screenshots and log
+        if: always()
+        working-directory: .
+        run: |
+          mkdir -p shots && cp -r app/smoke-out/* shots/ 2>/dev/null || true
+          ls -la shots || true
+          cd shots
+          git init -q && git checkout -q -b ci-shots
+          git config user.name ci && git config user.email ci@users.noreply.github.com
+          git add -A && git commit -qm "smoke ${{ github.run_number }}" || exit 0
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-shots
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-out
+          path: app/smoke-out
