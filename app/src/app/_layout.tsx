@@ -11,15 +11,16 @@ import { ToastHost } from '../components/ui';
 getDb();
 
 function Shell() {
-  const { c, bump } = useApp();
+  const { c, bump, checkPlan } = useApp();
   useEffect(() => {
     try { syncEvents(); rearmAll(); } catch {}
     bump();
+    checkPlan().catch(() => {});
     const sub = AppState.addEventListener('change', (st) => {
       if (st === 'active') { try { if (syncEvents() > 0) bump(); else bump(); } catch {} }
     });
     return () => sub.remove();
-  }, [bump]);
+  }, [bump, checkPlan]);
   return (
     <View style={{ flex: 1, backgroundColor: c.bg }}>
       <StatusBar style={c.dark ? 'light' : 'dark'} />
@@ -28,6 +29,7 @@ function Shell() {
         <Stack.Screen name="capture" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         <Stack.Screen name="note/[id]" />
         <Stack.Screen name="settings" />
+        <Stack.Screen name="upgrade" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
       </Stack>
       <ToastHost />
     </View>

@@ -10,8 +10,10 @@ import { testKey } from '../lib/ai';
 import type { Level } from '../lib/parse';
 import { Icon, type IconName } from '../components/Icon';
 import { Btn, Chip, IconBtn, Press, Section, T, toast } from '../components/ui';
+import { needPro, planLabel, ProTag } from '../components/PlanBadge';
 
 const PORTFOLIO = 'https://yeasinarafatbd.vercel.app/';
+const SITE = 'https://yeasinarafatbd.vercel.app/easy-life/';
 
 function Group({ children }: { children: React.ReactNode }) {
   const { c } = useApp();
@@ -38,7 +40,8 @@ function Row({ icon, title, hint, right, onPress, last }: { icon?: IconName; tit
 }
 
 export default function Settings() {
-  const { c, t, s, set } = useApp();
+  const app = useApp();
+  const { c, t, s, set, pro, plan } = app;
   const insets = useSafeAreaInsets();
   const [st, setSt] = useState<EngineStatus>(engineStatus());
   const [key, setKey] = useState(s.aiKey);
@@ -63,6 +66,16 @@ export default function Settings() {
         <T kind="h2">{t.settings}</T>
       </View>
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 60 }}>
+        <Press onPress={() => router.push('/upgrade')} style={{ marginTop: 18, borderRadius: 20, padding: 18, backgroundColor: c.accent, flexDirection: 'row', alignItems: 'center', gap: 14 }}>
+          <View style={{ width: 44, height: 44, borderRadius: 14, backgroundColor: '#ffffff33', alignItems: 'center', justifyContent: 'center' }}>
+            <Icon name="sparkle" size={22} color={c.onAccent} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <T kind="h3" color={c.onAccent}>{planLabel(app)}</T>
+            <T kind="small" color={c.onAccent} style={{ opacity: 0.85, marginTop: 2 }}>{pro && plan.status === 'pro' ? t.proActive : t.upgradeSub}</T>
+          </View>
+          <Icon name="right" size={18} color={c.onAccent} />
+        </Press>
 
         <Section title={t.language}>
           <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -91,11 +104,13 @@ export default function Settings() {
 
           <T kind="small" style={{ marginTop: 16, marginBottom: 8 }}>{t.defaultLevel}</T>
           <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
-            {levels.map((l) => <Chip key={l} label={t[l]} icon={l === 'critical' ? 'phone' : l === 'urgent' ? 'alarm' : 'bell'} active={s.defaultLevel === l} onPress={() => set({ defaultLevel: l })} />)}
+            {levels.map((l) => <Chip key={l} label={t[l] + (l === 'critical' && !pro ? ' · PRO' : '')} icon={l === 'critical' ? 'phone' : l === 'urgent' ? 'alarm' : 'bell'} active={s.defaultLevel === l} onPress={() => { if (l === 'critical' && needPro(app, toast, t.proFeature)) return; set({ defaultLevel: l }); }} />)}
           </View>
           <View style={{ marginTop: 12 }}>
             <Group>
-              <Row icon="alarm" title={t.escalate} hint={t.escalateHint} last right={<Switch value={s.escalate} onValueChange={(v) => set({ escalate: v })} trackColor={{ true: c.accent, false: c.line }} thumbColor="#fff" />} />
+              <Row icon="alarm" title={t.escalate} hint={t.escalateHint} last right={pro
+                ? <Switch value={s.escalate} onValueChange={(v) => set({ escalate: v })} trackColor={{ true: c.accent, false: c.line }} thumbColor="#fff" />
+                : <Press onPress={() => needPro(app, toast, t.proFeature)}><ProTag /></Press>} />
             </Group>
           </View>
           {engineAvailable ? (
@@ -139,7 +154,7 @@ export default function Settings() {
             }} />
             <Btn style={{ flex: 1 }} kind="ghost" label={t.getKey} onPress={() => Linking.openURL('https://aistudio.google.com/apikey')} />
           </View>
-          <T kind="small" style={{ marginTop: 8 }}>{s.aiKey ? '● ' + t.aiOn : '○ ' + t.aiOff}</T>
+          <T kind="small" style={{ marginTop: 8 }}>{s.aiKey || pro ? '● ' + t.aiOn + (pro && !s.aiKey ? ' · Pro' : '') : '○ ' + t.aiOff}</T>
         </Section>
 
         <Section title={t.privacy}>
@@ -149,7 +164,7 @@ export default function Settings() {
         <Section title={t.about}>
           <Group>
             <Row icon="grid" title={t.moreApps} hint="Amalnama · Averroes Code · Storefront Pro" onPress={() => Linking.openURL(PORTFOLIO)} right={<Icon name="right" size={18} color={c.ink3} />} />
-            <Row icon="sparkle" title={`Super Note ${version}`} hint={t.beta} last onPress={() => Linking.openURL(PORTFOLIO + 'super-note/')} right={<Icon name="right" size={18} color={c.ink3} />} />
+            <Row icon="sparkle" title={`${t.appName} ${version}`} hint={t.beta} last onPress={() => Linking.openURL(SITE)} right={<Icon name="right" size={18} color={c.ink3} />} />
           </Group>
         </Section>
       </ScrollView>

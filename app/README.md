@@ -1,4 +1,4 @@
-# Super Note — Android app
+# Easy Life — Android app
 
 Expo SDK 58 (React Native 0.88), Expo Router, SQLite, on-device speech, and a native reminder engine.
 
@@ -25,6 +25,6 @@ npx expo run:android
 ## Build
 
 Every push to `main` that touches `app/` runs `.github/workflows/android.yml`: tests, `expo prebuild`, `gradlew assembleRelease`, then publishes the APK as a GitHub Release. The newest beta is always at
-`https://github.com/uowyeasin-cyber/super-note/releases/latest/download/super-note-beta.apk`.
+`https://github.com/uowyeasin-cyber/super-note/releases/latest/download/easy-life-beta.apk`.
 
 Beta builds are signed with the debug key. A Play Store release needs a private upload key added as repository secrets.

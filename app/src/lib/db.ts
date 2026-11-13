@@ -16,7 +16,7 @@ let db: SQLite.SQLiteDatabase | null = null;
 
 export function getDb(): SQLite.SQLiteDatabase {
   if (db) return db;
-  db = SQLite.openDatabaseSync('supernote.db');
+  db = SQLite.openDatabaseSync('easylife.db');
   db.execSync(`
     PRAGMA journal_mode = WAL;
     CREATE TABLE IF NOT EXISTS notes (

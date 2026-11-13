@@ -6,6 +6,7 @@ import { STRINGS, type Lang, type Strings } from './i18n';
 import { palette, type AccentName, type Mode, type Palette } from './theme';
 import type { Level } from './parse';
 import { DEFAULT_MODEL } from './ai';
+import { isPro, loadPlan, refreshPlan, type PlanState } from './plan';
 
 export type Settings = {
   lang: Lang;
@@ -41,6 +42,9 @@ type Ctx = {
   c: Palette;
   version: number;
   bump: () => void;
+  plan: PlanState;
+  pro: boolean;
+  checkPlan: (key?: string) => Promise<PlanState>;
 };
 
 const AppCtx = createContext<Ctx | null>(null);
@@ -57,8 +61,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
   const bump = useCallback(() => setVersion((v) => v + 1), []);
+  const [plan, setPlan] = useState<PlanState>(loadPlan);
+  const checkPlan = useCallback(async (key?: string) => {
+    const next = await refreshPlan(loadPlan(), key);
+    setPlan(next);
+    return next;
+  }, []);
   const dark = s.mode === 'dark' || (s.mode === 'auto' && scheme === 'dark');
-  const value = useMemo<Ctx>(() => ({ s, set, t: STRINGS[s.lang], c: palette(dark, s.accent), version, bump }), [s, set, dark, version, bump]);
+  const pro = isPro(plan);
+  const value = useMemo<Ctx>(() => ({ s, set, t: STRINGS[s.lang], c: palette(dark, s.accent), version, bump, plan, pro, checkPlan }),
+    [s, set, dark, version, bump, plan, pro, checkPlan]);
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>;
 }
 
