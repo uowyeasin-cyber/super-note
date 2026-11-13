@@ -9,6 +9,10 @@ APK=android/app/build/outputs/apk/release/app-release.apk
 adb logcat -c || true
 adb install -r -g "$APK" > "$OUT/install.txt" 2>&1
 cat "$OUT/install.txt"
+if [ "${VARIANT:-plain}" = "bn-dark" ]; then
+  adb shell cmd uimode night yes || true
+  adb shell cmd locale set-app-locales "$PKG" --locales bn-BD || true
+fi
 
 shot() { adb exec-out screencap -p > "$OUT/$1.png" 2>/dev/null || true; }
 alive() { if adb shell pidof "$PKG" > /dev/null 2>&1; then echo "ALIVE"; else echo "DEAD"; fi; }

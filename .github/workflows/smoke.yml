@@ -52,6 +52,35 @@ jobs:
         working-directory: app/android
         run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=x86_64
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smoke-apk
+          path: app/android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 3
+
+  emulator:
+    needs: smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: api34-bn-dark, api: 34, variant: bn-dark }
+          - { name: api35, api: 35, variant: plain }
+          - { name: api36, api: 36, variant: plain }
+          - { name: api29, api: 29, variant: plain }
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: smoke-apk
+          path: app/android/app/build/outputs/apk/release
+
       - name: Enable KVM
         working-directory: .
         run: |
@@ -62,14 +91,14 @@ jobs:
       - name: Run on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: ${{ matrix.api }}
           target: google_apis
           arch: x86_64
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           working-directory: app
-          script: bash ../.github/smoke/run.sh
+          script: VARIANT=${{ matrix.variant }} bash ../.github/smoke/run.sh
 
       - name: Publish screenshots and log
         if: always()
@@ -78,13 +107,13 @@ jobs:
           mkdir -p shots && cp -r app/smoke-out/* shots/ 2>/dev/null || true
           ls -la shots || true
           cd shots
-          git init -q && git checkout -q -b ci-shots
+          git init -q && git checkout -q -b ci-shots-${{ matrix.name }}
           git config user.name ci && git config user.email ci@users.noreply.github.com
           git add -A && git commit -qm "smoke ${{ github.run_number }}" || exit 0
-          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-shots
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-shots-${{ matrix.name }}
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: smoke-out
+          name: smoke-out-${{ matrix.name }}
           path: app/smoke-out
