@@ -1,0 +1,60 @@
+11-13 19:27:31.818  2177  2177 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:27:31.821  2177  2177 I AndroidRuntime: Using default boot image
+11-13 19:27:31.821  2177  2177 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:27:31.920  2177  2177 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+11-13 19:27:31.966  2177  2177 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package android.xr cannot be found on the device
+11-13 19:27:32.133  2177  2177 I AndroidRuntime: VM exiting with result code 0.
+11-13 19:27:32.357  2210  2210 W SoLoader: Initializing SoLoader: 0
+11-13 19:27:32.357  2210  2210 W SoLoader: Recording new base apk path: /data/app/~~qL08EVuOZe6F8sKXJMjk5w==/com.averroesai.easylife-lC7jf3elWAjO5-ywCdMjjA==/base.apk
+11-13 19:27:32.357  2210  2210 W SoLoader: Previously recorded 0 base apk paths.
+11-13 19:27:32.357  2210  2210 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+11-13 19:27:32.359  2210  2210 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+11-13 19:27:32.359  2210  2210 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/~~qL08EVuOZe6F8sKXJMjk5w==/com.averroesai.easylife-lC7jf3elWAjO5-ywCdMjjA==/base.apk!/lib/x86_64]]
+11-13 19:27:32.363  2210  2210 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/~~qL08EVuOZe6F8sKXJMjk5w==/com.averroesai.easylife-lC7jf3elWAjO5-ywCdMjjA==/lib/x86_64 flags = 0]]
+11-13 19:27:32.363  2210  2210 I SoLoader: init finish: 4 SO sources prepared
+11-13 19:27:32.363  2210  2210 W SoLoader: SoLoader initialized: 8
+11-13 19:27:32.657  2210  2256 I ExpoModulesCore: ✅ AppContext was initialized
+11-13 19:27:32.754  2210  2257 I ExpoModulesCore: ✅ JSI interop was installed
+11-13 19:27:32.771  2210  2257 W ExpoModulesV2: du1 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:32.778  2210  2257 W ExpoModulesV2: kz0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:32.778  2210  2257 W ExpoModulesV2: lu0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:32.779  2210  2257 I ExpoModulesCore: ✅ Expo Modules v2 installed 3 module(s) on globalThis.expo.modules
+11-13 19:27:32.807  2210  2257 I ExpoModulesCore: ✅ Constants were exported
+11-13 19:27:33.083  2210  2257 I ReactNativeJS: Running "main"
+11-13 19:27:33.086  2210  2257 W ExpoModulesV2: am2 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:37.207   643  2638 I HealthConnectExportImport: Delete local export files started.
+11-13 19:27:37.207   643  2638 I HealthConnectExportImport: Delete local export files completed.
+11-13 19:27:37.918  1850  1850 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package com.android.settingslib.widget.theme.flags cannot be found on the device
+11-13 19:27:51.196  1277  1291 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package com.android.settingslib.widget.theme.flags cannot be found on the device
+11-13 19:28:04.455  1341  3555 I TrustedTime: SntpTimeSignal: SntpTimeSignalImpl{serverSocketAddress=time.google.com/216.239.35.12:123, response=NtpMessage{header=NtpHeader{leapIndicator=0, versionNumber=3, mode=4, stratum=1, pollInterval=Duration{seconds=1, nanosOfSecond=0}, precisionExponent=-20, rootDelay=Duration{seconds=0, nanosOfSecond=0}, rootDispersion=Duration{seconds=0, nanosOfSecond=91552}, referenceIdentifier='GOOG', referenceTimestamp=eea1e344.dcaed5ea, originateTimestamp=bb5c89d2.7ae5ac9b, receiveTimestamp=eea1e344.dcaed5eb, transmitTimestamp=eea1e344.dcaed5ed}}, resultTicks=Ticks{originalTicker=PlatformTicker, value=77028778034}, resultInstant=Instant{seconds=1794598084, nanosOfSecond=872151411}, clientOffset=Duration{seconds=0, nanosOfSecond=420934147}, totalTransactionDuration=Duration{seconds=0, nanosOfSecond=20217264}, roundTripDuration=Duration{seconds=0, nanosOfSecond=20217264}, responseInstant=Instant{seconds=1794598084, nanosOfSecond=451217264}} [CONTEXT service_id=326 ]
+11-13 19:28:05.612  2210  2257 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.AudioSourceOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:28:05.613  2210  2257 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.RecordingOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:28:05.613  2210  2257 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.VolumeChangeEventOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:28:05.614  2210  2210 D ExpoSpeechService: Start recognition.
+11-13 19:28:05.651  2210  2210 D ExpoSpeechService: androidIntentOptions: {EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS=2500.0, EXTRA_LANGUAGE_MODEL=free_form}
+11-13 19:28:05.652  2210  2210 D ExpoSpeechService: Resolved key EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS -> android.speech.extras.SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS with value: 2500.0 (java.lang.Double)
+11-13 19:28:05.652  2210  2210 D ExpoSpeechService: Resolved key EXTRA_LANGUAGE_MODEL -> android.speech.extra.LANGUAGE_MODEL with value: free_form (java.lang.String)
+11-13 19:28:33.460  4394  4394 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:28:33.504  4394  4394 I AndroidRuntime: Using default boot image
+11-13 19:28:33.504  4394  4394 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:28:34.033  4394  4394 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+11-13 19:28:34.120  4394  4394 E FeatureFlagsImplExport: android.os.flagging.AconfigStorageReadException: ERROR_PACKAGE_NOT_FOUND: package android.xr cannot be found on the device
+11-13 19:28:34.477  4394  4394 I AndroidRuntime: VM exiting with result code 0.
+11-13 19:28:34.698  4414  4414 W SoLoader: Initializing SoLoader: 0
+11-13 19:28:34.698  4414  4414 W SoLoader: Recording new base apk path: /data/app/~~qL08EVuOZe6F8sKXJMjk5w==/com.averroesai.easylife-lC7jf3elWAjO5-ywCdMjjA==/base.apk
+11-13 19:28:34.698  4414  4414 W SoLoader: Previously recorded 0 base apk paths.
+11-13 19:28:34.698  4414  4414 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+11-13 19:28:34.702  4414  4414 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+11-13 19:28:34.702  4414  4414 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/~~qL08EVuOZe6F8sKXJMjk5w==/com.averroesai.easylife-lC7jf3elWAjO5-ywCdMjjA==/base.apk!/lib/x86_64]]
+11-13 19:28:34.705  4414  4414 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/~~qL08EVuOZe6F8sKXJMjk5w==/com.averroesai.easylife-lC7jf3elWAjO5-ywCdMjjA==/lib/x86_64 flags = 0]]
+11-13 19:28:34.705  4414  4414 I SoLoader: init finish: 4 SO sources prepared
+11-13 19:28:34.705  4414  4414 W SoLoader: SoLoader initialized: 8
+11-13 19:28:35.157  4414  4435 I ExpoModulesCore: ✅ AppContext was initialized
+11-13 19:28:35.275  4414  4436 I ExpoModulesCore: ✅ JSI interop was installed
+11-13 19:28:35.286  4414  4436 W ExpoModulesV2: du1 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:35.291  4414  4436 W ExpoModulesV2: kz0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:35.291  4414  4436 W ExpoModulesV2: lu0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:35.292  4414  4436 I ExpoModulesCore: ✅ Expo Modules v2 installed 3 module(s) on globalThis.expo.modules
+11-13 19:28:35.299  4414  4436 I ExpoModulesCore: ✅ Constants were exported
+11-13 19:28:35.539  4414  4436 I ReactNativeJS: Running "main"
+11-13 19:28:35.542  4414  4436 W ExpoModulesV2: am2 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
