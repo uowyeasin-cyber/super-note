@@ -18,6 +18,8 @@ declare class SuperAlarmNative extends NativeModule<{}> {
   isIgnoringBatteryOptimizations(): boolean;
   openBatterySettings(): void;
   testRing(level: AlarmLevel): boolean;
+  takeCrash?(): string;
+  saveCrash?(text: string): boolean;
 }
 
 /** Null on platforms without the native engine (web preview, Expo Go). */
