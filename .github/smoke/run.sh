@@ -35,6 +35,12 @@ sleep 12; shot 04-relaunch; echo "relaunch: $(alive)" | tee -a "$OUT/status.txt"
 
 adb logcat -d > "$OUT/logcat-full.txt" 2>&1
 grep -E "AndroidRuntime|FATAL|ReactNativeJS|ReactNative|Expo|SuperAlarm|SoLoader|libc .*Fatal|DEBUG  :" "$OUT/logcat-full.txt" | tail -n 400 > "$OUT/logcat-app.txt"
+# The app must never start the system WebView (that is what crashed it on launch).
+if grep -E "WebViewFactory: Loading|Fatal signal" "$OUT/logcat-full.txt" | grep -q .; then
+  echo "WEBVIEW-OR-NATIVE-CRASH: yes" | tee -a "$OUT/status.txt"
+else
+  echo "WEBVIEW-OR-NATIVE-CRASH: no" | tee -a "$OUT/status.txt"
+fi
 echo "===== STATUS ====="; cat "$OUT/status.txt"
 echo "===== APP LOG ====="; cat "$OUT/logcat-app.txt"
 exit 0
