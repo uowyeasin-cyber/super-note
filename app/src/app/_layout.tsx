@@ -7,8 +7,11 @@ import { AppProvider, useApp } from '../lib/store';
 import { getDb } from '../lib/db';
 import { rearmAll, syncEvents } from '../lib/alarms';
 import { ToastHost } from '../components/ui';
+import { AppGuard } from '../components/AppGuard';
+import { installCrashHandler, recordCrash } from '../lib/crash';
 
-getDb();
+installCrashHandler();
+try { getDb(); } catch (e) { recordCrash(e, 'db'); }
 
 function Shell() {
   const { c, bump, checkPlan } = useApp();
@@ -38,10 +41,12 @@ function Shell() {
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <AppProvider>
-        <Shell />
-      </AppProvider>
-    </SafeAreaProvider>
+    <AppGuard>
+      <SafeAreaProvider>
+        <AppProvider>
+          <Shell />
+        </AppProvider>
+      </SafeAreaProvider>
+    </AppGuard>
   );
 }

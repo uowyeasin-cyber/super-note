@@ -26,7 +26,14 @@ class SuperAlarmModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("SuperAlarm")
 
-    OnCreate { runCatching { AlarmScheduler.ensureChannels(ctx) } }
+    OnCreate {
+      runCatching { CrashLog.install(ctx) }
+      runCatching { AlarmScheduler.ensureChannels(ctx) }
+    }
+
+    // Report of the last crash (native or JS), or "" if none. Cleared after reading.
+    Function("takeCrash") { CrashLog.take(ctx) }
+    Function("saveCrash") { text: String -> CrashLog.save(ctx, text); true }
 
     Function("schedule") { id: String, timeMs: Double, title: String, body: String, level: String, repeat: String, escalate: Boolean ->
       val t = timeMs.toLong()

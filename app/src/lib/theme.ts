@@ -1,8 +1,9 @@
 // Calm light + dark palettes with one accent, matching the approved design.
 export type Mode = 'auto' | 'light' | 'dark';
-export type AccentName = 'blue' | 'emerald' | 'violet' | 'amber' | 'rose' | 'graphite';
+export type AccentName = 'indigo' | 'blue' | 'emerald' | 'violet' | 'amber' | 'rose' | 'graphite';
 
 export const ACCENTS: Record<AccentName, [string, string]> = {
+  indigo: ['#4b3be0', '#9389ff'],
   blue: ['#2563eb', '#6b9bff'],
   emerald: ['#059669', '#34d399'],
   violet: ['#7c3aed', '#a78bfa'],
