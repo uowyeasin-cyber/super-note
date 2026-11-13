@@ -1,0 +1,133 @@
+11-13 19:27:08.716  2716  2716 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:27:08.733  2716  2716 I AndroidRuntime: Using default boot image
+11-13 19:27:08.733  2716  2716 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:27:09.845  2716  2716 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-13 19:27:10.038  2716  2716 D AndroidRuntime: Shutting down VM
+11-13 19:27:26.381  2319  4174 I ExposureNotification: ExposureNotificationInitIntentOperation.onInitRuntimeState [CONTEXT service_id=236 ]
+11-13 19:27:26.404  2055  2055 I ExposureNotification: ExposureNotificationInternalService.onCreate, com.google.android.gms.nearby.exposurenotification.service.ExposureNotificationInternalChimeraService@b66f292 [CONTEXT service_id=236 ]
+11-13 19:27:26.460  2055  2055 I ExposureNotification: ExposureServiceInternalService.onStartCommand, Intent { act=com.google.android.gms.nearby.exposurenotification.service.ACTION_CLIENT_CHANGE cmp=com.google.android.gms/.nearby.exposurenotification.service.ExposureNotificationInternalService } [CONTEXT service_id=236 ]
+11-13 19:27:26.472  2055  2055 I ExposureNotification: Utils#isSupported enabled=true, isDeviceSupported=true, isBluetoothSupported=false, BluetoothAdapter.isMultipleAdvertisementSupported=false [CONTEXT service_id=236 ]
+11-13 19:27:26.473  2055  2055 I ExposureNotification: Exposure notifications disabled. [CONTEXT service_id=236 ]
+11-13 19:27:26.473  2055  2055 I ExposureNotification: ExposureServiceInternalService.stopTracing [CONTEXT service_id=236 ]
+11-13 19:27:26.497  2055  2055 I ExposureNotification: AlarmManagerImpl.opportunisticSchedule called, delay=1800000ms [CONTEXT service_id=236 ]
+11-13 19:27:26.507  2055  2055 I ExposureNotification: User turn off scanning. [CONTEXT service_id=236 ]
+11-13 19:27:26.508  2055  2055 I ExposureNotification: Not scanning! [CONTEXT service_id=236 ]
+11-13 19:27:26.508  2055  2055 W ExposureNotification: stopTracing called but Scanner failed to stop! [CONTEXT service_id=236 ]
+11-13 19:27:26.513  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do open LevelDb contact-tracing-self-tracing-key-db [CONTEXT service_id=236 ]
+11-13 19:27:26.513  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:contact-tracing-self-tracing-key-db instance ajdk@dfbe378 created [CONTEXT service_id=236 ]
+11-13 19:27:26.516  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:contact-tracing-self-tracing-key-db instance ajdk@dfbe378 closed [CONTEXT service_id=236 ]
+11-13 19:27:26.516  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do close LevelDb contact-tracing-self-tracing-key-db [CONTEXT service_id=236 ]
+11-13 19:27:26.527  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do open LevelDb en-matching-request-db [CONTEXT service_id=236 ]
+11-13 19:27:26.527  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:en-matching-request-db instance ajdk@1218a8d created [CONTEXT service_id=236 ]
+11-13 19:27:26.527  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:en-matching-request-db instance ajdk@1218a8d closed [CONTEXT service_id=236 ]
+11-13 19:27:26.528  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do close LevelDb en-matching-request-db [CONTEXT service_id=236 ]
+11-13 19:27:26.535  2055  2055 I ExposureNotification: ExposureServiceInternalService.onDestroy, com.google.android.gms.nearby.exposurenotification.service.ExposureNotificationInternalChimeraService@b66f292 [CONTEXT service_id=236 ]
+11-13 19:27:36.278  2319  5402 I ExposureNotification: ExposureNotificationInitIntentOperation.onInitRuntimeState [CONTEXT service_id=236 ]
+11-13 19:27:36.289  2055  2055 I ExposureNotification: ExposureNotificationInternalService.onCreate, com.google.android.gms.nearby.exposurenotification.service.ExposureNotificationInternalChimeraService@467dd5f [CONTEXT service_id=236 ]
+11-13 19:27:36.294  2055  2055 I ExposureNotification: ExposureServiceInternalService.onStartCommand, Intent { act=com.google.android.gms.nearby.exposurenotification.service.ACTION_CLIENT_CHANGE cmp=com.google.android.gms/.nearby.exposurenotification.service.ExposureNotificationInternalService } [CONTEXT service_id=236 ]
+11-13 19:27:36.338  2055  2055 I ExposureNotification: Utils#isSupported enabled=true, isDeviceSupported=true, isBluetoothSupported=false, BluetoothAdapter.isMultipleAdvertisementSupported=false [CONTEXT service_id=236 ]
+11-13 19:27:36.340  2055  2055 I ExposureNotification: Exposure notifications disabled. [CONTEXT service_id=236 ]
+11-13 19:27:36.340  2055  2055 I ExposureNotification: ExposureServiceInternalService.stopTracing [CONTEXT service_id=236 ]
+11-13 19:27:36.365  2055  2055 I ExposureNotification: AlarmManagerImpl.opportunisticSchedule called, delay=1800000ms [CONTEXT service_id=236 ]
+11-13 19:27:36.367  2055  2055 I ExposureNotification: User turn off scanning. [CONTEXT service_id=236 ]
+11-13 19:27:36.367  2055  2055 I ExposureNotification: Not scanning! [CONTEXT service_id=236 ]
+11-13 19:27:36.367  2055  2055 W ExposureNotification: stopTracing called but Scanner failed to stop! [CONTEXT service_id=236 ]
+11-13 19:27:36.372  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do open LevelDb contact-tracing-self-tracing-key-db [CONTEXT service_id=236 ]
+11-13 19:27:36.372  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:contact-tracing-self-tracing-key-db instance ajdk@4cef662 created [CONTEXT service_id=236 ]
+11-13 19:27:36.381  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:contact-tracing-self-tracing-key-db instance ajdk@4cef662 closed [CONTEXT service_id=236 ]
+11-13 19:27:36.381  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do close LevelDb contact-tracing-self-tracing-key-db [CONTEXT service_id=236 ]
+11-13 19:27:36.387  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do open LevelDb en-matching-request-db [CONTEXT service_id=236 ]
+11-13 19:27:36.387  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:en-matching-request-db instance ajdk@8225329 created [CONTEXT service_id=236 ]
+11-13 19:27:36.388  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:en-matching-request-db instance ajdk@8225329 closed [CONTEXT service_id=236 ]
+11-13 19:27:36.388  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do close LevelDb en-matching-request-db [CONTEXT service_id=236 ]
+11-13 19:27:36.421  2055  2055 I ExposureNotification: ExposureServiceInternalService.onDestroy, com.google.android.gms.nearby.exposurenotification.service.ExposureNotificationInternalChimeraService@467dd5f [CONTEXT service_id=236 ]
+11-13 19:27:39.169  5529  5529 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:27:39.177  5529  5529 I AndroidRuntime: Using default boot image
+11-13 19:27:39.177  5529  5529 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:27:39.533  5529  5529 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+11-13 19:27:39.878  5529  5529 I AndroidRuntime: VM exiting with result code 0.
+11-13 19:27:40.119  5572  5572 W SoLoader: Initializing SoLoader: 0
+11-13 19:27:40.119  5572  5572 W SoLoader: Recording new base apk path: /data/app/com.averroesai.easylife-gcU_ddP76jxhxcfNip8_jg==/base.apk
+11-13 19:27:40.119  5572  5572 W SoLoader: Previously recorded 0 base apk paths.
+11-13 19:27:40.120  5572  5572 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+11-13 19:27:40.120  5572  5572 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+11-13 19:27:40.120  5572  5572 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/com.averroesai.easylife-gcU_ddP76jxhxcfNip8_jg==/base.apk!/lib/x86_64]]
+11-13 19:27:40.124  5572  5572 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/com.averroesai.easylife-gcU_ddP76jxhxcfNip8_jg==/lib/x86_64 flags = 0]]
+11-13 19:27:40.124  5572  5572 I SoLoader: init finish: 4 SO sources prepared
+11-13 19:27:40.133  5572  5572 W SoLoader: SoLoader initialized: 8
+11-13 19:27:40.739  5572  5604 I ExpoModulesCore: ✅ AppContext was initialized
+11-13 19:27:40.894  5572  5606 I ExpoModulesCore: ✅ JSI interop was installed
+11-13 19:27:40.899  5572  5606 W ExpoModulesV2: du1 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:40.899  5572  5606 W ExpoModulesV2: kz0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:40.899  5572  5606 W ExpoModulesV2: lu0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:40.909  5572  5606 I ExpoModulesCore: ✅ Expo Modules v2 installed 3 module(s) on globalThis.expo.modules
+11-13 19:27:40.925  5572  5606 I ExpoModulesCore: ✅ Constants were exported
+11-13 19:27:41.633  5572  5606 I ReactNativeJS: Running "main"
+11-13 19:27:41.637  5572  5606 W ExpoModulesV2: am2 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:27:54.361  2319  6008 I ExposureNotification: Phenotype config updated, isEnabled: true [CONTEXT service_id=236 ]
+11-13 19:27:54.414  2055  2055 I ExposureNotification: ExposureNotificationInternalService.onCreate, com.google.android.gms.nearby.exposurenotification.service.ExposureNotificationInternalChimeraService@c40ff83 [CONTEXT service_id=236 ]
+11-13 19:27:54.415  2055  2055 I ExposureNotification: ExposureServiceInternalService.onStartCommand, Intent { act=com.google.android.gms.nearby.exposurenotification.service.ACTION_CLIENT_CHANGE cmp=com.google.android.gms/.nearby.exposurenotification.service.ExposureNotificationInternalService } [CONTEXT service_id=236 ]
+11-13 19:27:54.416  2055  2055 I ExposureNotification: Utils#isSupported enabled=true, isDeviceSupported=true, isBluetoothSupported=false, BluetoothAdapter.isMultipleAdvertisementSupported=false [CONTEXT service_id=236 ]
+11-13 19:27:54.419  2055  2055 I ExposureNotification: Exposure notifications disabled. [CONTEXT service_id=236 ]
+11-13 19:27:54.419  2055  2055 I ExposureNotification: ExposureServiceInternalService.stopTracing [CONTEXT service_id=236 ]
+11-13 19:27:54.419  2055  2055 I ExposureNotification: AlarmManagerImpl.opportunisticSchedule called, delay=1800000ms [CONTEXT service_id=236 ]
+11-13 19:27:54.420  2055  2055 I ExposureNotification: User turn off scanning. [CONTEXT service_id=236 ]
+11-13 19:27:54.420  2055  2055 I ExposureNotification: Not scanning! [CONTEXT service_id=236 ]
+11-13 19:27:54.420  2055  2055 W ExposureNotification: stopTracing called but Scanner failed to stop! [CONTEXT service_id=236 ]
+11-13 19:27:54.425  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do open LevelDb contact-tracing-self-tracing-key-db [CONTEXT service_id=236 ]
+11-13 19:27:54.425  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:contact-tracing-self-tracing-key-db instance ajdk@5e8d98a created [CONTEXT service_id=236 ]
+11-13 19:27:54.425  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper:contact-tracing-self-tracing-key-db instance ajdk@5e8d98a closed [CONTEXT service_id=236 ]
+11-13 19:27:54.425  2055  2055 I ExposureNotification: ThreadSafeLevelDbWrapper: do close LevelDb contact-tracing-self-tracing-key-db [CONTEXT service_id=236 ]
+11-13 19:27:54.485  2055  2055 I ExposureNotification: ExposureServiceInternalService.onDestroy, com.google.android.gms.nearby.exposurenotification.service.ExposureNotificationInternalChimeraService@c40ff83 [CONTEXT service_id=236 ]
+11-13 19:28:08.713  6094  6094 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:28:08.720  6094  6094 I AndroidRuntime: Using default boot image
+11-13 19:28:08.720  6094  6094 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:28:08.883  6094  6094 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-13 19:28:08.899  6094  6094 D AndroidRuntime: Shutting down VM
+11-13 19:28:11.204  5572  5606 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.AudioSourceOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:28:11.204  5572  5606 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.RecordingOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:28:11.204  5572  5606 W ExpoModulesCore: Introspectable data is missing for class expo.modules.speechrecognition.VolumeChangeEventOptions. Falling back to reflection-based conversion, which may have performance implications. To fix this, ensure that the Record class is properly annotated with expo.modules.kotlin.types.Introspectable and that the necessary metadata is available at runtime.
+11-13 19:28:11.267  5572  5572 D ExpoSpeechService: Start recognition.
+11-13 19:28:11.267  5572  5572 D ExpoSpeechService: Continuous transcription opted in (older platforms)
+11-13 19:28:11.267  5572  5572 D ExpoSpeechService: androidIntentOptions: {EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS=2500.0, EXTRA_LANGUAGE_MODEL=free_form}
+11-13 19:28:11.267  5572  5572 D ExpoSpeechService: Resolved key EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS -> android.speech.extras.SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS with value: 2500.0 (java.lang.Double)
+11-13 19:28:11.267  5572  5572 D ExpoSpeechService: Resolved key EXTRA_LANGUAGE_MODEL -> android.speech.extra.LANGUAGE_MODEL with value: free_form (java.lang.String)
+11-13 19:28:16.904  5572  5572 D ExpoSpeechService: onError() - speech-timeout: No speech input. - code: 6
+11-13 19:28:17.123  6230  6230 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:28:17.131  6230  6230 I AndroidRuntime: Using default boot image
+11-13 19:28:17.131  6230  6230 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:28:17.176  6230  6230 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-13 19:28:17.182  6230  6230 D AndroidRuntime: Shutting down VM
+11-13 19:28:25.395  6256  6256 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:28:25.397  6256  6256 I AndroidRuntime: Using default boot image
+11-13 19:28:25.397  6256  6256 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:28:25.442  6256  6256 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-13 19:28:25.451  6256  6256 D AndroidRuntime: Shutting down VM
+11-13 19:28:33.651  6391  6391 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:28:33.652  6391  6391 I AndroidRuntime: Using default boot image
+11-13 19:28:33.652  6391  6391 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:28:33.709  6391  6391 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+11-13 19:28:33.719  6391  6391 D AndroidRuntime: Shutting down VM
+11-13 19:28:37.837  6422  6422 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 19:28:37.838  6422  6422 I AndroidRuntime: Using default boot image
+11-13 19:28:37.838  6422  6422 I AndroidRuntime: Leaving lock profiling enabled
+11-13 19:28:37.881  6422  6422 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+11-13 19:28:37.934  6422  6422 I AndroidRuntime: VM exiting with result code 0.
+11-13 19:28:37.979  6434  6434 W SoLoader: Initializing SoLoader: 0
+11-13 19:28:37.979  6434  6434 W SoLoader: Recording new base apk path: /data/app/com.averroesai.easylife-gcU_ddP76jxhxcfNip8_jg==/base.apk
+11-13 19:28:37.979  6434  6434 W SoLoader: Previously recorded 0 base apk paths.
+11-13 19:28:37.980  6434  6434 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+11-13 19:28:37.980  6434  6434 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+11-13 19:28:37.980  6434  6434 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/com.averroesai.easylife-gcU_ddP76jxhxcfNip8_jg==/base.apk!/lib/x86_64]]
+11-13 19:28:37.982  6434  6434 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/com.averroesai.easylife-gcU_ddP76jxhxcfNip8_jg==/lib/x86_64 flags = 0]]
+11-13 19:28:37.982  6434  6434 I SoLoader: init finish: 4 SO sources prepared
+11-13 19:28:37.983  6434  6434 W SoLoader: SoLoader initialized: 8
+11-13 19:28:38.136  6434  6460 I ExpoModulesCore: ✅ AppContext was initialized
+11-13 19:28:38.173  6434  6461 I ExpoModulesCore: ✅ JSI interop was installed
+11-13 19:28:38.178  6434  6461 W ExpoModulesV2: du1 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:38.178  6434  6461 W ExpoModulesV2: kz0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:38.178  6434  6461 W ExpoModulesV2: lu0 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-13 19:28:38.182  6434  6461 I ExpoModulesCore: ✅ Expo Modules v2 installed 3 module(s) on globalThis.expo.modules
+11-13 19:28:38.186  6434  6461 I ExpoModulesCore: ✅ Constants were exported
+11-13 19:28:38.583  6434  6461 I ReactNativeJS: Running "main"
+11-13 19:28:38.586  6434  6461 W ExpoModulesV2: am2 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
