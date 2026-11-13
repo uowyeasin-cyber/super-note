@@ -1,0 +1,7 @@
+after launch: ALIVE
+after 22s: ALIVE
+library: ALIVE
+capture: ALIVE
+settings: ALIVE
+upgrade: ALIVE
+relaunch: ALIVE
