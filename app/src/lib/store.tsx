@@ -21,7 +21,7 @@ export type Settings = {
 };
 
 const DEFAULTS: Settings = {
-  lang: 'en', speech: 'en-US', mode: 'auto', accent: 'blue', defaultLevel: 'normal',
+  lang: 'en', speech: 'en-US', mode: 'auto', accent: 'indigo', defaultLevel: 'normal',
   escalate: true, aiKey: '', aiModel: DEFAULT_MODEL, onboarded: false,
 };
 

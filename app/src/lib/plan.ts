@@ -1,5 +1,6 @@
 // Free plan + Pro. Every phone gets a Pro trial; after it, the app stays free with limits.
 // The owner controls trials, keys, renewals and blocks from the licence page on the website.
+import { request } from './net';
 import * as Application from 'expo-application';
 import { getDb, kvGet, kvSet } from './db';
 
@@ -65,8 +66,8 @@ export async function refreshPlan(p: PlanState, key = p.key): Promise<PlanState>
   const timer = setTimeout(() => ctrl.abort(), 8000);
   try {
     const [check, info] = await Promise.all([
-      fetch(LICENSE_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key, host: deviceCode() }), signal: ctrl.signal }).then((r) => r.json()),
-      fetch(LICENSE_API + '&a=info', { signal: ctrl.signal }).then((r) => r.json()).catch(() => null),
+      request(LICENSE_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key, host: deviceCode() }), signal: ctrl.signal }).then((r) => r.json()),
+      request(LICENSE_API + '&a=info', { signal: ctrl.signal }).then((r) => r.json()).catch(() => null),
     ]);
     const next: PlanState = { ...p, key, checkedAt: Date.now(), message: '' };
     if (info?.prices) next.prices = { ...p.prices, ...info.prices };
@@ -107,7 +108,7 @@ export async function proAiRead(text: string, p: PlanState): Promise<unknown | n
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 12000);
   try {
-    const r = await fetch(LICENSE_API + '&a=ai', {
+    const r = await request(LICENSE_API + '&a=ai', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
       body: JSON.stringify({ key: p.key, host: deviceCode(), text, now: iso, weekday: now.toLocaleDateString('en-US', { weekday: 'long' }) }),
     });

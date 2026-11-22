@@ -1,5 +1,6 @@
 // Optional AI: reads a note with Google Gemini when the user adds their own key.
 // Any failure falls back to the offline parser, so saving never depends on the network.
+import { request } from './net';
 import { AREAS, type Area } from './classify';
 import type { Level, Repeat } from './parse';
 
@@ -32,7 +33,7 @@ Note: ${JSON.stringify(text)}`;
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+    const res = await request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key.trim() },
       body: JSON.stringify({
