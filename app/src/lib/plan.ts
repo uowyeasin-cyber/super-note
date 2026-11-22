@@ -100,7 +100,7 @@ export function notesToday(): number {
 }
 
 /** Pro AI through the website, using the owner's AI key. */
-export async function proAiRead(text: string, p: PlanState): Promise<unknown | null> {
+export async function proAiRead(text: string, p: PlanState, files: string[] = [], task = 'note', extra: Record<string, unknown> = {}): Promise<unknown | null> {
   const now = new Date();
   const p2 = (n: number) => String(n).padStart(2, '0');
   const off = -now.getTimezoneOffset();
@@ -110,7 +110,7 @@ export async function proAiRead(text: string, p: PlanState): Promise<unknown | n
   try {
     const r = await request(LICENSE_API + '&a=ai', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
-      body: JSON.stringify({ key: p.key, host: deviceCode(), text, now: iso, weekday: now.toLocaleDateString('en-US', { weekday: 'long' }) }),
+      body: JSON.stringify({ key: p.key, host: deviceCode(), text, now: iso, weekday: now.toLocaleDateString('en-US', { weekday: 'long' }), files: files.slice(0, 80), task, ...extra }),
     });
     if (!r.ok) return null;
     const j = await r.json();

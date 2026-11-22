@@ -43,11 +43,11 @@ SAVED_AT=$(date +%s)
 
 # 2. Is the reminder armed with Android?
 if adb shell dumpsys alarm | grep -q "$PKG"; then log "alarm-armed: yes"; else log "alarm-armed: NO"; fi
-dump; if grep -qi "bank" "$OUT/ui.xml"; then log "today-shows-task: yes"; else log "today-shows-task: NO"; fi
+dump; if grep -qi "loan" "$OUT/ui.xml"; then log "today-shows-task: yes"; else log "today-shows-task: NO"; fi
 
 # 3. Library: the note is there and search finds it.
 adb shell am start -a android.intent.action.VIEW -d "easylife://library" "$PKG" > /dev/null 2>&1; sleep 4
-dump; if grep -qi "bank" "$OUT/ui.xml"; then log "library-has-note: yes"; else log "library-has-note: NO"; fi
+dump; if grep -qi "loan" "$OUT/ui.xml"; then log "library-has-note: yes"; else log "library-has-note: NO"; fi
 if tap "Search notes|নোট খুঁজুন|খুঁজুন"; then sleep 1; adb shell input text "loan"; sleep 2; dump
   if grep -qi "bank" "$OUT/ui.xml"; then log "search-finds-note: yes"; else log "search-finds-note: NO"; fi
 else log "search-field: MISSING"; fi
@@ -65,7 +65,7 @@ adb shell cmd statusbar collapse; sleep 1
 adb shell am start -a android.intent.action.VIEW -d "easylife://settings" "$PKG" > /dev/null 2>&1; sleep 4
 if tap_scroll "▶ (Alarm|অ্যালার্ম)"; then log "test-alarm: tapped"; sleep 9; shot e2e-5-alarm; else log "test-alarm: MISSING"; fi
 adb shell am start -a android.intent.action.VIEW -d "easylife://settings" "$PKG" > /dev/null 2>&1; sleep 3
-if tap_scroll "▶ (Call screen|কল স্ক্রিন)"; then log "test-call: tapped"; adb shell input keyevent KEYCODE_HOME; sleep 9; shot e2e-6-callscreen
+if tap_scroll "▶ (Call screen|কল স্ক্রিন)"; then log "test-call: tapped"; adb shell input keyevent KEYCODE_SLEEP; sleep 9; adb shell input keyevent KEYCODE_WAKEUP; sleep 2; shot e2e-6-callscreen
   dump; if grep -q "$PKG" "$OUT/ui.xml" && grep -qiE "EASY LIFE|Done|Snooze" "$OUT/ui.xml"; then log "call-screen-shown: yes"; else log "call-screen-shown: NO"; fi
 else log "test-call: MISSING"; fi
 

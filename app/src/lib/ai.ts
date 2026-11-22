@@ -6,6 +6,8 @@ import type { Level, Repeat } from './parse';
 
 export type AiResult = {
   area: Area;
+  topic?: string;
+  important?: boolean;
   title: string;
   tasks: { title: string; at: string | null; repeat: Repeat; level: Level }[];
 };
@@ -19,13 +21,17 @@ function localIso(d: Date) {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:00${sign}${p(Math.floor(Math.abs(off) / 60))}:${p(Math.abs(off) % 60)}`;
 }
 
-export async function aiRead(text: string, key: string, model = DEFAULT_MODEL, timeoutMs = 9000): Promise<AiResult | null> {
+export async function aiRead(text: string, key: string, model = DEFAULT_MODEL, timeoutMs = 9000, fileNames: string[] = []): Promise<AiResult | null> {
   if (!key.trim()) return null;
   const now = new Date();
   const prompt = `You organise a personal note app. The user may speak Bangla, English or both.
 Now is ${localIso(now)} (${now.toLocaleDateString('en-US', { weekday: 'long' })}).
 Read the note and return JSON only:
-{"area": one of ${JSON.stringify(AREAS)}, "title": short title in the note's own language (max 8 words),
+{"area": one of ${JSON.stringify(AREAS)},
+ "topic": the exact file inside that area: the course code, subject, teacher ("Rahim sir"), family member, friend, client or business the note is about.
+   Reuse one of these existing files when it fits, spelled exactly: ${JSON.stringify(fileNames.slice(0, 80))}. Otherwise a short new name in the note's language, or "General".
+ "important": true if it needs attention (deadline, exam, money, medicine, bills), false for ideas and small talk,
+ "title": short title in the note's own language (max 8 words),
  "tasks": [{"title": short action in the note's language, "at": ISO 8601 local time with offset or null, "repeat": "none"|"daily"|"weekly", "level": "normal"|"urgent"|"critical"}]}
 Rules: one task per separate thing to do that has a time or day; if only a day is given use 09:00; bare hours 1-6 mean PM;
 medicine and bills are "urgent"; "must/অবশ্যই/wake me" is "critical"; ideas and plain notes have no tasks.
