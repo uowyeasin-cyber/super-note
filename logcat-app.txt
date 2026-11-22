@@ -1,0 +1,47 @@
+11-22 10:11:12.185  1994  1994 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 10:11:12.195  1994  1994 I AndroidRuntime: Using default boot image
+11-22 10:11:12.196  1994  1994 I AndroidRuntime: Leaving lock profiling enabled
+11-22 10:11:12.539  1994  1994 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+11-22 10:11:12.668  1994  1994 I AndroidRuntime: VM exiting with result code 0.
+11-22 10:11:12.863  2025  2025 W SoLoader: Initializing SoLoader: 0
+11-22 10:11:12.864  2025  2025 W SoLoader: Recording new base apk path: /data/app/~~AR7XZl06yx0OsQm7LLLNYA==/com.averroesai.easylife-dcjsMsquXL0zfbGSlO6zWg==/base.apk
+11-22 10:11:12.864  2025  2025 W SoLoader: Previously recorded 0 base apk paths.
+11-22 10:11:12.865  2025  2025 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+11-22 10:11:12.865  2025  2025 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+11-22 10:11:12.866  2025  2025 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/~~AR7XZl06yx0OsQm7LLLNYA==/com.averroesai.easylife-dcjsMsquXL0zfbGSlO6zWg==/base.apk!/lib/x86_64]]
+11-22 10:11:12.868  2025  2025 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/~~AR7XZl06yx0OsQm7LLLNYA==/com.averroesai.easylife-dcjsMsquXL0zfbGSlO6zWg==/lib/x86_64 flags = 0]]
+11-22 10:11:12.876  2025  2025 I SoLoader: init finish: 4 SO sources prepared
+11-22 10:11:12.876  2025  2025 W SoLoader: SoLoader initialized: 8
+11-22 10:11:13.287  2025  2057 I ExpoModulesCore: ✅ AppContext was initialized
+11-22 10:11:13.347  2025  2059 I ExpoModulesCore: ✅ JSI interop was installed
+11-22 10:11:13.354  2025  2059 W ExpoModulesV2: i42 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-22 10:11:13.354  2025  2059 W ExpoModulesV2: y71 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-22 10:11:13.354  2025  2059 W ExpoModulesV2: r11 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-22 10:11:13.356  2025  2059 I ExpoModulesCore: ✅ Expo Modules v2 installed 3 module(s) on globalThis.expo.modules
+11-22 10:11:13.401  2025  2059 I ExpoModulesCore: ✅ Constants were exported
+11-22 10:11:13.697  2025  2059 I ReactNativeJS: Running "main"
+11-22 10:11:13.727  2025  2059 W ExpoModulesV2: wx2 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-22 10:11:40.076  1214  2676 I TrustedTime: SntpTimeSignal: SntpTimeSignalImpl{serverSocketAddress=time.google.com/216.239.35.8:123, response=NtpMessage{header=NtpHeader{leapIndicator=0, versionNumber=3, mode=4, stratum=1, pollInterval=Duration{seconds=1, nanosOfSecond=0}, precisionExponent=-20, rootDelay=Duration{seconds=0, nanosOfSecond=0}, rootDispersion=Duration{seconds=0, nanosOfSecond=76293}, referenceIdentifier='GOOG', referenceTimestamp=eead3e5c.480dc6b7, originateTimestamp=10ec9376.21427bf3, receiveTimestamp=eead3e5c.480dc6b8, transmitTimestamp=eead3e5c.480dc6ba}}, resultTicks=Ticks{originalTicker=PlatformTicker, value=74283844667}, resultInstant=Instant{seconds=1795342300, nanosOfSecond=292239520}, clientOffset=Duration{seconds=0, nanosOfSecond=282680896}, totalTransactionDuration=Duration{seconds=0, nanosOfSecond=21558624}, roundTripDuration=Duration{seconds=0, nanosOfSecond=21558624}, responseInstant=Instant{seconds=1795342300, nanosOfSecond=9558624}} [CONTEXT service_id=326 ]
+11-22 10:12:13.012  4069  4069 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-22 10:12:13.032  4069  4069 I AndroidRuntime: Using default boot image
+11-22 10:12:13.032  4069  4069 I AndroidRuntime: Leaving lock profiling enabled
+11-22 10:12:13.572  4069  4069 D AndroidRuntime: Calling main entry com.android.commands.monkey.Monkey
+11-22 10:12:13.816  4069  4069 I AndroidRuntime: VM exiting with result code 0.
+11-22 10:12:14.083  4083  4083 W SoLoader: Initializing SoLoader: 0
+11-22 10:12:14.083  4083  4083 W SoLoader: Recording new base apk path: /data/app/~~AR7XZl06yx0OsQm7LLLNYA==/com.averroesai.easylife-dcjsMsquXL0zfbGSlO6zWg==/base.apk
+11-22 10:12:14.083  4083  4083 W SoLoader: Previously recorded 0 base apk paths.
+11-22 10:12:14.083  4083  4083 I SoLoader: Preparing SO source: DirectorySoSource[root = /vendor/lib64 flags = 2]
+11-22 10:12:14.083  4083  4083 I SoLoader: Preparing SO source: DirectorySoSource[root = /system/lib64 flags = 2]
+11-22 10:12:14.083  4083  4083 I SoLoader: Preparing SO source: DirectApkSoSource[root = [/data/app/~~AR7XZl06yx0OsQm7LLLNYA==/com.averroesai.easylife-dcjsMsquXL0zfbGSlO6zWg==/base.apk!/lib/x86_64]]
+11-22 10:12:14.084  4083  4083 I SoLoader: Preparing SO source: ApplicationSoSource[DirectorySoSource[root = /data/app/~~AR7XZl06yx0OsQm7LLLNYA==/com.averroesai.easylife-dcjsMsquXL0zfbGSlO6zWg==/lib/x86_64 flags = 0]]
+11-22 10:12:14.084  4083  4083 I SoLoader: init finish: 4 SO sources prepared
+11-22 10:12:14.084  4083  4083 W SoLoader: SoLoader initialized: 8
+11-22 10:12:14.404  4083  4102 I ExpoModulesCore: ✅ AppContext was initialized
+11-22 10:12:14.487  4083  4103 I ExpoModulesCore: ✅ JSI interop was installed
+11-22 10:12:14.491  4083  4103 W ExpoModulesV2: i42 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-22 10:12:14.491  4083  4103 W ExpoModulesV2: y71 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-22 10:12:14.492  4083  4103 W ExpoModulesV2: r11 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
+11-22 10:12:14.496  4083  4103 I ExpoModulesCore: ✅ Expo Modules v2 installed 3 module(s) on globalThis.expo.modules
+11-22 10:12:14.511  4083  4103 I ExpoModulesCore: ✅ Constants were exported
+11-22 10:12:14.880  4083  4103 I ReactNativeJS: Running "main"
+11-22 10:12:14.887  4083  4103 W ExpoModulesV2: wx2 does not implement io.github.expo.modules.v2.Enumerable. It crosses to JavaScript here, but R8 keeps an enum's entries and its property only when it does, so a release build may fail on it or send its entry names instead
