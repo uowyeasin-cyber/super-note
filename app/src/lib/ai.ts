@@ -1,7 +1,9 @@
-// Optional AI: reads a note with Google Gemini when the user adds their own key.
+// Optional AI: reads a note with the person's own AI keys (Gemini, Groq, OpenAI and others).
 // Any failure falls back to the offline parser, so saving never depends on the network.
-import { request } from './net';
 import { AREAS, type Area } from './classify';
+import { parseJson } from './gemini';
+import { askAll, askKey } from './llm';
+import type { AiKey } from './providers';
 import type { Level, Repeat } from './parse';
 
 export type AiResult = {
@@ -10,9 +12,10 @@ export type AiResult = {
   important?: boolean;
   title: string;
   tasks: { title: string; at: string | null; repeat: Repeat; level: Level }[];
+  points?: string[];
 };
 
-export const DEFAULT_MODEL = 'gemini-2.5-flash';
+export const DEFAULT_MODEL = 'gemini-flash-latest';
 
 function localIso(d: Date) {
   const p = (n: number) => String(n).padStart(2, '0');
@@ -32,38 +35,21 @@ Read the note and return JSON only:
    Reuse one of these existing files when it fits, spelled exactly: ${JSON.stringify(fileNames.slice(0, 80))}. Otherwise a short new name in the note's language, or "General".
  "important": true if it needs attention (deadline, exam, money, medicine, bills), false for ideas and small talk,
  "title": short title in the note's own language (max 8 words),
+ "points": the note rewritten as short, clear bullet points in the note's own language (fix speech-to-text mistakes, keep every fact, number, name and date; 1 point for a one-line note, up to 10 for long ones),
  "tasks": [{"title": short action in the note's language, "at": ISO 8601 local time with offset or null, "repeat": "none"|"daily"|"weekly", "level": "normal"|"urgent"|"critical"}]}
 Rules: one task per separate thing to do that has a time or day; if only a day is given use 09:00; bare hours 1-6 mean PM;
 medicine and bills are "urgent"; "must/অবশ্যই/wake me" is "critical"; ideas and plain notes have no tasks.
 Note: ${JSON.stringify(text)}`;
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key.trim() },
-      body: JSON.stringify({
-        contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: { responseMimeType: 'application/json', temperature: 0.1 },
-      }),
-      signal: ctrl.signal,
-    });
-    if (!res.ok) return null;
-    const j = await res.json();
-    const raw = j?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (typeof raw !== 'string') return null;
-    const o = JSON.parse(raw);
-    if (!AREAS.includes(o.area)) o.area = 'personal';
-    if (!Array.isArray(o.tasks)) o.tasks = [];
-    return o as AiResult;
-  } catch {
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
+  const o = parseJson<AiResult>(await askAll(key, prompt, undefined, { model, temperature: 0.1, timeoutMs }));
+  if (!o || typeof o !== 'object') return null;
+  if (!AREAS.includes(o.area)) o.area = 'personal';
+  if (!Array.isArray(o.tasks)) o.tasks = [];
+  if (!Array.isArray(o.points)) o.points = [];
+  return o;
 }
 
-export async function testKey(key: string, model = DEFAULT_MODEL): Promise<boolean> {
-  const r = await aiRead('Test: call Rafi tomorrow at 7 pm', key, model, 12000);
-  return !!r;
+/** Checks one key with a tiny JSON request. */
+export async function testKey(k: AiKey, model = DEFAULT_MODEL): Promise<boolean> {
+  const raw = await askKey(k, 'Return JSON only: {"ok": true}', undefined, { model, temperature: 0, timeoutMs: 25000 });
+  return !!parseJson(raw);
 }

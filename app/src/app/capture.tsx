@@ -320,6 +320,17 @@ export default function Capture() {
               </View>
             ) : null}
 
+            {draft.points.length > 1 ? (
+              <View style={{ marginTop: 14, padding: 14, gap: 6, backgroundColor: c.surface, borderRadius: 18, borderWidth: StyleSheet.hairlineWidth, borderColor: c.line }}>
+                {draft.points.map((p, i) => (
+                  <View key={i} style={{ flexDirection: 'row', gap: 8 }}>
+                    <T kind="body" color={c.accent}>•</T>
+                    <T kind="body" style={{ flex: 1, lineHeight: 22 }}>{p}</T>
+                  </View>
+                ))}
+              </View>
+            ) : null}
+
             <View style={{ marginTop: 14, backgroundColor: c.surface, borderRadius: 18, borderWidth: StyleSheet.hairlineWidth, borderColor: c.line }}>
               {draft.tasks.length === 0 ? (
                 <T kind="small" style={{ padding: 16 }}>{t.noTasksFound}</T>

@@ -58,7 +58,7 @@ export default function CircleScreen() {
 
   function remind(task: CircleTask, when: number) {
     saveDraft(task.title, bn ? 'bn' : 'en', {
-      title: task.title, area: 'family', topic: circle?.name || (bn ? 'পরিবার' : 'Family'), important: true, money: null, kind: 'task', byAi: false,
+      title: task.title, area: 'family', topic: circle?.name || (bn ? 'পরিবার' : 'Family'), important: true, money: null, kind: 'task', byAi: false, points: [],
       tasks: [{ key: 'c' + task.id, title: task.title, at: when, repeat: 'none', level: 'urgent', on: true, duplicate: false }],
     }, s.escalate && pro);
     bump(); toast(t.reminderSet);

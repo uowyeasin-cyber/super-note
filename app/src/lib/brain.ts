@@ -1,7 +1,8 @@
 // One door to the AI for every feature (notes, photos, links, classes, messages).
-// Uses the person's own Gemini key when set, otherwise Pro's built-in AI; returns null
+// Uses the person's own AI keys when set, otherwise Pro's built-in AI; returns null
 // when neither is available or the call fails, so every caller has an offline path.
-import { request } from './net';
+import { parseJson } from './gemini';
+import { askAll } from './llm';
 import { DEFAULT_MODEL } from './ai';
 import { proAiRead, type PlanState } from './plan';
 
@@ -29,26 +30,7 @@ export async function askJson<T = Record<string, unknown>>(ctx: AiCtx, prompt: s
 }
 
 async function direct<T>(key: string, model: string, prompt: string, image: Img | undefined, timeoutMs: number): Promise<T | null> {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const parts: unknown[] = [{ text: prompt }];
-    if (image) parts.push({ inline_data: { mime_type: image.mime, data: image.base64 } });
-    const res = await request(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2 } }),
-      signal: ctrl.signal,
-    });
-    if (!res.ok) return null;
-    const j = await res.json();
-    const raw = j?.candidates?.[0]?.content?.parts?.[0]?.text;
-    return typeof raw === 'string' ? (JSON.parse(raw) as T) : null;
-  } catch {
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
+  return parseJson<T>(await askAll(key, prompt, image, { model, timeoutMs }));
 }
 
 /** The shared part of every "organise this" prompt. */

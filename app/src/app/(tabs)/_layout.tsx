@@ -7,14 +7,15 @@ import { useApp } from '../../lib/store';
 import { Icon } from '../../components/Icon';
 import { Press } from '../../components/ui';
 
-function TabBar({ state, navigation }: { state: { index: number; routes: { name: string; key: string }[] }; navigation: { navigate: (n: string) => void } }) {
+// expo-router's tab view gives a custom tab bar `navigateToTab(routeKey)`, not a `navigation` object.
+function TabBar({ state, navigateToTab }: { state: { index: number; routes: { name: string; key: string }[] }; navigateToTab: (key: string) => void }) {
   const { c, t } = useApp();
   const insets = useSafeAreaInsets();
   const item = (name: string, label: string, icon: 'home' | 'library' | 'wallet' | 'grid') => {
     const i = state.routes.findIndex((r) => r.name === name);
     const on = state.index === i;
     return (
-      <Press key={name} onPress={() => navigation.navigate(name)} style={{ flex: 1, alignItems: 'center', gap: 3, paddingTop: 10 }}>
+      <Press key={name} onPress={() => { if (!on && i >= 0) navigateToTab(state.routes[i].key); }} style={{ flex: 1, alignItems: 'center', gap: 3, paddingTop: 10 }}>
         <Icon name={icon} size={22} color={on ? c.accent : c.ink3} />
         <Text style={{ fontSize: 11.5, fontWeight: '600', color: on ? c.accent : c.ink3 }}>{label}</Text>
       </Press>
@@ -46,7 +47,7 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: c.bg } }}
-      tabBar={(p: any) => <TabBar state={p.state} navigation={p.navigation} />}
+      tabBar={(p: any) => <TabBar state={p.state} navigateToTab={p.navigateToTab} />}
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="library" />
