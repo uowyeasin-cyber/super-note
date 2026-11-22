@@ -49,6 +49,8 @@ tab "^(Today|আজ)$"; sleep 1
 
 # 1. Type a note with a reminder in 2 minutes and save it.
 adb shell am start -a android.intent.action.VIEW -d "easylife://capture" "$PKG" > /dev/null 2>&1; sleep 5
+# Phones that never granted permissions get Android's own dialogs first: answer "Don't allow", as a cautious person would.
+for _ in 1 2; do tap "^(Don.t allow|Deny|অনুমতি দেবেন না)$" && sleep 2; done
 tap "Tap to stop|থামাতে চাপ দিন" && sleep 1
 if tap "Or type here|অথবা এখানে লিখুন"; then log "type-field: found"; else log "type-field: MISSING"; fi
 sleep 1
