@@ -1,0 +1,39 @@
+after launch: ALIVE
+after 22s: ALIVE
+library: ALIVE
+capture: ALIVE
+settings: ALIVE
+upgrade: ALIVE
+relaunch: ALIVE
+WEBVIEW-OR-NATIVE-CRASH: no
+E2E tab-Library: ok
+E2E tab-Money: ok
+E2E tab-More: ok
+E2E tab-Today: ok
+E2E tool-TelltheAI: ok
+E2E tool-Classmode: ok
+E2E tool-Writeamessage: ok
+E2E tool-Myprofile: ok
+E2E tool-Circle: ok
+E2E tool-Settings: ok
+E2E type-field: found
+E2E save-button: tapped
+E2E alarm-armed: yes
+E2E today-shows-task: yes
+E2E library-has-note: NO
+E2E search-finds-note: yes
+E2E reminder-rang: yes
+E2E test-alarm: tapped
+E2E test-call: tapped
+E2E call-screen-shown: yes
+E2E screen-money: open
+E2E screen-more: open
+E2E screen-assistant: open
+E2E screen-class: open
+E2E screen-circle: open
+E2E screen-message: open
+E2E screen-profile: open
+E2E assistant-plans-action: yes
+E2E ai-providers: shown
+E2E owner-signin: NO
+E2E alive-at-end: yes
