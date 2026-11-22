@@ -61,7 +61,7 @@ jobs:
   emulator:
     needs: smoke
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 50
     strategy:
       fail-fast: false
       matrix:
@@ -99,7 +99,9 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           working-directory: app
-          script: VARIANT=${{ matrix.variant }} bash ../.github/smoke/run.sh
+          script: |
+            VARIANT=${{ matrix.variant }} bash ../.github/smoke/run.sh
+            bash ../.github/smoke/e2e.sh
 
       - name: Publish screenshots and log
         if: always()
