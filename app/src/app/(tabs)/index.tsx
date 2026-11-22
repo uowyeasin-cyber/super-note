@@ -7,7 +7,7 @@ import { allNotes, openTasks, recentDone, type Task } from '../../lib/db';
 import { toggleTask } from '../../lib/actions';
 import { toBnDigits } from '../../lib/i18n';
 import { Icon } from '../../components/Icon';
-import { IconBtn, Press, Section, T } from '../../components/ui';
+import { IconBtn, Press, Section, T, Chip } from '../../components/ui';
 import { ListCard, NoteRow, TaskRow } from '../../components/rows';
 import { PlanPill } from '../../components/PlanBadge';
 
@@ -65,6 +65,12 @@ export default function Today() {
           <Icon name="mic" size={22} color={c.onAccent} />
         </View>
       </Press>
+
+      <View style={{ flexDirection: 'row', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+        <Chip label={t.askAi} icon="sparkle" onPress={() => router.push('/assistant')} />
+        <Chip label={t.classMode} icon="school" onPress={() => router.push('/class')} />
+        <Chip label={t.message} icon="message" onPress={() => router.push('/message')} />
+      </View>
 
       {count > 0 ? (
         <View style={{ flexDirection: 'row', gap: 10, marginTop: 14 }}>

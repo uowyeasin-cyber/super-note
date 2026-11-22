@@ -6,12 +6,13 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppProvider, useApp } from '../lib/store';
 import { getDb } from '../lib/db';
 import { rearmAll, syncEvents } from '../lib/alarms';
+import { backfillFiles } from '../lib/capture';
 import { ToastHost } from '../components/ui';
 import { AppGuard } from '../components/AppGuard';
 import { installCrashHandler, recordCrash } from '../lib/crash';
 
 installCrashHandler();
-try { getDb(); } catch (e) { recordCrash(e, 'db'); }
+try { getDb(); backfillFiles(); } catch (e) { recordCrash(e, 'db'); }
 
 function Shell() {
   const { c, bump, checkPlan } = useApp();
@@ -31,6 +32,12 @@ function Shell() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="capture" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         <Stack.Screen name="note/[id]" />
+        <Stack.Screen name="file" />
+        <Stack.Screen name="class" />
+        <Stack.Screen name="circle" />
+        <Stack.Screen name="assistant" />
+        <Stack.Screen name="message" />
+        <Stack.Screen name="profile" />
         <Stack.Screen name="settings" />
         <Stack.Screen name="upgrade" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
       </Stack>

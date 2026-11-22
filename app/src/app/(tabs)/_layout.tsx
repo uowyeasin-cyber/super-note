@@ -10,7 +10,7 @@ import { Press } from '../../components/ui';
 function TabBar({ state, navigation }: { state: { index: number; routes: { name: string; key: string }[] }; navigation: { navigate: (n: string) => void } }) {
   const { c, t } = useApp();
   const insets = useSafeAreaInsets();
-  const item = (name: string, label: string, icon: 'home' | 'library') => {
+  const item = (name: string, label: string, icon: 'home' | 'library' | 'wallet' | 'grid') => {
     const i = state.routes.findIndex((r) => r.name === name);
     const on = state.index === i;
     return (
@@ -26,6 +26,7 @@ function TabBar({ state, navigation }: { state: { index: number; routes: { name:
       paddingBottom: Math.max(insets.bottom, 10), height: 66 + Math.max(insets.bottom, 10),
     }}>
       {item('index', t.today, 'home')}
+      {item('library', t.library, 'library')}
       <View style={{ flex: 1, alignItems: 'center' }}>
         <Press accessibilityLabel="New note" onPress={() => router.push('/capture')} style={{
           marginTop: -22, width: 64, height: 64, borderRadius: 22, backgroundColor: c.accent, alignItems: 'center', justifyContent: 'center',
@@ -34,7 +35,8 @@ function TabBar({ state, navigation }: { state: { index: number; routes: { name:
           <Icon name="mic" size={28} color={c.onAccent} stroke={2.1} />
         </Press>
       </View>
-      {item('library', t.library, 'library')}
+      {item('money', t.money, 'wallet')}
+      {item('more', t.more, 'grid')}
     </View>
   );
 }
@@ -48,6 +50,8 @@ export default function TabsLayout() {
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="library" />
+      <Tabs.Screen name="money" />
+      <Tabs.Screen name="more" />
     </Tabs>
   );
 }

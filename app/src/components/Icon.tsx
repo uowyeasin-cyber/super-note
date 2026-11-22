@@ -3,7 +3,8 @@ import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 export type IconName =
   | 'mic' | 'plus' | 'search' | 'settings' | 'check' | 'right' | 'left' | 'bell' | 'alarm' | 'phone'
-  | 'trash' | 'copy' | 'share' | 'folder' | 'x' | 'sparkle' | 'repeat' | 'stop' | 'home' | 'library' | 'shield' | 'grid' | 'clock';
+  | 'trash' | 'copy' | 'share' | 'folder' | 'x' | 'sparkle' | 'repeat' | 'stop' | 'home' | 'library' | 'shield' | 'grid' | 'clock'
+  | 'wallet' | 'camera' | 'link' | 'image' | 'book' | 'message' | 'user' | 'chart' | 'up' | 'down' | 'school' | 'send';
 
 export function Icon({ name, size = 22, color = '#000', stroke = 1.9 }: { name: IconName; size?: number; color?: string; stroke?: number }) {
   const p = { stroke: color, strokeWidth: stroke, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, fill: 'none' };
@@ -31,6 +32,18 @@ export function Icon({ name, size = 22, color = '#000', stroke = 1.9 }: { name: 
       case 'library': return <Path d="M4 5h4v15H4zM10 5h4v15h-4zM16.5 5.5l3.8-1 3.2 14.6-3.8 1z" {...p} />;
       case 'shield': return <Path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z" {...p} />;
       case 'grid': return <><Rect x={4} y={4} width={7} height={7} rx={2} {...p} /><Rect x={13} y={4} width={7} height={7} rx={2} {...p} /><Rect x={4} y={13} width={7} height={7} rx={2} {...p} /><Rect x={13} y={13} width={7} height={7} rx={2} {...p} /></>;
+      case 'wallet': return <><Path d="M4 7a2 2 0 0 1 2-2h11v4M4 7v11a2 2 0 0 0 2 2h14V9H6a2 2 0 0 1-2-2Z" {...p} /><Circle cx={16} cy={14.5} r={1.2} fill={color} stroke="none" /></>;
+      case 'camera': return <><Path d="M4 8a2 2 0 0 1 2-2h2l1.5-2h5L16 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" {...p} /><Circle cx={12} cy={13} r={3.5} {...p} /></>;
+      case 'link': return <Path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" {...p} />;
+      case 'image': return <><Rect x={3} y={4} width={18} height={16} rx={2.5} {...p} /><Circle cx={9} cy={10} r={1.8} {...p} /><Path d="m21 16-5-5-9 9" {...p} /></>;
+      case 'book': return <Path d="M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2V5Zm0 15a2 2 0 0 0 2 2h13v-4" {...p} />;
+      case 'message': return <Path d="M4 5h16v11H9l-5 4V5Z" {...p} />;
+      case 'user': return <><Circle cx={12} cy={8} r={4} {...p} /><Path d="M4 21a8 8 0 0 1 16 0" {...p} /></>;
+      case 'chart': return <Path d="M4 20V10M10 20V4M16 20v-7M22 20H2" {...p} />;
+      case 'up': return <Path d="M12 19V5M6 11l6-6 6 6" {...p} />;
+      case 'down': return <Path d="M12 5v14M6 13l6 6 6-6" {...p} />;
+      case 'school': return <Path d="M2 9l10-5 10 5-10 5L2 9Zm4 2v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" {...p} />;
+      case 'send': return <Path d="M21 3 10 14M21 3l-7 18-4-7-7-4 18-7Z" {...p} />;
       case 'clock': return <><Circle cx={12} cy={12} r={8} {...p} /><Path d="M12 8v4l3 2" {...p} /></>;
     }
   })();

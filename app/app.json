@@ -2,7 +2,7 @@
   "expo": {
     "name": "Easy Life",
     "slug": "easy-life",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "scheme": "easylife",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,7 +12,7 @@
     ],
     "android": {
       "package": "com.averroesai.easylife",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "backgroundColor": "#4B3BE0",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -52,7 +52,14 @@
         }
       ],
       "expo-sqlite",
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Easy Life opens your photos only when you pick one to save as a note.",
+          "cameraPermission": "Easy Life uses the camera only when you take a photo for a note."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": false
