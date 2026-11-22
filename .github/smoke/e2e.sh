@@ -69,6 +69,17 @@ if tap_scroll "▶ (Call screen|কল স্ক্রিন)"; then log "test-c
   dump; if grep -q "$PKG" "$OUT/ui.xml" && grep -qiE "EASY LIFE|Done|Snooze" "$OUT/ui.xml"; then log "call-screen-shown: yes"; else log "call-screen-shown: NO"; fi
 else log "test-call: MISSING"; fi
 
+# 6. New v0.2 screens open without crashing; "Tell the AI" turns a sentence into an action.
+for r in money more assistant class circle message profile; do
+  adb shell am start -a android.intent.action.VIEW -d "easylife://$r" "$PKG" > /dev/null 2>&1; sleep 3; shot "e2e-7-$r"
+  if adb shell pidof "$PKG" > /dev/null 2>&1; then log "screen-$r: open"; else log "screen-$r: CRASH"; fi
+done
+adb shell am start -a android.intent.action.VIEW -d "easylife://assistant" "$PKG" > /dev/null 2>&1; sleep 3
+if tap "What should I do|কী করব"; then sleep 1; adb shell input text "open%sfacebook"; adb shell input keyevent 111; sleep 1
+  tap "^Do it$|^করে দাও$"; sleep 3; dump; shot e2e-8-assistant
+  if grep -qiE "Open facebook|facebook খুলব" "$OUT/ui.xml"; then log "assistant-plans-action: yes"; else log "assistant-plans-action: NO"; fi
+else log "assistant-field: MISSING"; fi
+
 if adb shell pidof "$PKG" > /dev/null 2>&1; then log "alive-at-end: yes"; else log "alive-at-end: NO"; fi
 adb logcat -d > "$OUT/logcat-e2e.txt" 2>&1
 echo "===== E2E ====="; grep "^E2E" "$OUT/status.txt"

@@ -34,6 +34,7 @@ function Shell() {
         <Stack.Screen name="note/[id]" />
         <Stack.Screen name="file" />
         <Stack.Screen name="class" />
+        <Stack.Screen name="circle" />
         <Stack.Screen name="assistant" />
         <Stack.Screen name="message" />
         <Stack.Screen name="profile" />

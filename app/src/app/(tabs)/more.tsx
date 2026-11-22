@@ -22,7 +22,7 @@ export default function More() {
     { icon: 'wallet', title: t.money, go: () => router.navigate('/money') },
     { icon: 'book', title: t.lifeStory, soon: true },
     { icon: 'send', title: t.inbox, soon: true },
-    { icon: 'grid', title: t.circle, soon: true },
+    { icon: 'user', title: t.circle, go: () => router.push('/circle') },
     { icon: 'settings', title: t.settingsTitle, go: () => router.push('/settings') },
   ];
   return (

@@ -106,7 +106,7 @@ export async function proAiRead(text: string, p: PlanState, files: string[] = []
   const off = -now.getTimezoneOffset();
   const iso = `${now.getFullYear()}-${p2(now.getMonth() + 1)}-${p2(now.getDate())}T${p2(now.getHours())}:${p2(now.getMinutes())}:00${off >= 0 ? '+' : '-'}${p2(Math.floor(Math.abs(off) / 60))}:${p2(Math.abs(off) % 60)}`;
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 12000);
+  const timer = setTimeout(() => ctrl.abort(), task === 'raw' ? 45000 : 12000);
   try {
     const r = await request(LICENSE_API + '&a=ai', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctrl.signal,
