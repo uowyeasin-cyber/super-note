@@ -1,7 +1,8 @@
 // One door to the AI for every feature (notes, photos, links, classes, messages).
-// Uses the person's own Gemini key when set, otherwise Pro's built-in AI; returns null
+// Uses the person's own AI keys when set, otherwise Pro's built-in AI; returns null
 // when neither is available or the call fails, so every caller has an offline path.
-import { gemini, parseJson, type GeminiPart } from './gemini';
+import { parseJson } from './gemini';
+import { askAll } from './llm';
 import { DEFAULT_MODEL } from './ai';
 import { proAiRead, type PlanState } from './plan';
 
@@ -29,9 +30,7 @@ export async function askJson<T = Record<string, unknown>>(ctx: AiCtx, prompt: s
 }
 
 async function direct<T>(key: string, model: string, prompt: string, image: Img | undefined, timeoutMs: number): Promise<T | null> {
-  const parts: GeminiPart[] = [{ text: prompt }];
-  if (image) parts.push({ inline_data: { mime_type: image.mime, data: image.base64 } });
-  return parseJson<T>(await gemini(key, parts, { model, timeoutMs }));
+  return parseJson<T>(await askAll(key, prompt, image, { model, timeoutMs }));
 }
 
 /** The shared part of every "organise this" prompt. */

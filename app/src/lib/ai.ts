@@ -1,7 +1,9 @@
-// Optional AI: reads a note with Google Gemini when the user adds their own key.
+// Optional AI: reads a note with the person's own AI keys (Gemini, Groq, OpenAI and others).
 // Any failure falls back to the offline parser, so saving never depends on the network.
 import { AREAS, type Area } from './classify';
-import { gemini, parseJson } from './gemini';
+import { parseJson } from './gemini';
+import { askAll, askKey } from './llm';
+import type { AiKey } from './providers';
 import type { Level, Repeat } from './parse';
 
 export type AiResult = {
@@ -38,7 +40,7 @@ Read the note and return JSON only:
 Rules: one task per separate thing to do that has a time or day; if only a day is given use 09:00; bare hours 1-6 mean PM;
 medicine and bills are "urgent"; "must/অবশ্যই/wake me" is "critical"; ideas and plain notes have no tasks.
 Note: ${JSON.stringify(text)}`;
-  const o = parseJson<AiResult>(await gemini(key, [{ text: prompt }], { model, temperature: 0.1, timeoutMs }));
+  const o = parseJson<AiResult>(await askAll(key, prompt, undefined, { model, temperature: 0.1, timeoutMs }));
   if (!o || typeof o !== 'object') return null;
   if (!AREAS.includes(o.area)) o.area = 'personal';
   if (!Array.isArray(o.tasks)) o.tasks = [];
@@ -46,7 +48,8 @@ Note: ${JSON.stringify(text)}`;
   return o;
 }
 
-export async function testKey(key: string, model = DEFAULT_MODEL): Promise<boolean> {
-  const r = await aiRead('Test: call Rafi tomorrow at 7 pm', key, model, 25000);
-  return !!r;
+/** Checks one key with a tiny JSON request. */
+export async function testKey(k: AiKey, model = DEFAULT_MODEL): Promise<boolean> {
+  const raw = await askKey(k, 'Return JSON only: {"ok": true}', undefined, { model, temperature: 0, timeoutMs: 25000 });
+  return !!parseJson(raw);
 }

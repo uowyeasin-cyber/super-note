@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import { useApp } from '../lib/store';
 import { ACCENTS, type AccentName } from '../lib/theme';
 import { askNotificationPermission, engineAvailable, engineStatus, SuperAlarm, type EngineStatus } from '../lib/alarms';
-import { testKey } from '../lib/ai';
+import { AiKeys } from '../components/AiKeys';
 import type { Level } from '../lib/parse';
 import { Icon, type IconName } from '../components/Icon';
 import { Btn, Chip, IconBtn, Press, Section, T, toast } from '../components/ui';
@@ -44,8 +44,6 @@ export default function Settings() {
   const { c, t, s, set, pro, plan } = app;
   const insets = useSafeAreaInsets();
   const [st, setSt] = useState<EngineStatus>(engineStatus());
-  const [key, setKey] = useState(s.aiKey);
-  const [checking, setChecking] = useState(false);
   const refresh = useCallback(() => setSt(engineStatus()), []);
   useEffect(() => {
     const sub = AppState.addEventListener('change', (x) => { if (x === 'active') refresh(); });
@@ -140,21 +138,7 @@ export default function Settings() {
 
         <Section title={t.ai}>
           <T kind="small" style={{ marginBottom: 10 }}>{t.aiHint}</T>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: c.surface, borderRadius: 14, borderWidth: StyleSheet.hairlineWidth, borderColor: c.line, paddingHorizontal: 14, height: 50 }}>
-            <Icon name="sparkle" size={18} color={s.aiKey ? c.accent : c.ink3} />
-            <TextInput value={key} onChangeText={setKey} placeholder={t.aiKeyPlaceholder} placeholderTextColor={c.ink3} secureTextEntry autoCapitalize="none" autoCorrect={false} style={{ flex: 1, color: c.ink, fontSize: 15 }} />
-          </View>
-          <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
-            <Btn style={{ flex: 1 }} label={checking ? '…' : t.save} disabled={checking} onPress={async () => {
-              if (!key.trim()) { set({ aiKey: '' }); toast(t.aiOff); return; }
-              setChecking(true);
-              const ok = await testKey(key.trim(), s.aiModel);
-              setChecking(false);
-              if (ok) { set({ aiKey: key.trim() }); toast(t.aiOn); } else toast('Key did not work');
-            }} />
-            <Btn style={{ flex: 1 }} kind="ghost" label={t.getKey} onPress={() => Linking.openURL('https://aistudio.google.com/apikey')} />
-          </View>
-          <T kind="small" style={{ marginTop: 8 }}>{s.aiKey || pro ? '● ' + t.aiOn + (pro && !s.aiKey ? ' · Pro' : '') : '○ ' + t.aiOff}</T>
+          <AiKeys />
         </Section>
 
         <Section title={t.privacy}>

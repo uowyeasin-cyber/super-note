@@ -98,6 +98,13 @@ if tap "What should I do|কী করব"; then sleep 1; adb shell input text "
   if grep -qiE "Open facebook|facebook খুলব" "$OUT/ui.xml"; then log "assistant-plans-action: yes"; else log "assistant-plans-action: NO"; fi
 else log "assistant-field: MISSING"; fi
 
+# 7. Settings: keys from any AI service, and the owner's sign-in box opens.
+adb shell am start -a android.intent.action.VIEW -d "easylife://settings" "$PKG" > /dev/null 2>&1; sleep 3
+if tap_scroll "^Groq$"; then log "ai-providers: shown"; else log "ai-providers: MISSING"; fi
+if tap_scroll "Owner: server AI|মালিক: সার্ভারের AI"; then sleep 1; dump; shot e2e-9-owner
+  if grep -qE "Password|পাসওয়ার্ড" "$OUT/ui.xml"; then log "owner-signin: opens"; else log "owner-signin: NO"; fi
+else log "owner-signin: MISSING"; fi
+
 if adb shell pidof "$PKG" > /dev/null 2>&1; then log "alive-at-end: yes"; else log "alive-at-end: NO"; fi
 adb logcat -d > "$OUT/logcat-e2e.txt" 2>&1
 echo "===== E2E ====="; grep "^E2E" "$OUT/status.txt"
