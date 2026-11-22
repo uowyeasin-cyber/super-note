@@ -1,4 +1,5 @@
 // Turns what the user said into a saved note plus armed reminders.
+import { bulletPoints, tidyText } from './points';
 import { type Area } from './classify';
 import { parseTasks, similar, type Level, type Repeat } from './parse';
 import { allNotes, files, getDb, insertMoney, insertNote, insertTask, openTaskTitlesSince, uid, type Kind, type Task } from './db';
@@ -17,6 +18,7 @@ export type Draft = {
   url?: string;
   tasks: { key: string; title: string; at: number | null; repeat: Repeat; level: Level; on: boolean; duplicate: boolean }[];
   byAi: boolean;
+  points: string[];       // the note as short bullet points (AI, or the offline splitter)
 };
 
 function shortTitle(text: string) {
@@ -63,7 +65,7 @@ export function offlineDraft(text: string, defaultLevel: Level, extra: { kind?: 
   const o = organize(text, { hasTimedTask: tasks.length > 0, areaHint: extra.areaHint ?? null });
   const file = extra.topicHint ? { area: extra.areaHint ?? o.area, topic: extra.topicHint } : chooseFile(text, o);
   const kind: Kind = extra.kind ?? (o.money ? 'money' : tasks.length ? 'task' : o.later ? 'idea' : 'note');
-  return markDuplicates({ title, area: file.area, topic: file.topic, important: o.important, money: o.money, kind, media: extra.media, url: extra.url, tasks, byAi: false });
+  return markDuplicates({ title, area: file.area, topic: file.topic, important: o.important, money: o.money, kind, media: extra.media, url: extra.url, tasks, byAi: false, points: bulletPoints(text) });
 }
 
 /** `keepFile`: the person picked the file (opened from a file or class), so the AI may not move it. */
@@ -78,6 +80,7 @@ export function aiDraft(r: AiResult, defaultLevel: Level, base: Draft, keepFile 
     ...base, title: r.title || base.title, area: file.area, topic: file.topic,
     important: typeof r.important === 'boolean' ? r.important || tasks.length > 0 : base.important,
     kind: base.kind === 'note' && tasks.length ? 'task' : base.kind, tasks, byAi: true,
+    points: Array.isArray(r.points) && r.points.length > 1 ? r.points.map(String).filter(Boolean).slice(0, 15) : base.points,
   });
 }
 
@@ -85,7 +88,7 @@ export function saveDraft(text: string, lang: string, d: Draft, escalate: boolea
   const now = Date.now();
   const noteId = uid('n');
   insertNote({
-    id: noteId, text: text.trim(), title: d.title.trim() || shortTitle(text), area: d.area, lang, created: now, updated: now, pinned: 0,
+    id: noteId, text: tidyText(text, d.points ?? [], lang === 'bn'), title: d.title.trim() || shortTitle(text), area: d.area, lang, created: now, updated: now, pinned: 0,
     topic: d.topic, important: d.important ? 1 : 0, kind: d.kind, media: d.media ?? '', url: d.url ?? '',
   });
   if (d.money) insertMoney({ id: uid('m'), note_id: noteId, amount: d.money.amount, dir: d.money.dir, party: d.money.party, area: d.area, topic: d.topic, at: now });

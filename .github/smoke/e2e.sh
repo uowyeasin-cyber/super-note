@@ -29,6 +29,24 @@ tap_scroll() {
 adb shell am force-stop "$PKG"; sleep 1
 adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1; sleep 8
 
+# 0. Real taps: every tab, then every tool on More. A crash shows the error screen.
+broken() { dump; grep -qE "Something went wrong|কিছু একটা ভুল" "$OUT/ui.xml"; }
+tab() { LAST=1 tap "$1"; }
+for t in "^(Library|লাইব্রেরি)$" "^(Money|হিসাব)$" "^(More|আরও)$" "^(Today|আজ)$"; do
+  name=$(echo "$t" | sed 's/[^A-Za-z]//g')
+  if tab "$t"; then sleep 2; if broken; then log "tab-$name: ERROR SCREEN"; shot "e2e-0-tab-$name-error"; adb shell input keyevent KEYCODE_BACK; else log "tab-$name: ok"; fi
+  else log "tab-$name: MISSING"; fi
+done
+tab "^(More|আরও)$"; sleep 2
+for t in "Tell the AI|AI কে বলো" "Class mode|ক্লাস মোড" "Write a message|মেসেজ লিখে দাও" "My profile|আমার প্রোফাইল" "Circle|সার্কেল" "^(Settings|সেটিংস)$"; do
+  name=$(echo "$t" | sed 's/|.*//; s/[^A-Za-z]//g')
+  if tap_scroll "$t"; then sleep 2; if broken; then log "tool-$name: ERROR SCREEN"; shot "e2e-0-tool-$name-error"; else log "tool-$name: ok"; fi
+    adb shell input keyevent KEYCODE_BACK; sleep 2
+    tab "^(More|আরও)$" || { adb shell monkey -p "$PKG" -c android.intent.category.LAUNCHER 1 > /dev/null 2>&1; sleep 4; tab "^(More|আরও)$"; }; sleep 1
+  else log "tool-$name: MISSING"; fi
+done
+tab "^(Today|আজ)$"; sleep 1
+
 # 1. Type a note with a reminder in 2 minutes and save it.
 adb shell am start -a android.intent.action.VIEW -d "easylife://capture" "$PKG" > /dev/null 2>&1; sleep 5
 tap "Tap to stop|থামাতে চাপ দিন" && sleep 1

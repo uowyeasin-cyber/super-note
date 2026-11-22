@@ -2,7 +2,7 @@
   "expo": {
     "name": "Easy Life",
     "slug": "easy-life",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "scheme": "easylife",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,7 +12,7 @@
     ],
     "android": {
       "package": "com.averroesai.easylife",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "backgroundColor": "#4B3BE0",
         "foregroundImage": "./assets/android-icon-foreground.png",
