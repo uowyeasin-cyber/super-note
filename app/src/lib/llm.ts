@@ -1,6 +1,6 @@
 // Asks every AI key the person saved, top to bottom, until one answers.
 // Gemini uses Google's API; every other service uses the OpenAI chat format.
-import { gemini, type GeminiPart } from './gemini';
+import { gemini, parseJson, type GeminiPart } from './gemini';
 import { request } from './net';
 import { parseRing, pickModel, PROVIDERS, type AiKey } from './providers';
 
@@ -15,7 +15,8 @@ async function withTimeout<T>(ms: number, run: (signal: AbortSignal) => Promise<
 
 async function chatModels(base: string, k: AiKey, vision: boolean, ms: number): Promise<string[]> {
   if (k.model) return [k.model];
-  if (!models.has(base)) {
+  const id = base + '|' + k.key; // model access differs per account, so cache per key
+  if (!models.has(id)) {
     const ids = await withTimeout(ms, async (signal) => {
       const r = await request(`${base}/models`, { headers: { Authorization: `Bearer ${k.key}`, 'x-api-key': k.key, 'anthropic-version': '2023-06-01' }, signal });
       if (!r.ok) return null;
@@ -23,9 +24,9 @@ async function chatModels(base: string, k: AiKey, vision: boolean, ms: number): 
       return ((j?.data ?? []) as { id: string; active?: boolean }[]).filter((m) => m.active !== false).map((m) => m.id);
     });
     if (!ids?.length) return [];
-    models.set(base, ids);
+    models.set(id, ids);
   }
-  let ids = models.get(base)!;
+  let ids = models.get(id)!;
   if (vision) ids = ids.filter((id) => VISION.test(id));
   const out: string[] = [];
   const first = pickModel(k.provider, ids);
@@ -41,8 +42,9 @@ async function viaChat(k: AiKey, prompt: string, image: { base64: string; mime: 
   for (const model of await chatModels(base, k, !!image, Math.min(8000, deadline - Date.now()))) {
     const left = deadline - Date.now();
     if (left < 1500) return null;
-    const body: Record<string, unknown> = { model, temperature, messages: [{ role: 'user', content }] };
-    if (k.provider !== 'anthropic') body.response_format = { type: 'json_object' };
+    const body: Record<string, unknown> = { model, messages: [{ role: 'user', content }] };
+    // Newer Claude models reject low temperatures, so Claude keeps its default.
+    if (k.provider !== 'anthropic') { body.temperature = temperature; body.response_format = { type: 'json_object' }; }
     const res = await withTimeout(left, async (signal) => {
       const r = await request(`${base}/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${k.key}` }, body: JSON.stringify(body), signal });
       if (r.status === 401 || r.status === 403) return 'bad';
@@ -51,7 +53,7 @@ async function viaChat(k: AiKey, prompt: string, image: { base64: string; mime: 
       return String(j?.choices?.[0]?.message?.content ?? '') || null;
     });
     if (res === 'bad') return null;
-    if (res) return res;
+    if (res && parseJson(res)) return res;
   }
   return null;
 }
@@ -77,7 +79,7 @@ export async function askAll(ring: string, prompt: string, image?: { base64: str
     // Give every key a fair share of the time, but at least 6 seconds.
     const share = Math.max(6000, Math.floor(left / Math.max(1, keys.length - keys.indexOf(k))));
     const out = await askKey(k, prompt, image, { ...opts, timeoutMs: Math.min(left, keys.length > 1 ? share : left) });
-    if (out) return out;
+    if (out && parseJson(out)) return out; // a reply that is not JSON counts as a miss: try the next key
   }
   return null;
 }

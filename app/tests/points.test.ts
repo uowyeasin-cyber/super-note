@@ -19,3 +19,8 @@ test('one-line notes stay as they are', () => {
 test('tidy text keeps the original under the points', () => {
   assert.equal(tidyText('a. b', ['a', 'b'], false), '• a\n• b\n\n— Original —\na. b');
 });
+
+test('"also" inside a sentence stays; ", also" and "and also" start a new point', () => {
+  assert.deepEqual(bulletPoints('I also need to pay rent'), []);
+  assert.deepEqual(bulletPoints('Buy rice, also call Rafi and also pay rent'), ['Buy rice', 'call Rafi', 'pay rent']);
+});

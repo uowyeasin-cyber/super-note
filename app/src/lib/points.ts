@@ -3,7 +3,7 @@
 export function bulletPoints(text: string): string[] {
   const parts = text
     .replace(/\r/g, '')
-    .split(/\n+|(?<=[.!?।])\s+|\s+(?:and then|then|also|তারপর|এরপর|আর একটা|এছাড়া)\s+/i)
+    .split(/\n+|(?<=[.!?।])\s+|\s+(?:and then|then|তারপর|এরপর|আর একটা|এছাড়া)\s+|,?\s+and also\s+|,\s*also\s+/i)
     .map((p) => p.replace(/^(?:[-•*]|\d+[.)])\s+/, '').replace(/^(?:and then|then|also|তারপর|এরপর|এছাড়া)[,\s]+/i, '').replace(/[.।]\s*$/, '').trim())
     .filter((p) => p.length > 1);
   return parts.length > 1 ? parts.slice(0, 15) : [];

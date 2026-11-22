@@ -110,4 +110,6 @@ else log "owner-signin: MISSING"; fi
 if adb shell pidof "$PKG" > /dev/null 2>&1; then log "alive-at-end: yes"; else log "alive-at-end: NO"; fi
 adb logcat -d > "$OUT/logcat-e2e.txt" 2>&1
 echo "===== E2E ====="; grep "^E2E" "$OUT/status.txt"
+# An error screen, a crash or a dead app fails the job; softer checks only report.
+if grep -qE "^E2E .*(ERROR SCREEN|CRASH|alive-at-end: NO)" "$OUT/status.txt"; then echo "E2E found a crash"; exit 1; fi
 exit 0
